@@ -44,4 +44,4 @@
 # /android/app/profile
 # /android/app/release
 
-.np_project_test
+lib/np_project_test
