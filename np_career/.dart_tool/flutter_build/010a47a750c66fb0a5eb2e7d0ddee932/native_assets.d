@@ -1,0 +1,1 @@
+ E:\\flutter_test\\cv\\np_career\\.dart_tool\\flutter_build\\010a47a750c66fb0a5eb2e7d0ddee932\\native_assets.yaml: 
