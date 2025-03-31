@@ -28,7 +28,7 @@ class _SignupState extends State<Signup> {
               "Sign up",
               style: TextStyle(
                   color: AppColor.greenPrimaryColor,
-                  fontSize: 30,
+                  fontSize: 50,
                   fontWeight: FontWeight.bold),
             ),
           ),
