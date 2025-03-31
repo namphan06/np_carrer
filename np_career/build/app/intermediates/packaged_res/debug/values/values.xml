@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="gcm_defaultSenderId" translatable="false">220655003141</string>
+    <string name="google_api_key" translatable="false">AIzaSyAL38Xh_y4pKahkvmkQpjXJswtPKmawr2A</string>
+    <string name="google_app_id" translatable="false">1:220655003141:android:6d5e977684af595af09e6c</string>
+    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyAL38Xh_y4pKahkvmkQpjXJswtPKmawr2A</string>
+    <string name="google_storage_bucket" translatable="false">np-career.firebasestorage.app</string>
+    <string name="project_id" translatable="false">np-career</string>
     <style name="LaunchTheme" parent="@android:style/Theme.Light.NoTitleBar">
         
         <item name="android:windowBackground">@drawable/launch_background</item>

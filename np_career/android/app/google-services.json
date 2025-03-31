@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "220655003141",
+    "project_id": "np-career",
+    "storage_bucket": "np-career.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:220655003141:android:6d5e977684af595af09e6c",
+        "android_client_info": {
+          "package_name": "com.example.np_career"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAL38Xh_y4pKahkvmkQpjXJswtPKmawr2A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

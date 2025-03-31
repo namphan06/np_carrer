@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "com.example.np_career.app-mergeDebugResources-4:/values-sw360dp-v13/values-sw360dp-v13.xml",
+            "outputFile": "com.example.np_career.app-mergeDebugResources-5:/values-sw360dp-v13/values-sw360dp-v13.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\THINKBOOK\\.gradle\\caches\\transforms-3\\284028a17b3c4602dfe2b64a1546fb3a\\transformed\\preference-1.2.1\\res\\values-sw360dp-v13\\values-sw360dp-v13.xml",
+                    "source": "C:\\Users\\THINKBOOK\\.gradle\\caches\\transforms-3\\da542fe1ab6f0853d4c2e65ccf4036ae\\transformed\\preference-1.2.1\\res\\values-sw360dp-v13\\values-sw360dp-v13.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",
