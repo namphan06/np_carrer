@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:get/instance_manager.dart';
 import 'package:np_career/core/app_color.dart';
 import 'package:np_career/view/login/animation_check_remember.dart';
 import 'package:np_career/view/login/login_controller.dart';
+import 'package:np_career/view/signup/signup.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -126,7 +128,7 @@ class _LoginState extends State<Login> {
                               Obx(() => AnimationCheckRemember(
                                   value: controller.isRemember.value,
                                   onChanged: (val) =>
-                                      controller.isRemember.value = val)),
+                                      controller.saveRememberMe(val))),
                               SizedBox(
                                 width: 10,
                               ),
@@ -226,7 +228,9 @@ class _LoginState extends State<Login> {
                             width: 5,
                           ),
                           GestureDetector(
-                              onTap: () {},
+                              onTap: () {
+                                Get.to(Signup());
+                              },
                               child: Text(
                                 "Sign up",
                                 style: TextStyle(
