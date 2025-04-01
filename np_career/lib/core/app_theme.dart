@@ -52,7 +52,7 @@ class AppTheme {
         focusedErrorBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
             borderSide:
-                const BorderSide(color: AppColor.greenPrimaryColor, width: 2)),
+                const BorderSide(color: AppColor.orangeRedColor, width: 2)),
         hintStyle: const TextStyle(
             fontSize: 16,
             color: AppColor.greenPrimaryColor,
@@ -61,6 +61,10 @@ class AppTheme {
           fontSize: 16,
           color: AppColor.greenPrimaryColor,
           fontWeight: FontWeight.w600,
+        ),
+        errorStyle: TextStyle(
+          fontSize: 16,
+          color: AppColor.orangeRedColor, // Màu chữ khi có lỗi
         )),
     textSelectionTheme: TextSelectionThemeData(
       cursorColor: AppColor.greenPrimaryColor, // Màu con trỏ nhập liệu

@@ -5,6 +5,7 @@ import 'package:get/instance_manager.dart';
 import 'package:np_career/core/app_color.dart';
 import 'package:np_career/view/login/animation_check_remember.dart';
 import 'package:np_career/view/login/login_controller.dart';
+import 'package:np_career/view/login/login_fb.dart';
 import 'package:np_career/view/signup/signup.dart';
 
 class Login extends StatefulWidget {
@@ -16,6 +17,7 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
   final LoginController controller = Get.put(LoginController());
+  final LoginFb fb = Get.put(LoginFb());
 
   @override
   Widget build(BuildContext context) {
@@ -102,19 +104,27 @@ class _LoginState extends State<Login> {
                   ),
                   Column(
                     children: [
-                      TextField(
-                        controller: controller.emailController,
-                        decoration: InputDecoration(
-                          label: Text("Email"),
+                      Obx(
+                        () => TextField(
+                          controller: controller.emailController,
+                          decoration: InputDecoration(
+                              label: Text("Email"),
+                              errorText: controller.emailError.isEmpty
+                                  ? null
+                                  : controller.emailError.value),
                         ),
                       ),
                       SizedBox(
                         height: 20,
                       ),
-                      TextField(
-                        controller: controller.passwordController,
-                        decoration: InputDecoration(
-                          label: Text("Password"),
+                      Obx(
+                        () => TextField(
+                          controller: controller.passwordController,
+                          decoration: InputDecoration(
+                              label: Text("Password"),
+                              errorText: controller.passwordError.isEmpty
+                                  ? null
+                                  : controller.passwordError.value),
                         ),
                       ),
                       SizedBox(
@@ -153,7 +163,9 @@ class _LoginState extends State<Login> {
                         height: 20,
                       ),
                       ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          controller.validForm();
+                        },
                         child: Text(
                           "Sign in",
                           style: TextStyle(
@@ -193,7 +205,9 @@ class _LoginState extends State<Login> {
                         height: 20,
                       ),
                       ElevatedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            fb.loginWithGoogle();
+                          },
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [

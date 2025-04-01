@@ -20,12 +20,12 @@
         "source": "com.example.np_career.app-main-1:/mipmap-xxhdpi/ic_launcher.png"
     },
     {
-        "merged": "com.example.np_career.app-merged_res-7:/drawable-v21_launch_background.xml.flat",
-        "source": "com.example.np_career.app-main-1:/drawable-v21/launch_background.xml"
-    },
-    {
         "merged": "com.example.np_career.app-merged_res-7:/mipmap-xhdpi_launcher_icon.png.flat",
         "source": "com.example.np_career.app-main-1:/mipmap-xhdpi/launcher_icon.png"
+    },
+    {
+        "merged": "com.example.np_career.app-merged_res-7:/drawable-v21_launch_background.xml.flat",
+        "source": "com.example.np_career.app-main-1:/drawable-v21/launch_background.xml"
     },
     {
         "merged": "com.example.np_career.app-merged_res-7:/mipmap-xxxhdpi_ic_launcher.png.flat",
