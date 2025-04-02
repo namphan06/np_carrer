@@ -13,15 +13,25 @@ class LoginFb {
 
   Future<void> login({required String email, required String password}) async {
     try {
-      if (email.isNotEmpty || password.isNotEmpty) {
-        await _auth.signInWithEmailAndPassword(
-            email: email, password: password);
-        Get.snackbar("Success", "Login successful.");
-      } else {
+      if (email.isEmpty || password.isEmpty) {
         Get.snackbar("Error", "Email and password cannot be empty.");
+        return;
       }
+
+      await _auth.signInWithEmailAndPassword(email: email, password: password);
+      Get.snackbar("Success", "Login successful.");
+    } on FirebaseAuthException catch (e) {
+      String errorMessage = "Login failed. Please try again.";
+
+      if (e.code == 'user-not-found') {
+        errorMessage = "No user found with this email.";
+      } else if (e.code == 'wrong-password') {
+        errorMessage = "Incorrect password. Please try again.";
+      }
+
+      Get.snackbar("Error", errorMessage);
     } catch (err) {
-      Get.snackbar("Error", err.toString());
+      Get.snackbar("Error", "An unexpected error occurred.");
     }
   }
 
