@@ -1,0 +1,1 @@
+ C:\\Namphan\\flutter_project\\np_carrer\\np_career\\.dart_tool\\flutter_build\\377c5f32a0720a73ff361c6226df9121\\native_assets.json: 

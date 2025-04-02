@@ -57,9 +57,8 @@ class LoginFb {
               .collection('users')
               .doc(userCredential.user!.uid)
               .set(user.toJson());
-
-          Get.to(Home());
         }
+        Get.to(Home());
       }
     } catch (err) {
       Get.snackbar("Error", err.toString());
@@ -87,6 +86,15 @@ class LoginFb {
       return await FirebaseAuth.instance.signInWithCredential(credential);
     } catch (err) {
       throw 'Error during Google sign-in: $err';
+    }
+  }
+
+  Future<void> signOut() async {
+    try {
+      _auth.signOut();
+      await GoogleSignIn().signOut();
+    } catch (err) {
+      Get.snackbar("Error", err.toString());
     }
   }
 }
