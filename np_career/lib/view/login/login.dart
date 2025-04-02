@@ -6,6 +6,7 @@ import 'package:np_career/core/app_color.dart';
 import 'package:np_career/view/login/animation_check_remember.dart';
 import 'package:np_career/view/login/login_controller.dart';
 import 'package:np_career/view/login/login_fb.dart';
+import 'package:np_career/view/screen/home.dart';
 import 'package:np_career/view/signup/signup.dart';
 
 class Login extends StatefulWidget {
@@ -164,7 +165,10 @@ class _LoginState extends State<Login> {
                       ),
                       ElevatedButton(
                         onPressed: () {
-                          controller.validForm();
+                          if (controller.validForm()) {
+                            Get.to(Home());
+                          }
+                          ;
                         },
                         child: Text(
                           "Sign in",

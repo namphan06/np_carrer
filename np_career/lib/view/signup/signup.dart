@@ -6,6 +6,7 @@ import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:np_career/core/app_color.dart';
 import 'package:np_career/view/login/login.dart';
 import 'package:np_career/view/signup/signup_controller.dart';
+import 'package:np_career/view/signup/signup_fb.dart';
 
 class Signup extends StatefulWidget {
   const Signup({super.key});
@@ -16,27 +17,29 @@ class Signup extends StatefulWidget {
 
 class _SignupState extends State<Signup> {
   final SignupController controller = Get.put(SignupController());
+  final SignupFb signupFb = Get.put(SignupFb());
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(20),
-            child: Text(
-              "Sign up",
-              style: TextStyle(
-                  color: AppColor.greenPrimaryColor,
-                  fontSize: 50,
-                  fontWeight: FontWeight.bold),
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(20),
+              child: Text(
+                "Sign up",
+                style: TextStyle(
+                    color: AppColor.greenPrimaryColor,
+                    fontSize: 50,
+                    fontWeight: FontWeight.bold),
+              ),
             ),
-          ),
-          SizedBox(
-            height: 10,
-          ),
-          Expanded(
-            child: Container(
+            SizedBox(
+              height: 10,
+            ),
+            Container(
               width: double.infinity,
               decoration: BoxDecoration(
                   border: Border(
@@ -52,7 +55,7 @@ class _SignupState extends State<Signup> {
                       () => Row(
                         mainAxisSize: MainAxisSize.max,
                         children: [
-                          Flexible(
+                          Expanded(
                               child: ElevatedButton(
                                   onPressed: () {
                                     controller.checkChoice.value = "user";
@@ -74,7 +77,7 @@ class _SignupState extends State<Signup> {
                           SizedBox(
                             width: 30,
                           ),
-                          Flexible(
+                          Expanded(
                               child: ElevatedButton(
                                   onPressed: () {
                                     controller.checkChoice.value = "company";
@@ -100,38 +103,68 @@ class _SignupState extends State<Signup> {
                     padding: EdgeInsets.symmetric(horizontal: 50, vertical: 20),
                     child: Column(
                       children: [
-                        TextField(
-                          controller: controller.nameController,
-                          decoration: InputDecoration(label: Text("Name")),
+                        Obx(
+                          () => TextField(
+                            controller: controller.nameController,
+                            decoration: InputDecoration(
+                                label: Text("Name"),
+                                errorText: controller.nameError.isEmpty
+                                    ? null
+                                    : controller.nameError.value),
+                          ),
                         ),
                         SizedBox(
                           height: 20,
                         ),
-                        TextField(
-                          controller: controller.nameController,
-                          decoration: InputDecoration(label: Text("Email")),
+                        Obx(
+                          () => TextField(
+                            controller: controller.emailController,
+                            decoration: InputDecoration(
+                                label: Text("Email"),
+                                errorText: controller.emailError.isEmpty
+                                    ? null
+                                    : controller.emailError.value),
+                          ),
                         ),
                         SizedBox(
                           height: 20,
                         ),
-                        TextField(
-                          controller: controller.nameController,
-                          decoration: InputDecoration(label: Text("Phone")),
+                        Obx(
+                          () => TextField(
+                            controller: controller.phoneController,
+                            decoration: InputDecoration(
+                                label: Text("Phone"),
+                                errorText: controller.phoneError.isEmpty
+                                    ? null
+                                    : controller.phoneError.value),
+                          ),
                         ),
                         SizedBox(
                           height: 20,
                         ),
-                        TextField(
-                          controller: controller.nameController,
-                          decoration: InputDecoration(label: Text("Password")),
+                        Obx(
+                          () => TextField(
+                            controller: controller.passwordController,
+                            decoration: InputDecoration(
+                                label: Text("Password"),
+                                errorText: controller.passwordError.isEmpty
+                                    ? null
+                                    : controller.passwordError.value),
+                          ),
                         ),
                         SizedBox(
                           height: 20,
                         ),
-                        TextField(
-                          controller: controller.nameController,
-                          decoration:
-                              InputDecoration(label: Text("Confirm Password")),
+                        Obx(
+                          () => TextField(
+                            controller: controller.confirmController,
+                            decoration: InputDecoration(
+                                label: Text("Confirm Password"),
+                                errorText: controller
+                                        .confirmpasswordError.isEmpty
+                                    ? null
+                                    : controller.confirmpasswordError.value),
+                          ),
                         ),
                       ],
                     ),
@@ -139,7 +172,17 @@ class _SignupState extends State<Signup> {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 50),
                     child: ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          if (controller.validForm()) {
+                            signupFb.signUp(
+                              email: controller.emailController.text,
+                              password: controller.passwordController.text,
+                              username: controller.nameController.text,
+                              phone: controller.phoneController.text,
+                              role: controller.checkChoice.value,
+                            );
+                          }
+                        },
                         child: Text(
                           "Sign up",
                           style: TextStyle(
@@ -175,9 +218,9 @@ class _SignupState extends State<Signup> {
                   )
                 ],
               ),
-            ),
-          )
-        ],
+            )
+          ],
+        ),
       ),
     );
   }

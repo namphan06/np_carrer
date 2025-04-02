@@ -15,6 +15,19 @@ class LoginController extends GetxController {
   void onInit() {
     super.onInit();
     loadRememberMe();
+
+    // Lắng nghe sự thay đổi của email và password
+    emailController.addListener(() {
+      if (isRemember.value) {
+        saveRememberMe(true); // Lưu lại thông tin khi email thay đổi
+      }
+    });
+
+    passwordController.addListener(() {
+      if (isRemember.value) {
+        saveRememberMe(true); // Lưu lại thông tin khi password thay đổi
+      }
+    });
   }
 
   String validEmail(String value) {
@@ -44,26 +57,32 @@ class LoginController extends GetxController {
     return false;
   }
 
-  Future<void> loadRememberMe() async {
-    final prefs = await SharedPreferences.getInstance();
-    isRemember.value = prefs.getBool('remember_me') ?? false;
-
-    if (isRemember.value) {
-      emailController.text = prefs.getString('email') ?? '';
-      passwordController.text = prefs.getString('password') ?? '';
-    }
-  }
-
   Future<void> saveRememberMe(bool value) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool('remember_me', value);
     isRemember.value = value;
+
     if (isRemember.value) {
       await prefs.setString('email', emailController.text);
       await prefs.setString('password', passwordController.text);
+      print("Email saved: ${emailController.text}");
+      print("Password saved: ${passwordController.text}");
     } else {
       await prefs.remove('email');
       await prefs.remove('password');
+      print("Email and Password removed.");
+    }
+  }
+
+  Future<void> loadRememberMe() async {
+    final prefs = await SharedPreferences.getInstance();
+    isRemember.value = prefs.getBool('remember_me') ?? false;
+
+    print("Remember me: $isRemember");
+
+    if (isRemember.value) {
+      emailController.text = prefs.getString('email') ?? '';
+      passwordController.text = prefs.getString('password') ?? '';
     }
   }
 

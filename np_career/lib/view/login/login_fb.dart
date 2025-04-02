@@ -47,10 +47,10 @@ class LoginFb {
 
         if (!docSnap.exists) {
           UserModel user = UserModel(
-            username: userCredential.user!.displayName ?? 'New User',
-            uid: userCredential.user!.uid,
-            email: userCredential.user!.email ?? '',
-          );
+              username: userCredential.user!.displayName ?? 'New User',
+              uid: userCredential.user!.uid,
+              email: userCredential.user!.email ?? '',
+              role: "user");
 
           // Lưu thông tin người dùng vào Firestore
           await _firestore
