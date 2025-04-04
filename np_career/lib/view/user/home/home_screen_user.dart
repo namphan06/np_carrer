@@ -75,7 +75,7 @@ class _HomeScreenUserState extends State<HomeScreenUser> {
                       color: AppColor.greenPrimaryColor,
                     ),
                     Positioned(
-                        top: -8,
+                        top: -5,
                         right: 0,
                         child: Container(
                           padding: EdgeInsets.all(4),
@@ -86,7 +86,7 @@ class _HomeScreenUserState extends State<HomeScreenUser> {
                             "1",
                             style: TextStyle(
                                 color: Colors.white,
-                                fontSize: 18,
+                                fontSize: 15,
                                 fontWeight: FontWeight.bold),
                           ),
                         ))
@@ -106,10 +106,17 @@ class _HomeScreenUserState extends State<HomeScreenUser> {
                   height: 60,
                   width: 60,
                   decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    image: DecorationImage(
-                      image: AssetImage("assets/icon/icon1.png"),
-                      fit: BoxFit.cover,
+                      shape: BoxShape.circle,
+                      color: Colors.grey[200],
+                      border: Border.all(
+                          color: AppColor.greenPrimaryColor, width: 3)),
+                  child: Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: SvgPicture.asset(
+                      'assets/images/profile-round-1342-svgrepo-com.svg',
+                      height: 10,
+                      width: 10,
+                      color: AppColor.greenPrimaryColor,
                     ),
                   ),
                 ),
@@ -154,77 +161,243 @@ class _HomeScreenUserState extends State<HomeScreenUser> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Job",
-                          style: TextStyle(
-                              color: AppColor.orangePrimaryColor,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 30),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: Row(
-                            children: [
-                              CustomerContainer(
-                                  svgPicture:
-                                      "assets/images/file-info-paper-person-profile-svgrepo-com.svg",
-                                  lableContainer: "Jobs Applied",
-                                  selectedContainer: () {
-                                    Get.to(JobApplied());
-                                  }),
-                              SizedBox(
-                                width: 30,
-                              ),
-                              CustomerContainer(
-                                  svgPicture:
-                                      "assets/images/save-add-svgrepo-com.svg",
-                                  lableContainer: "Saved Jobs",
-                                  selectedContainer: () {
-                                    Get.to(JobApplied());
-                                  }),
-                              SizedBox(
-                                width: 30,
-                              ),
-                              CustomerContainer(
-                                  svgPicture:
-                                      "assets/images/recommended-svgrepo-com.svg",
-                                  lableContainer: "Relevant Jobs",
-                                  selectedContainer: () {
-                                    Get.to(JobApplied());
-                                  }),
-                              SizedBox(
-                                width: 30,
-                              ),
-                              CustomerContainer(
-                                  svgPicture:
-                                      "assets/images/industry-svgrepo-com.svg",
-                                  lableContainer: "Jobs by Specialty",
-                                  selectedContainer: () {
-                                    Get.to(JobApplied());
-                                  }),
-                              SizedBox(
-                                width: 30,
-                              ),
-                              CustomerContainer(
-                                  svgPicture:
-                                      "assets/images/company-svgrepo-com.svg",
-                                  lableContainer: "Top Company",
-                                  selectedContainer: () {
-                                    Get.to(JobApplied());
-                                  }),
-                              SizedBox(
-                                width: 30,
-                              ),
-                            ],
+                    SingleChildScrollView(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Job",
+                            style: TextStyle(
+                                color: AppColor.orangePrimaryColor,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 30),
                           ),
-                        )
-                      ],
+                          SizedBox(
+                            height: 10,
+                          ),
+                          SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: Row(
+                              children: [
+                                CustomerContainer(
+                                    svgPicture:
+                                        "assets/images/file-info-paper-person-profile-svgrepo-com.svg",
+                                    lableContainer: "Jobs Applied",
+                                    selectedContainer: () {
+                                      Get.to(JobApplied());
+                                    }),
+                                SizedBox(
+                                  width: 30,
+                                ),
+                                CustomerContainer(
+                                    svgPicture:
+                                        "assets/images/save-add-svgrepo-com.svg",
+                                    lableContainer: "Saved Jobs",
+                                    selectedContainer: () {
+                                      Get.to(JobApplied());
+                                    }),
+                                SizedBox(
+                                  width: 30,
+                                ),
+                                CustomerContainer(
+                                    svgPicture:
+                                        "assets/images/recommended-svgrepo-com.svg",
+                                    lableContainer: "Relevant Jobs",
+                                    selectedContainer: () {
+                                      Get.to(JobApplied());
+                                    }),
+                                SizedBox(
+                                  width: 30,
+                                ),
+                                CustomerContainer(
+                                    svgPicture:
+                                        "assets/images/industry-svgrepo-com.svg",
+                                    lableContainer: "Jobs by Specialty",
+                                    selectedContainer: () {
+                                      Get.to(JobApplied());
+                                    }),
+                                SizedBox(
+                                  width: 30,
+                                ),
+                                CustomerContainer(
+                                    svgPicture:
+                                        "assets/images/company-svgrepo-com.svg",
+                                    lableContainer: "Top Company",
+                                    selectedContainer: () {
+                                      Get.to(JobApplied());
+                                    }),
+                                SizedBox(
+                                  width: 30,
+                                ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          Text(
+                            "Profile & Resume",
+                            style: TextStyle(
+                                color: AppColor.orangePrimaryColor,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 30),
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: Row(
+                              children: [
+                                CustomerContainer(
+                                    svgPicture:
+                                        "assets/images/pen-file-svgrepo-com.svg",
+                                    lableContainer: "Build Your Resume",
+                                    selectedContainer: () {
+                                      Get.to(JobApplied());
+                                    }),
+                                SizedBox(
+                                  width: 30,
+                                ),
+                                CustomerContainer(
+                                    svgPicture:
+                                        "assets/images/manage-dashboard-analytic-svgrepo-com.svg",
+                                    lableContainer: "Resume Management",
+                                    selectedContainer: () {
+                                      Get.to(JobApplied());
+                                    }),
+                                SizedBox(
+                                  width: 30,
+                                ),
+                                CustomerContainer(
+                                    svgPicture:
+                                        "assets/images/profile-image-round-1326-svgrepo-com.svg",
+                                    lableContainer: "CV Profile",
+                                    selectedContainer: () {
+                                      Get.to(JobApplied());
+                                    }),
+                                SizedBox(
+                                  width: 30,
+                                ),
+                                CustomerContainer(
+                                    svgPicture:
+                                        "assets/images/brain-svgrepo-com.svg",
+                                    lableContainer: "Resume Writing Guide",
+                                    selectedContainer: () {
+                                      Get.to(JobApplied());
+                                    }),
+                                SizedBox(
+                                  width: 30,
+                                ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          Text(
+                            "Tool",
+                            style: TextStyle(
+                                color: AppColor.orangePrimaryColor,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 30),
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: Row(
+                              children: [
+                                CustomerContainer(
+                                    svgPicture:
+                                        "assets/images/test-svgrepo-com.svg",
+                                    lableContainer: "MBTI Personality Test",
+                                    selectedContainer: () {
+                                      Get.to(JobApplied());
+                                    }),
+                                SizedBox(
+                                  width: 30,
+                                ),
+                                CustomerContainer(
+                                    svgPicture:
+                                        "assets/images/test-svgrepo-com (1).svg",
+                                    lableContainer: "MI Test",
+                                    selectedContainer: () {
+                                      Get.to(JobApplied());
+                                    }),
+                                SizedBox(
+                                  width: 30,
+                                ),
+                                CustomerContainer(
+                                    svgPicture:
+                                        "assets/images/scales-3-svgrepo-com.svg",
+                                    lableContainer:
+                                        "Gross-Net Salary Calculation",
+                                    selectedContainer: () {
+                                      Get.to(JobApplied());
+                                    }),
+                                SizedBox(
+                                  width: 30,
+                                ),
+                                CustomerContainer(
+                                    svgPicture:
+                                        "assets/images/marketing-hand-give-bar-chart-statistic-svgrepo-com.svg",
+                                    lableContainer: "Income Tax Calculation",
+                                    selectedContainer: () {
+                                      Get.to(JobApplied());
+                                    }),
+                                SizedBox(
+                                  width: 30,
+                                ),
+                                CustomerContainer(
+                                    svgPicture:
+                                        "assets/images/shield-xmark-svgrepo-com.svg",
+                                    lableContainer:
+                                        "Unemployment Insurance Calculation",
+                                    selectedContainer: () {
+                                      Get.to(JobApplied());
+                                    }),
+                                SizedBox(
+                                  width: 30,
+                                ),
+                                CustomerContainer(
+                                    svgPicture:
+                                        "assets/images/shield-check-svgrepo-com.svg",
+                                    lableContainer:
+                                        "One-Time Social Insurance Calculation",
+                                    selectedContainer: () {
+                                      Get.to(JobApplied());
+                                    }),
+                                SizedBox(
+                                  width: 30,
+                                ),
+                                CustomerContainer(
+                                    svgPicture:
+                                        "assets/images/money-bag-svgrepo-com.svg",
+                                    lableContainer:
+                                        "Compound Interest Calculation",
+                                    selectedContainer: () {
+                                      Get.to(JobApplied());
+                                    }),
+                                SizedBox(
+                                  width: 30,
+                                ),
+                                CustomerContainer(
+                                    svgPicture:
+                                        "assets/images/money-recive-svgrepo-com.svg",
+                                    lableContainer: "Savings Plan",
+                                    selectedContainer: () {
+                                      Get.to(JobApplied());
+                                    }),
+                                SizedBox(
+                                  width: 30,
+                                ),
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
                     )
                   ],
                 ),
