@@ -11,15 +11,17 @@ class LoginFb {
   FirebaseAuth _auth = FirebaseAuth.instance;
   FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  Future<void> login({required String email, required String password}) async {
+  Future<String> login({
+    required String email,
+    required String password,
+  }) async {
     try {
       if (email.isEmpty || password.isEmpty) {
-        Get.snackbar("Error", "Email and password cannot be empty.");
-        return;
+        return "Email and password cannot be empty.";
       }
 
       await _auth.signInWithEmailAndPassword(email: email, password: password);
-      Get.snackbar("Success", "Login successful.");
+      return "success";
     } on FirebaseAuthException catch (e) {
       String errorMessage = "Login failed. Please try again.";
 
@@ -29,9 +31,9 @@ class LoginFb {
         errorMessage = "Incorrect password. Please try again.";
       }
 
-      Get.snackbar("Error", errorMessage);
+      return errorMessage;
     } catch (err) {
-      Get.snackbar("Error", "An unexpected error occurred.");
+      return "An unexpected error occurred.";
     }
   }
 
@@ -96,5 +98,13 @@ class LoginFb {
     } catch (err) {
       Get.snackbar("Error", err.toString());
     }
+  }
+
+  Future<UserModel> getUser() async {
+    User user = _auth.currentUser!;
+
+    DocumentSnapshot documentSnapshot =
+        await _firestore.collection("users").doc(user.uid).get();
+    return UserModel.fromSnap(documentSnapshot);
   }
 }

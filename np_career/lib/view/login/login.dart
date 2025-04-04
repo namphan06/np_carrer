@@ -165,10 +165,7 @@ class _LoginState extends State<Login> {
                       ),
                       ElevatedButton(
                         onPressed: () {
-                          if (controller.validForm()) {
-                            Get.to(Home());
-                          }
-                          ;
+                          controller.loginUser();
                         },
                         child: Text(
                           "Sign in",

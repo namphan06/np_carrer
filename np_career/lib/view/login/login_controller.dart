@@ -1,11 +1,18 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
+import 'package:np_career/model/user_model.dart';
+import 'package:np_career/view/login/login_fb.dart';
+import 'package:np_career/view/user/home/home_screen_user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginController extends GetxController {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+
+  final LoginFb _loginFb = Get.put(LoginFb());
+
   var isRemember = false.obs;
 
   var emailError = "".obs;
@@ -55,6 +62,28 @@ class LoginController extends GetxController {
       return true;
     }
     return false;
+  }
+
+  void loginUser() async {
+    try {
+      String res = await _loginFb.login(
+          email: emailController.text.trim(),
+          password: passwordController.text.trim());
+      UserModel userModel = await _loginFb.getUser();
+      if (res == "success") {
+        if (userModel.role == "user") {
+          Get.to(HomeScreenUser());
+        } else if (userModel.role == "company") {
+          Get.snackbar("Company", "Actor Company");
+        } else {
+          Get.snackbar("Error", "Actor empty");
+        }
+      } else {
+        Get.snackbar("Error", "Login Fail");
+      }
+    } catch (err) {
+      Get.snackbar("Error", err.toString());
+    }
   }
 
   Future<void> saveRememberMe(bool value) async {
