@@ -211,6 +211,16 @@ class _HomeScreenUserState extends State<HomeScreenUser> {
                               SizedBox(
                                 width: 30,
                               ),
+                              CustomerContainer(
+                                  svgPicture:
+                                      "assets/images/company-svgrepo-com.svg",
+                                  lableContainer: "Top Company",
+                                  selectedContainer: () {
+                                    Get.to(JobApplied());
+                                  }),
+                              SizedBox(
+                                width: 30,
+                              ),
                             ],
                           ),
                         )
