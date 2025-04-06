@@ -3,12 +3,13 @@ import 'package:get/utils.dart';
 import 'package:np_career/view/screen/home.dart';
 
 enum EnumCvNo1 {
-  cv1_no1("cv1_no1", _cv1_no1);
+  cv1_no1("CV1", ["Experience", "One Page", "Tieng Viet"], _cv1_no1);
 
   final String label;
+  final List<String> tag;
   final Function() action;
 
-  const EnumCvNo1(this.label, this.action);
+  const EnumCvNo1(this.label, this.tag, this.action);
 
   void run() => action();
 }

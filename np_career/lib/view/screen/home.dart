@@ -16,18 +16,23 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          Center(
-            child: Text("Home"),
+      body: SingleChildScrollView(
+        child: Container(
+          height: 200,
+          child: Column(
+            children: [
+              Center(
+                child: Text("Home"),
+              ),
+              ElevatedButton(
+                  onPressed: () {
+                    loginFb.signOut();
+                    Get.to(Login());
+                  },
+                  child: Text("Sign Out"))
+            ],
           ),
-          ElevatedButton(
-              onPressed: () {
-                loginFb.signOut();
-                Get.to(Login());
-              },
-              child: Text("Sign Out"))
-        ],
+        ),
       ),
     );
   }
