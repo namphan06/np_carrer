@@ -18,10 +18,14 @@ class ResumeByStyle extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppColor.orangePrimaryColor,
-        leading: Icon(
-          Icons.arrow_back_ios,
-          color: AppColor.lightBackgroundColor,
-        ),
+        leading: IconButton(
+            onPressed: () {
+              Get.back();
+            },
+            icon: Icon(
+              Icons.arrow_back_ios,
+              color: AppColor.lightBackgroundColor,
+            )),
         title: Center(
           child: Text(
             "Build your resume",

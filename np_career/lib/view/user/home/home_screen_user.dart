@@ -32,7 +32,7 @@ class _HomeScreenUserState extends State<HomeScreenUser> {
           case 0:
             return _buildHomeScree();
           case 1:
-            return ResumeByStyle();
+            return Home();
           case 2:
             return Home();
           default:
@@ -255,7 +255,7 @@ class _HomeScreenUserState extends State<HomeScreenUser> {
                                         "assets/images/pen-file-svgrepo-com.svg",
                                     lableContainer: "Build Your Resume",
                                     selectedContainer: () {
-                                      Get.to(JobApplied());
+                                      Get.to(ResumeByStyle());
                                     }),
                                 SizedBox(
                                   width: 30,
