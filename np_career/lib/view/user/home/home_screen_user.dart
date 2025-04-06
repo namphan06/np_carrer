@@ -7,6 +7,7 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:get/instance_manager.dart';
 import 'package:np_career/core/app_color.dart';
 import 'package:np_career/view/screen/home.dart';
+import 'package:np_career/view/user/build_your_resume/by_style/resume_by_style.dart';
 import 'package:np_career/view/user/home/home_user_controller.dart';
 import 'package:np_career/view/user/home/navbar/customer_bottom_navbar.dart';
 import 'package:np_career/view/user/home/navbar/navbar_controller.dart';
@@ -31,7 +32,7 @@ class _HomeScreenUserState extends State<HomeScreenUser> {
           case 0:
             return _buildHomeScree();
           case 1:
-            return Home();
+            return ResumeByStyle();
           case 2:
             return Home();
           default:

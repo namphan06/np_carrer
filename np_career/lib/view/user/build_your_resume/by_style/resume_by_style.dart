@@ -1,0 +1,203 @@
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:np_career/core/app_color.dart';
+import 'package:np_career/enum/enum_language.dart';
+import 'package:np_career/view/user/build_your_resume/by_style/resume_by_style_controller.dart';
+
+class ResumeByStyle extends StatelessWidget {
+  const ResumeByStyle({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final ResumeByStyleController resumeController =
+        Get.put(ResumeByStyleController());
+
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: AppColor.orangePrimaryColor,
+        leading: Icon(
+          Icons.arrow_back_ios,
+          color: AppColor.lightBackgroundColor,
+        ),
+        title: Center(
+          child: Text(
+            "Build your resume",
+            style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: AppColor.lightBackgroundColor),
+          ),
+        ),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.only(top: 20, left: 10, right: 10),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Obx(() {
+              return Row(
+                children: [
+                  GestureDetector(
+                      onTap: () => resumeController.changeSelectChoice("style"),
+                      child: Container(
+                        decoration: BoxDecoration(
+                            border: Border(
+                                bottom: BorderSide(
+                                    color:
+                                        resumeController.selectChoice.value ==
+                                                "style"
+                                            ? AppColor.greenPrimaryColor
+                                            : AppColor.greyColor,
+                                    width: 2))),
+                        child: Text(
+                          "CV templates by style",
+                          style: TextStyle(
+                              fontSize: 13,
+                              fontWeight: FontWeight.bold,
+                              color:
+                                  resumeController.selectChoice.value == "style"
+                                      ? AppColor.greenPrimaryColor
+                                      : AppColor.greyColor),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      )),
+                  SizedBox(width: 10),
+                  GestureDetector(
+                      onTap: () =>
+                          resumeController.changeSelectChoice("position"),
+                      child: Container(
+                        decoration: BoxDecoration(
+                            border: Border(
+                                bottom: BorderSide(
+                                    color:
+                                        resumeController.selectChoice.value ==
+                                                "position"
+                                            ? AppColor.greenPrimaryColor
+                                            : AppColor.greyColor,
+                                    width: 2))),
+                        child: Text(
+                          "CV templates by position",
+                          style: TextStyle(
+                              fontSize: 13,
+                              fontWeight: FontWeight.bold,
+                              color: resumeController.selectChoice.value ==
+                                      "position"
+                                  ? AppColor.greenPrimaryColor
+                                  : AppColor.greyColor),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ))
+                ],
+              );
+            }),
+            SizedBox(height: 20),
+            // Language selection
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Column(
+                  children: [
+                    Obx(() {
+                      return GestureDetector(
+                        onTap: () {
+                          resumeController.selectLanguageAndDesign.value =
+                              resumeController.selectLanguageAndDesign.value ==
+                                      "language"
+                                  ? "" // Tắt dropdown khi nhấn lại
+                                  : "language"; // Mở dropdown
+                        },
+                        child: Container(
+                          height: 50,
+                          width: 120,
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                                color: resumeController
+                                            .selectLanguageAndDesign.value ==
+                                        "language"
+                                    ? AppColor.greenPrimaryColor
+                                    : AppColor.greyColor,
+                                width: 3),
+                            borderRadius: BorderRadius.all(Radius.circular(15)),
+                            color: AppColor.orangePrimaryColor,
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            child: Row(
+                              children: [
+                                Text(
+                                  resumeController.selectedLanguage
+                                      .value, // Hiển thị ngôn ngữ đã chọn
+                                  style: TextStyle(
+                                    color: resumeController
+                                                .selectLanguageAndDesign
+                                                .value ==
+                                            "language"
+                                        ? AppColor.greenPrimaryColor
+                                        : AppColor.greyColor,
+                                  ),
+                                ),
+                                Spacer(),
+                                Icon(
+                                  resumeController
+                                              .selectLanguageAndDesign.value ==
+                                          "language"
+                                      ? Icons.arrow_drop_up_outlined
+                                      : Icons.arrow_drop_down_outlined,
+                                  color: resumeController
+                                              .selectLanguageAndDesign.value ==
+                                          "language"
+                                      ? AppColor.greenPrimaryColor
+                                      : AppColor.greyColor,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      );
+                    }),
+                    SizedBox(height: 20),
+                    // Display language list when dropdown is open
+                    Obx(() {
+                      return resumeController.selectLanguageAndDesign.value ==
+                              "language"
+                          ? Column(
+                              children: EnumLanguage.values
+                                  .map((EnumLanguage language) {
+                                return GestureDetector(
+                                  onTap: () {
+                                    resumeController.selectedLanguage.value =
+                                        language
+                                            .label; // Update selected language
+                                    resumeController.selectLanguageAndDesign
+                                        .value = ""; // Close dropdown
+                                  },
+                                  child: Container(
+                                    padding: EdgeInsets.symmetric(
+                                        vertical: 10, horizontal: 20),
+                                    decoration: BoxDecoration(
+                                      border: Border(
+                                          bottom: BorderSide(
+                                              color: AppColor.greyColor)),
+                                    ),
+                                    child: Text(
+                                      language.label,
+                                      style: TextStyle(fontSize: 16),
+                                    ),
+                                  ),
+                                );
+                              }).toList(),
+                            )
+                          : SizedBox
+                              .shrink(); // Không hiển thị danh sách nếu dropdown không mở
+                    }),
+                  ],
+                ),
+              ],
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
