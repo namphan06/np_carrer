@@ -232,7 +232,7 @@ class ResumeByStyle extends StatelessWidget {
                         },
                         child: Container(
                           height: 50,
-                          width: size.width * 0.5,
+                          width: size.width * 0.48,
                           decoration: BoxDecoration(
                               border: Border.all(
                                   color: resumeController

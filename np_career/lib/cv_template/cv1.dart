@@ -107,6 +107,9 @@ class Cv1 extends StatelessWidget {
                                 height: 15,
                               ),
                               _buildSkills(),
+                              SizedBox(
+                                height: 245,
+                              ),
                             ],
                           ),
                         ),
@@ -232,14 +235,16 @@ class Cv1 extends StatelessWidget {
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
-                                    Text(
-                                      "DANH HIỆU VÀ GIẢI THƯỞNG",
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 15,
-                                        color: AppColor.greenPrimaryCv1,
+                                    Expanded(
+                                      child: Text(
+                                        "DANH HIỆU VÀ GIẢI THƯỞNG",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 15,
+                                          color: AppColor.greenPrimaryCv1,
+                                        ),
+                                        maxLines: 2,
                                       ),
-                                      maxLines: 2,
                                     ),
                                   ],
                                 ),
@@ -424,10 +429,25 @@ class Cv1 extends StatelessWidget {
               fontSize: 20),
         ),
         _buildSkill("Tìm kiếm thông tin"),
+        SizedBox(
+          height: 10,
+        ),
         _buildSkill("Chăm sóc khách hàng"),
+        SizedBox(
+          height: 10,
+        ),
         _buildSkill("Tư vấn thông tin sản phẩm"),
+        SizedBox(
+          height: 10,
+        ),
         _buildSkill("Tìm kiếm khách hàng tiềm năng"),
+        SizedBox(
+          height: 10,
+        ),
         _buildSkill("Giao tiếp, thuyết trình, đàm phán tốt"),
+        SizedBox(
+          height: 10,
+        ),
       ],
     );
   }
@@ -475,12 +495,16 @@ class Cv1 extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-              company,
-              style: TextStyle(fontWeight: FontWeight.bold),
-              maxLines: 2,
+            Expanded(
+              child: Text(
+                company,
+                style: TextStyle(fontWeight: FontWeight.bold),
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+              ),
             ),
-            Text(year)
+            SizedBox(width: 8), // Khoảng cách nhỏ giữa 2 Text
+            Text(year),
           ],
         ),
         SizedBox(height: 10),
