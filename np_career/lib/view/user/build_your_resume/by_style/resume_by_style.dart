@@ -299,7 +299,7 @@ class ResumeByStyle extends StatelessWidget {
                                               .value = "";
                                         },
                                         child: Container(
-                                          width: 230,
+                                          width: size.width * 0.48,
                                           padding: EdgeInsets.symmetric(
                                               vertical: 10),
                                           decoration: BoxDecoration(
