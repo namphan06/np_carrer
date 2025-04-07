@@ -147,7 +147,7 @@ class Cv1 extends StatelessWidget {
                             ),
                             _buildExperience(
                                 item2s,
-                                "Công ty BCD TopCV",
+                                "Công ty BCD ",
                                 "08/2023 - 08/2025",
                                 "Chuyên Viên Tư Vấn Giải Pháp Phần Mềm"),
                             SizedBox(
