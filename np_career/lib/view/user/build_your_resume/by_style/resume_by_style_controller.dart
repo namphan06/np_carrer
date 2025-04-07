@@ -5,7 +5,7 @@ class ResumeByStyleController extends GetxController {
   var selectChoice = "style".obs;
   var selectLanguageAndDesign = "".obs;
   var selectedLanguage = "Viet Nam".obs;
-  var selectedDesign = "All designs".obs;
+  var selectedDesign = "All Designs".obs;
 
   void changeSelectChoice(String choice) {
     selectChoice.value = choice;

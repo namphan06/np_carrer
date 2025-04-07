@@ -1,9 +1,10 @@
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:get/utils.dart';
+import 'package:np_career/cv_template/cv1.dart';
 import 'package:np_career/view/screen/home.dart';
 
 enum EnumCvNo1 {
-  cv1_no1("CV1", ["Experience", "One Page", "Tieng Viet"], _cv1_no1);
+  cv1_no1("CV1", ["Experience", "Two Pages", "Viet Nam"], _cv1_no1);
 
   final String label;
   final List<String> tag;
@@ -15,5 +16,5 @@ enum EnumCvNo1 {
 }
 
 void _cv1_no1() {
-  Get.to(Home());
+  Get.to(Cv1());
 }

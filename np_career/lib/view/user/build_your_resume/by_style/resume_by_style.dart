@@ -332,101 +332,114 @@ class ResumeByStyle extends StatelessWidget {
         ),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                Column(
-                  children: [
-                    ...EnumCvNo1.values.map((EnumCvNo1 cvNo1) {
-                      return GestureDetector(
-                        onTap: () {
-                          cvNo1.action();
-                        },
-                        child: Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                                color: AppColor.greenPrimaryColor, width: 2),
-                            borderRadius: BorderRadius.all(Radius.circular(15)),
-                            color:
-                                AppColor.orangePrimaryColor.withOpacity(0.69),
-                          ),
-                          padding: EdgeInsets.all(20),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                cvNo1.label,
-                                style: TextStyle(
-                                    color: AppColor.greenPrimaryColor,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 25),
-                              ),
-                              SizedBox(
-                                height: 5,
-                              ),
-                              Row(
-                                children: [
-                                  Row(
-                                    children: [
-                                      // Hiển thị tối đa 2 tag
-                                      ...cvNo1.tag.take(2).map((String tag) {
-                                        return Container(
-                                          margin: EdgeInsets.only(right: 8),
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: 12, vertical: 6),
-                                          decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(20)),
-                                            color: AppColor.lightTextColor,
-                                          ),
-                                          child: Text(
-                                            tag,
-                                            style: TextStyle(
-                                                color: AppColor
-                                                    .lightBackgroundColor),
-                                            textAlign: TextAlign.center,
-                                          ),
-                                        );
-                                      }),
+          child: Obx(
+            () => SingleChildScrollView(
+              child: Column(
+                children: [
+                  Column(
+                    children: [
+                      ...EnumCvNo1.values.where((cvNo1) {
+                        // Kiểm tra theo điều kiện
+                        final hasSelectedDesign =
+                            resumeController.selectedDesign.value ==
+                                    'All Designs' ||
+                                cvNo1.tag.contains(
+                                    resumeController.selectedDesign.value);
+                        final hasSelectedLanguage = cvNo1.tag
+                            .contains(resumeController.selectedLanguage.value);
+                        return hasSelectedDesign && hasSelectedLanguage;
+                      }).map((EnumCvNo1 cvNo1) {
+                        return GestureDetector(
+                          onTap: () {
+                            cvNo1.action();
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                  color: AppColor.greenPrimaryColor, width: 2),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(15)),
+                              color:
+                                  AppColor.orangePrimaryColor.withOpacity(0.69),
+                            ),
+                            padding: EdgeInsets.all(20),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  cvNo1.label,
+                                  style: TextStyle(
+                                      color: AppColor.greenPrimaryColor,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 25),
+                                ),
+                                SizedBox(
+                                  height: 5,
+                                ),
+                                Row(
+                                  children: [
+                                    Row(
+                                      children: [
+                                        // Hiển thị tối đa 2 tag
+                                        ...cvNo1.tag.take(2).map((String tag) {
+                                          return Container(
+                                            margin: EdgeInsets.only(right: 8),
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 12, vertical: 6),
+                                            decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(20)),
+                                              color: AppColor.lightTextColor,
+                                            ),
+                                            child: Text(
+                                              tag,
+                                              style: TextStyle(
+                                                  color: AppColor
+                                                      .lightBackgroundColor),
+                                              textAlign: TextAlign.center,
+                                            ),
+                                          );
+                                        }),
 
-                                      // Nếu còn nhiều hơn 2 tag thì hiển thị dấu ...
-                                      if (cvNo1.tag.length > 2)
-                                        Container(
-                                          margin: EdgeInsets.only(right: 8),
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: 10, vertical: 6),
-                                          decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(20)),
-                                            color: AppColor.lightTextColor,
-                                          ),
-                                          child: Text(
-                                            "...",
-                                            style: TextStyle(
-                                                color: AppColor
-                                                    .lightBackgroundColor),
-                                            textAlign: TextAlign.center,
-                                          ),
-                                        )
-                                    ],
-                                  ),
-                                  Spacer(),
-                                  IconButton(
-                                    onPressed: () {},
-                                    icon: Icon(Icons.edit_note_outlined),
-                                    iconSize: 40,
-                                    color: AppColor.greenPrimaryColor,
-                                  )
-                                ],
-                              )
-                            ],
+                                        // Nếu còn nhiều hơn 2 tag thì hiển thị dấu ...
+                                        if (cvNo1.tag.length > 2)
+                                          Container(
+                                            margin: EdgeInsets.only(right: 8),
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 10, vertical: 6),
+                                            decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(20)),
+                                              color: AppColor.lightTextColor,
+                                            ),
+                                            child: Text(
+                                              "...",
+                                              style: TextStyle(
+                                                  color: AppColor
+                                                      .lightBackgroundColor),
+                                              textAlign: TextAlign.center,
+                                            ),
+                                          )
+                                      ],
+                                    ),
+                                    Spacer(),
+                                    IconButton(
+                                      onPressed: () {},
+                                      icon: Icon(Icons.edit_note_outlined),
+                                      iconSize: 40,
+                                      color: AppColor.greenPrimaryColor,
+                                    )
+                                  ],
+                                )
+                              ],
+                            ),
                           ),
-                        ),
-                      );
-                    }).toList(),
-                  ],
-                )
-              ],
+                        );
+                      }).toList(),
+                    ],
+                  )
+                ],
+              ),
             ),
           ),
         )
