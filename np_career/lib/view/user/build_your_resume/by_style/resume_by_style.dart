@@ -15,6 +15,8 @@ class ResumeByStyle extends StatelessWidget {
     final ResumeByStyleController resumeController =
         Get.put(ResumeByStyleController());
 
+    Size size = MediaQuery.of(context).size;
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppColor.orangePrimaryColor,
@@ -101,7 +103,7 @@ class ResumeByStyle extends StatelessWidget {
             SizedBox(height: 30),
             Obx(() {
               return resumeController.selectChoice.value == "style"
-                  ? buildStyle(resumeController)
+                  ? buildStyle(resumeController, size)
                   : buildPosition();
             })
           ],
@@ -110,7 +112,7 @@ class ResumeByStyle extends StatelessWidget {
     );
   }
 
-  Widget buildStyle(ResumeByStyleController resumeController) {
+  Widget buildStyle(ResumeByStyleController resumeController, Size size) {
     return Column(
       children: [
         Padding(
@@ -132,7 +134,7 @@ class ResumeByStyle extends StatelessWidget {
                       },
                       child: Container(
                         height: 50,
-                        width: 120,
+                        width: size.width * 0.3,
                         decoration: BoxDecoration(
                           border: Border.all(
                               color: resumeController
@@ -230,7 +232,7 @@ class ResumeByStyle extends StatelessWidget {
                         },
                         child: Container(
                           height: 50,
-                          width: 250,
+                          width: size.width * 0.5,
                           decoration: BoxDecoration(
                               border: Border.all(
                                   color: resumeController

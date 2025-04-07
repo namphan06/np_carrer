@@ -239,6 +239,7 @@ class Cv1 extends StatelessWidget {
                                         fontSize: 15,
                                         color: AppColor.greenPrimaryCv1,
                                       ),
+                                      maxLines: 2,
                                     ),
                                   ],
                                 ),
@@ -477,6 +478,7 @@ class Cv1 extends StatelessWidget {
             Text(
               company,
               style: TextStyle(fontWeight: FontWeight.bold),
+              maxLines: 2,
             ),
             Text(year)
           ],
