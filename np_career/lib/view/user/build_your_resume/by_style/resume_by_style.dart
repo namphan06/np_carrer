@@ -216,7 +216,7 @@ class ResumeByStyle extends StatelessWidget {
                 ],
               ),
               SizedBox(
-                width: 20,
+                width: size.width * 0.05,
               ),
               Column(
                 children: [
