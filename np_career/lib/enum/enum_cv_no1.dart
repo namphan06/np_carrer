@@ -1,6 +1,6 @@
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:get/utils.dart';
-import 'package:np_career/cv_template/cv1.dart';
+import 'package:np_career/cv_template/cv1/cv1.dart';
 import 'package:np_career/view/screen/home.dart';
 
 enum EnumCvNo1 {
