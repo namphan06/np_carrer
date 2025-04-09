@@ -1,29 +1,59 @@
 import 'package:flutter/material.dart';
-import 'package:get/get_rx/src/rx_types/rx_types.dart';
-import 'package:get/get_state_manager/src/simple/get_controllers.dart';
+import 'package:get/get.dart';
 
 class CvInputNo1Controller extends GetxController {
   var selectDate = Rxn<DateTime>();
   var choiceSex = false.obs;
   var selectSex = "".obs;
+
+  TextEditingController fullNameController = TextEditingController();
+  TextEditingController positionController = TextEditingController();
+  TextEditingController phoneNumberController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController addressController = TextEditingController();
+  TextEditingController websiteController = TextEditingController();
+  TextEditingController occupationalGoalsController = TextEditingController();
+  TextEditingController moreInformationController = TextEditingController();
+  TextEditingController introducerController = TextEditingController();
+
   RxList<Map<String, dynamic>> listSkill = <Map<String, dynamic>>[
-    {"name": "", "indicator": 0}
+    {"name": TextEditingController(), "indicator": TextEditingController()}
   ].obs;
+
   RxList<Map<String, dynamic>> listWorkExperience = <Map<String, dynamic>>[
-    {"company": "", "date": "", "position": "", "list": [].obs}
+    {
+      "company": TextEditingController(),
+      "date": TextEditingController(),
+      "position": TextEditingController(),
+      "list": <TextEditingController>[].obs
+    }
   ].obs;
+
   RxList<Map<String, dynamic>> listKnowledge = <Map<String, dynamic>>[
-    {"school": "", "date": "", "list": [].obs}
+    {
+      "school": TextEditingController(),
+      "date": TextEditingController(),
+      "list": <TextEditingController>[].obs
+    }
   ].obs;
+
   RxList<Map<String, dynamic>> listActivities = <Map<String, dynamic>>[
-    {"name": "", "date": "", "position": "", "list": [].obs}
+    {
+      "name": TextEditingController(),
+      "date": TextEditingController(),
+      "position": TextEditingController(),
+      "list": <TextEditingController>[].obs
+    }
   ].obs;
+
   RxList<Map<String, dynamic>> listAward = <Map<String, dynamic>>[
-    {"name": "", "date": ""}
+    {"name": TextEditingController(), "date": TextEditingController()}
   ].obs;
+
   RxList<Map<String, dynamic>> listCertificate = <Map<String, dynamic>>[
-    {"name": "", "date": ""}
+    {"name": TextEditingController(), "date": TextEditingController()}
   ].obs;
+
   Future<void> pickDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
       context: context,
@@ -36,8 +66,12 @@ class CvInputNo1Controller extends GetxController {
     }
   }
 
+  // Skill
   void addRowSkill() {
-    listSkill.add({"name": "", "indicator": 0});
+    listSkill.add({
+      "name": TextEditingController(),
+      "indicator": TextEditingController()
+    });
   }
 
   void updateNameSkill(int index, String name) {
@@ -51,38 +85,58 @@ class CvInputNo1Controller extends GetxController {
     refresh();
   }
 
+  void removeRowSkill(int index) {
+    if (index >= 0 && index < listSkill.length) {
+      listSkill.removeAt(index);
+    }
+  }
+
+  // Work Experience
   void addRowWorkExperience() {
-    listWorkExperience
-        .add({"company": "", "date": "", "position": "", "list": [].obs});
-  }
-
-  void updateCompanyWorkExperience(int index, String name) {
-    listSkill[index]['company'] = name;
-    refresh();
-  }
-
-  void updateDateWorkExperience(int index, String date) {
-    listSkill[index]['date'] = date;
-    refresh();
-  }
-
-  void updatePositionWorkExperience(int index, String position) {
-    listSkill[index]['position'] = position;
-    refresh();
+    listWorkExperience.add({
+      "company": TextEditingController(),
+      "date": TextEditingController(),
+      "position": TextEditingController(),
+      "list": <TextEditingController>[].obs
+    }.obs);
   }
 
   void addDetailToList(int index) {
-    (listWorkExperience[index]['list'] as List).add("");
+    (listWorkExperience[index]['list'] as RxList<TextEditingController>)
+        .add(TextEditingController());
     refresh();
   }
 
   void updateDetailInList(int parentIndex, int detailIndex, String text) {
-    (listWorkExperience[parentIndex]['list'] as List)[detailIndex] = text;
+    (listWorkExperience[parentIndex]['list']
+            as RxList<TextEditingController>)[detailIndex]
+        .text = text;
     refresh();
   }
 
+  void removeRowWorkExperience(int index) {
+    if (index >= 0 && index < listWorkExperience.length) {
+      listWorkExperience.removeAt(index);
+      refresh();
+    }
+    print(listWorkExperience);
+  }
+
+  void removeDetailFromWorkExperience(int parentIndex, int detailIndex) {
+    if (parentIndex < listWorkExperience.length) {
+      (listWorkExperience[parentIndex]['list'] as RxList<TextEditingController>)
+          .removeAt(detailIndex);
+      refresh();
+    }
+  }
+
+  // Knowledge
   void addRowKnowledge() {
-    listKnowledge.add({"school": "", "date": "", "list": [].obs});
+    listKnowledge.add({
+      "school": TextEditingController(),
+      "date": TextEditingController(),
+      "list": <TextEditingController>[].obs
+    });
   }
 
   void updateSchoolKnowledge(int index, String school) {
@@ -96,18 +150,40 @@ class CvInputNo1Controller extends GetxController {
   }
 
   void addDetailToListK(int index) {
-    (listKnowledge[index]['list'] as List).add("");
+    (listKnowledge[index]['list'] as RxList<TextEditingController>)
+        .add(TextEditingController());
     refresh();
   }
 
   void updateDetailInListK(int parentIndex, int detailIndex, String text) {
-    (listKnowledge[parentIndex]['list'] as List)[detailIndex] = text;
+    (listKnowledge[parentIndex]['list']
+            as RxList<TextEditingController>)[detailIndex]
+        .text = text;
     refresh();
   }
 
+  void removeRowKnowledge(int index) {
+    if (index >= 0 && index < listKnowledge.length) {
+      listKnowledge.removeAt(index);
+    }
+  }
+
+  void removeDetailFromKnowledge(int parentIndex, int detailIndex) {
+    if (parentIndex < listKnowledge.length) {
+      (listKnowledge[parentIndex]['list'] as RxList<TextEditingController>)
+          .removeAt(detailIndex);
+      refresh();
+    }
+  }
+
+  // Activities
   void addRowActivities() {
-    listActivities
-        .add({"name": "", "date": "", "position": "", "list": [].obs});
+    listActivities.add({
+      "name": TextEditingController(),
+      "date": TextEditingController(),
+      "position": TextEditingController(),
+      "list": <TextEditingController>[].obs
+    });
   }
 
   void updateNameActivities(int index, String name) {
@@ -126,17 +202,35 @@ class CvInputNo1Controller extends GetxController {
   }
 
   void addDetailToListA(int index) {
-    (listActivities[index]['list'] as List).add("");
+    (listActivities[index]['list'] as RxList<TextEditingController>)
+        .add(TextEditingController());
     refresh();
   }
 
   void updateDetailInListA(int parentIndex, int detailIndex, String text) {
-    (listActivities[parentIndex]['list'] as List)[detailIndex] = text;
+    (listActivities[parentIndex]['list']
+            as RxList<TextEditingController>)[detailIndex]
+        .text = text;
     refresh();
   }
 
+  void removeRowActivities(int index) {
+    if (index >= 0 && index < listActivities.length) {
+      listActivities.removeAt(index);
+    }
+  }
+
+  void removeDetailFromActivities(int parentIndex, int detailIndex) {
+    if (parentIndex < listActivities.length) {
+      (listActivities[parentIndex]['list'] as RxList).removeAt(detailIndex);
+      refresh();
+    }
+  }
+
+  // Award
   void addRowAward() {
-    listAward.add({"name": "", "date": ""});
+    listAward.add(
+        {"name": TextEditingController(), "date": TextEditingController()});
   }
 
   void updateNameAward(int index, String name) {
@@ -149,8 +243,16 @@ class CvInputNo1Controller extends GetxController {
     refresh();
   }
 
+  void removeRowAward(int index) {
+    if (index >= 0 && index < listAward.length) {
+      listAward.removeAt(index);
+    }
+  }
+
+  // Certificate
   void addRowCertificate() {
-    listCertificate.add({"name": "", "date": ""});
+    listCertificate.add(
+        {"name": TextEditingController(), "date": TextEditingController()});
   }
 
   void updateNameCertificate(int index, String name) {
@@ -161,5 +263,11 @@ class CvInputNo1Controller extends GetxController {
   void updateDateCertificate(int index, String date) {
     listCertificate[index]['date'] = date;
     refresh();
+  }
+
+  void removeRowCertificate(int index) {
+    if (index >= 0 && index < listCertificate.length) {
+      listCertificate.removeAt(index);
+    }
   }
 }
