@@ -24,7 +24,7 @@ class ButtonTrigger extends StatelessWidget {
               fullName: "Nguyễn Văn A",
               position: "Nhân viên tư vấn",
               linkImage:
-                  "https://cdn-new.topcv.vn/unsafe/https://static.topcv.vn/v4/image/cv-template/screenshots/thumbs/cv-template-thumbnails-v1.4/avatar-default/pro_1_v2.png?v=1.01",
+                  "https://drive.google.com/file/d/1gIISUN3vuGFXXVVC2IIFwd5FMvV22JKb/view?usp=sharing",
               dateOfBirth: "15/05/1990",
               sex: "Nam/Nữ/khác",
               phoneNumber: "0123456789",

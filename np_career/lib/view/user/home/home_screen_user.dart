@@ -13,6 +13,7 @@ import 'package:np_career/view/user/home/home_user_controller.dart';
 import 'package:np_career/view/user/home/navbar/customer_bottom_navbar.dart';
 import 'package:np_career/view/user/home/navbar/navbar_controller.dart';
 import 'package:np_career/view/user/job_applied/job_applied.dart';
+import 'package:np_career/view/user/profile/profile_screen.dart';
 
 class HomeScreenUser extends StatefulWidget {
   const HomeScreenUser({super.key});
@@ -35,7 +36,7 @@ class _HomeScreenUserState extends State<HomeScreenUser> {
           case 1:
             return Home();
           case 2:
-            return Home();
+            return ProfileScreen();
           default:
             return _buildHomeScree();
         }

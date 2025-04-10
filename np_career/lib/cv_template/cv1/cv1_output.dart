@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get_instance/get_instance.dart';
+import 'package:get/state_manager.dart';
 import 'package:np_career/core/app_color.dart';
+import 'package:np_career/cv_template/cv_setting/cv_setting_no1.dart';
 import 'package:np_career/model/activity.dart';
 import 'package:np_career/model/award.dart';
 import 'package:np_career/model/certificate.dart';
@@ -17,6 +20,7 @@ class Cv1Output extends StatefulWidget {
 }
 
 class _Cv1OutputState extends State<Cv1Output> {
+  final CvSettingNo1 controller = Get.put(CvSettingNo1());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -75,7 +79,7 @@ class _Cv1OutputState extends State<Cv1Output> {
                           width: 150,
                           child: ClipRRect(
                               child: Image.network(
-                            widget.cvModel.linkImage,
+                            controller.getImageUrl(widget.cvModel.linkImage),
                           )),
                         ),
                         Padding(
