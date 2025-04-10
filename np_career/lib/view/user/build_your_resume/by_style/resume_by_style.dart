@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:np_career/core/app_color.dart';
-import 'package:np_career/cv_input/cv_input_no1.dart';
+import 'package:np_career/cv_no1/cv_input_no1/cv_input_no1.dart';
 import 'package:np_career/enum/enum_cv_no1.dart';
 import 'package:np_career/enum/enum_language.dart';
 import 'package:np_career/enum/enum_style_cv.dart';
@@ -428,7 +428,9 @@ class ResumeByStyle extends StatelessWidget {
                                     Spacer(),
                                     IconButton(
                                       onPressed: () {
-                                        Get.to(CvInputNo1());
+                                        Get.to(CvInputNo1(
+                                          type: cvNo1.label.toLowerCase(),
+                                        ));
                                       },
                                       icon: Icon(Icons.edit_note_outlined),
                                       iconSize: 40,

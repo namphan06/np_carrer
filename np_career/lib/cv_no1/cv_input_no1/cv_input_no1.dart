@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:np_career/core/app_color.dart';
-import 'package:np_career/cv_input/cv_input_no1_controller.dart';
+import 'package:np_career/cv_no1/cv_input_no1/cv_input_no1_controller.dart';
 import 'package:np_career/enum/enum_sex.dart';
 
 class CvInputNo1 extends StatefulWidget {
-  const CvInputNo1({super.key});
+  final String type;
+  const CvInputNo1({required this.type});
 
   @override
   State<CvInputNo1> createState() => _CvInputNo1State();
@@ -49,21 +50,67 @@ class _CvInputNo1State extends State<CvInputNo1> {
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Container(
-                  height: 150,
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: AppColor.greenPrimaryColor,
-                      width: 2,
+                GestureDetector(
+                  onTap: () => Get.dialog(AlertDialog(
+                    backgroundColor: AppColor.lightBackgroundColor,
+                    title: Text(
+                      "Enter image link",
+                      style: TextStyle(
+                          color: AppColor.orangePrimaryColor,
+                          fontWeight: FontWeight.bold),
                     ),
-                    borderRadius: BorderRadius.all(Radius.circular(15)),
-                  ),
-                  child: Center(
-                    child: Icon(
-                      Icons.add,
-                      color: AppColor.greenPrimaryColor,
-                      size: 50,
+                    content: TextField(
+                      controller: controller.linkImgController,
+                      style: TextStyle(
+                          color: AppColor.greenPrimaryColor,
+                          fontWeight: FontWeight.bold),
+                      decoration: InputDecoration(label: Text("Link")),
+                    ),
+                    actions: [
+                      SizedBox(
+                        width: 100,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            Get.back();
+                          },
+                          child: Text(
+                            "Cancel",
+                            style: TextStyle(
+                                color: AppColor.lightBackgroundColor,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        width: 100,
+                        child: ElevatedButton(
+                          onPressed: () {},
+                          child: Text(
+                            "Submit",
+                            style: TextStyle(
+                                color: AppColor.lightBackgroundColor,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ),
+                    ],
+                  )),
+                  child: Container(
+                    height: 150,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: AppColor.greenPrimaryColor,
+                        width: 2,
+                      ),
+                      borderRadius: BorderRadius.all(Radius.circular(15)),
+                    ),
+                    child: Center(
+                      child: Icon(
+                        Icons.add,
+                        color: AppColor.greenPrimaryColor,
+                        size: 50,
+                      ),
                     ),
                   ),
                 ),

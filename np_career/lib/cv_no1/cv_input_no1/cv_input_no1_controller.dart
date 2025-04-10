@@ -6,6 +6,7 @@ class CvInputNo1Controller extends GetxController {
   var choiceSex = false.obs;
   var selectSex = "".obs;
 
+  TextEditingController linkImgController = TextEditingController();
   TextEditingController fullNameController = TextEditingController();
   TextEditingController positionController = TextEditingController();
   TextEditingController phoneNumberController = TextEditingController();
