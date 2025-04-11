@@ -6,6 +6,7 @@ import 'package:np_career/core/app_color.dart';
 import 'package:np_career/enum/enum_education_level.dart';
 import 'package:np_career/enum/enum_nationality.dart';
 import 'package:np_career/enum/enum_sex.dart';
+import 'package:np_career/enum/enum_type_job.dart';
 import 'package:np_career/main.dart';
 import 'package:np_career/view/user/profile/my_profile/my_profile_controller.dart';
 
@@ -46,6 +47,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
         child: Obx(
           () => SingleChildScrollView(
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 TextField(
                   decoration: InputDecoration(
@@ -577,6 +579,53 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                 SizedBox(
                   height: 10,
                 ),
+                Text(
+                  "Preferred job type",
+                  style: TextStyle(
+                      color: AppColor.orangePrimaryColor,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Wrap(
+                    spacing: 10,
+                    runSpacing: 5,
+                    children: EnumTypeJob.values
+                        .map((e) => GestureDetector(
+                              onTap: () {
+                                if (controller.list_type_job
+                                    .contains(e.label)) {
+                                  controller.list_type_job.remove(e.label);
+                                } else {
+                                  controller.list_type_job.add(e.label);
+                                }
+                              },
+                              child: Container(
+                                padding: EdgeInsets.all(8),
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                      color: AppColor.greenPrimaryColor,
+                                      width: 2),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(15)),
+                                  color:
+                                      controller.list_type_job.contains(e.label)
+                                          ? AppColor.orangePrimaryColor
+                                          : AppColor.greyColor,
+                                ),
+                                child: Text(
+                                  e.label,
+                                  style: TextStyle(
+                                      color: AppColor.greenPrimaryColor),
+                                ),
+                              ),
+                            ))
+                        .toList()),
+                SizedBox(
+                  height: 10,
+                ),
                 Container(
                   decoration: BoxDecoration(
                       border: Border.all(color: AppColor.greenPrimaryColor)),
@@ -586,6 +635,13 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                 ),
                 SizedBox(
                   height: 10,
+                ),
+                Text(
+                  "Security settigns",
+                  style: TextStyle(
+                      color: AppColor.orangePrimaryColor,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20),
                 ),
                 Column(
                   children: [

@@ -6,6 +6,7 @@ class MyProfileController extends GetxController {
   var choiceSex = false.obs;
   var selectSex = "".obs;
   var isSharing;
+  RxList<String> list_type_job = <String>[].obs;
 
   RxList<Map<String, dynamic>> listWorkExperience = <Map<String, dynamic>>[
     {
