@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/get_instance.dart';
 import 'package:np_career/core/app_color.dart';
+import 'package:np_career/view/user/profile/my_profile/my_profile_screen.dart';
 import 'package:np_career/view/user/profile/profile_controller.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -73,7 +74,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 "assets/images/account_circle_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.svg",
                 "assets/images/keyboard_arrow_right_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.svg",
                 "My profile",
-                () => Get.snackbar("Action", "GestureDetector")),
+                () => Get.to(MyProfileScreen())),
             SizedBox(
               height: 15,
             ),

@@ -218,35 +218,31 @@ class _CvInputNo1State extends State<CvInputNo1> {
                     controller.choiceSex.value
                         ? Padding(
                             padding: const EdgeInsets.only(right: 10),
-                            child: Align(
-                              alignment: Alignment.centerRight,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                children: EnumSex.values.map((EnumSex sex) {
-                                  return GestureDetector(
-                                    onTap: () {
-                                      controller.selectSex.value = sex.name;
-                                      controller.choiceSex.value =
-                                          !controller.choiceSex.value;
-                                    },
-                                    child: Container(
-                                      width: 100,
-                                      padding: EdgeInsets.symmetric(
-                                          vertical: 10, horizontal: 25),
-                                      decoration: BoxDecoration(
-                                        border: Border(
-                                          bottom: BorderSide(
-                                              color: AppColor.greyColor),
-                                        ),
-                                      ),
-                                      child: Text(
-                                        sex.name,
-                                        style: TextStyle(fontSize: 16),
+                            child: Column(
+                              children: EnumSex.values.map((EnumSex sex) {
+                                return GestureDetector(
+                                  onTap: () {
+                                    controller.selectSex.value = sex.name;
+                                    controller.choiceSex.value =
+                                        !controller.choiceSex.value;
+                                  },
+                                  child: Container(
+                                    width: double.infinity,
+                                    padding: EdgeInsets.symmetric(
+                                        vertical: 10, horizontal: 25),
+                                    decoration: BoxDecoration(
+                                      border: Border(
+                                        bottom: BorderSide(
+                                            color: AppColor.greyColor),
                                       ),
                                     ),
-                                  );
-                                }).toList(),
-                              ),
+                                    child: Text(
+                                      sex.name,
+                                      style: TextStyle(fontSize: 16),
+                                    ),
+                                  ),
+                                );
+                              }).toList(),
                             ),
                           )
                         : SizedBox.shrink(),
