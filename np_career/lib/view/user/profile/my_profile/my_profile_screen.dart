@@ -7,6 +7,7 @@ import 'package:np_career/enum/enum_education_level.dart';
 import 'package:np_career/enum/enum_nationality.dart';
 import 'package:np_career/enum/enum_sex.dart';
 import 'package:np_career/enum/enum_type_job.dart';
+import 'package:np_career/enum/enum_type_job_category.dart';
 import 'package:np_career/main.dart';
 import 'package:np_career/view/user/profile/my_profile/my_profile_controller.dart';
 
@@ -49,6 +50,9 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                Container(
+                  height: 5,
+                ),
                 TextField(
                   decoration: InputDecoration(
                     label: Text("Full name"),
@@ -110,7 +114,8 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                                     final e = EnumNationality.values[index];
                                     return InkWell(
                                       onTap: () {
-                                        print(e.name);
+                                        controller.selectedNationality.value =
+                                            e.name;
                                         Get.back();
                                       },
                                       borderRadius: BorderRadius.circular(8),
@@ -138,7 +143,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                     );
                   },
                   child: Container(
-                    height: 55,
+                    padding: EdgeInsets.all(15),
                     decoration: BoxDecoration(
                       border: Border.all(
                           color: AppColor.greenPrimaryColor, width: 2),
@@ -148,8 +153,13 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          "",
-                          style: TextStyle(color: AppColor.greenPrimaryColor),
+                          controller.selectedNationality.isNotEmpty
+                              ? controller.selectedNationality.value
+                              : "Select Nationality",
+                          style: TextStyle(
+                              color: AppColor.greenPrimaryColor,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16),
                         ),
                         Icon(
                           Icons.arrow_drop_down_outlined,
@@ -190,7 +200,8 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                                     final e = EnumEducationLevel.values[index];
                                     return InkWell(
                                       onTap: () {
-                                        print(e.label);
+                                        controller.selectedEducationLevel
+                                            .value = e.label;
                                         Get.back();
                                       },
                                       borderRadius: BorderRadius.circular(8),
@@ -218,7 +229,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                     );
                   },
                   child: Container(
-                    height: 55,
+                    padding: EdgeInsets.all(15),
                     decoration: BoxDecoration(
                       border: Border.all(
                           color: AppColor.greenPrimaryColor, width: 2),
@@ -228,8 +239,13 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          "",
-                          style: TextStyle(color: AppColor.greenPrimaryColor),
+                          controller.selectedEducationLevel.isNotEmpty
+                              ? controller.selectedEducationLevel.value
+                              : "Select Education Level",
+                          style: TextStyle(
+                              color: AppColor.greenPrimaryColor,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16),
                         ),
                         Icon(
                           Icons.arrow_drop_down_outlined,
@@ -626,13 +642,192 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                 SizedBox(
                   height: 10,
                 ),
-                Container(
-                  decoration: BoxDecoration(
-                      border: Border.all(color: AppColor.greenPrimaryColor)),
-                  height: 200,
-                  width: double.infinity,
-                  child: Text("Wait"),
+                Text(
+                  "Job Interests",
+                  style: TextStyle(
+                      color: AppColor.orangePrimaryColor,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20),
                 ),
+                SizedBox(
+                  height: 10,
+                ),
+                GestureDetector(
+                  onTap: () {
+                    Get.dialog(
+                      Dialog(
+                        insetPadding: EdgeInsets.zero,
+                        backgroundColor: AppColor.lightBackgroundColor,
+                        child: Container(
+                          padding: EdgeInsets.all(16),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Job Interests',
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                  color: AppColor.greenPrimaryColor,
+                                ),
+                              ),
+                              SizedBox(height: 16),
+                              TextField(
+                                onChanged: (value) => controller
+                                    .searchQuery.value = value.toLowerCase(),
+                                decoration: InputDecoration(
+                                  hintText: 'Search job category...',
+                                  prefixIcon: Icon(Icons.search),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(height: 16),
+                              Expanded(
+                                child: Obx(() {
+                                  final filteredList = EnumTypeJobCategory
+                                      .values
+                                      .where((e) => e.label
+                                          .toLowerCase()
+                                          .contains(
+                                              controller.searchQuery.value))
+                                      .toList();
+                                  return ListView.separated(
+                                    itemCount: filteredList.length,
+                                    separatorBuilder: (_, __) =>
+                                        Divider(color: Colors.grey[300]),
+                                    itemBuilder: (context, index) {
+                                      final e = filteredList[index];
+
+                                      return Obx(() {
+                                        final isSelected = controller
+                                            .list_type_job_category
+                                            .contains(e.label);
+                                        return InkWell(
+                                          onTap: () {
+                                            if (isSelected) {
+                                              controller.list_type_job_category
+                                                  .remove(e.label);
+                                            } else {
+                                              controller.list_type_job_category
+                                                  .add(e.label);
+                                            }
+                                          },
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                          child: Container(
+                                            padding: const EdgeInsets.symmetric(
+                                                vertical: 12, horizontal: 8),
+                                            decoration: BoxDecoration(
+                                              color: isSelected
+                                                  ? Colors.orange
+                                                      .withOpacity(0.3)
+                                                  : null,
+                                              borderRadius:
+                                                  BorderRadius.circular(8),
+                                            ),
+                                            child: Text(
+                                              e.label,
+                                              style: TextStyle(
+                                                fontSize: 16,
+                                                color: isSelected
+                                                    ? Colors.orange
+                                                    : Colors.black87,
+                                                fontWeight: isSelected
+                                                    ? FontWeight.bold
+                                                    : FontWeight.normal,
+                                              ),
+                                            ),
+                                          ),
+                                        );
+                                      });
+                                    },
+                                  );
+                                }),
+                              ),
+                              SizedBox(height: 10),
+                              Align(
+                                alignment: Alignment.centerRight,
+                                child: ElevatedButton(
+                                  onPressed: () => Get.back(),
+                                  child: Text(
+                                    'Done',
+                                    style: TextStyle(
+                                        color: AppColor.lightBackgroundColor,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20),
+                                  ),
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: AppColor.greenPrimaryColor,
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                  child: Container(
+                    height: 55,
+                    padding: EdgeInsets.symmetric(horizontal: 12),
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                          color: AppColor.greenPrimaryColor, width: 2),
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(""),
+                        Icon(
+                          Icons.arrow_drop_down_outlined,
+                          color: AppColor.greenPrimaryColor,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Wrap(
+                    spacing: 10,
+                    runSpacing: 5,
+                    children: controller.list_type_job_category
+                        .map(
+                          (e) => Container(
+                            padding: EdgeInsets.symmetric(horizontal: 8),
+                            decoration: BoxDecoration(
+                                border: Border.all(
+                                    color: AppColor.greenPrimaryColor,
+                                    width: 2),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(15)),
+                                color: AppColor.greyColor.withOpacity(0.5)),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text(
+                                  e,
+                                  style: TextStyle(
+                                      color: AppColor.greenPrimaryColor),
+                                ),
+                                SizedBox(
+                                  width: 5,
+                                ),
+                                IconButton(
+                                    onPressed: () {
+                                      controller.list_type_job_category
+                                          .remove(e);
+                                    },
+                                    icon: Icon(Icons.close))
+                              ],
+                            ),
+                          ),
+                        )
+                        .toList()),
                 SizedBox(
                   height: 10,
                 ),

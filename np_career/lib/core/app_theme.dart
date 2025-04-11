@@ -7,6 +7,12 @@ class AppTheme {
   static ThemeData lightAppTheme = ThemeData(
       fontFamily: "Tinos",
       scaffoldBackgroundColor: AppColor.lightBackgroundColor,
+      colorScheme: ColorScheme.light(
+        primary: AppColor.greenPrimaryColor,
+        onPrimary: Colors.white,
+        onSurface: Colors.black,
+        surface: AppColor.lightBackgroundColor,
+      ),
       textTheme: TextTheme(
           titleLarge: TextStyle(
             fontSize: 25,
