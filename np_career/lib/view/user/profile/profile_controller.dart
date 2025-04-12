@@ -14,7 +14,7 @@ class ProfileController extends GetxController {
     super.onInit();
   }
 
-  void getUser() async {
+  Future<void> getUser() async {
     try {
       UserModel userModel = await _loginFb.getUser();
       nameController.value = userModel.username;
