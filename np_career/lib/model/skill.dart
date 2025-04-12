@@ -7,7 +7,7 @@ class Skill {
   factory Skill.fromMap(Map<String, dynamic> map) {
     return Skill(
       name: map['name'] ?? '',
-      indicator: map['indicator'] ?? '',
+      indicator: int.tryParse(map['indicator'].toString()) ?? 0,
     );
   }
 

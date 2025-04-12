@@ -3,6 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:np_career/core/app_color.dart';
 import 'package:np_career/cv_no1/cv_input_no1/cv_input_no1_controller.dart';
+import 'package:np_career/cv_template/cv_setting/cv_setting_no1.dart';
 import 'package:np_career/enum/enum_sex.dart';
 
 class CvInputNo1 extends StatefulWidget {
@@ -15,6 +16,7 @@ class CvInputNo1 extends StatefulWidget {
 
 class _CvInputNo1State extends State<CvInputNo1> {
   final CvInputNo1Controller controller = Get.put(CvInputNo1Controller());
+  final CvSettingNo1 cvSettingNo1 = Get.put(CvSettingNo1());
 
   @override
   Widget build(BuildContext context) {
@@ -84,7 +86,11 @@ class _CvInputNo1State extends State<CvInputNo1> {
                       SizedBox(
                         width: 100,
                         child: ElevatedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            controller.imageUrl.value =
+                                controller.linkImgController.text;
+                            Get.back();
+                          },
                           child: Text(
                             "Submit",
                             style: TextStyle(
@@ -96,7 +102,6 @@ class _CvInputNo1State extends State<CvInputNo1> {
                     ],
                   )),
                   child: Container(
-                    height: 150,
                     width: double.infinity,
                     decoration: BoxDecoration(
                       border: Border.all(
@@ -105,13 +110,31 @@ class _CvInputNo1State extends State<CvInputNo1> {
                       ),
                       borderRadius: BorderRadius.all(Radius.circular(15)),
                     ),
-                    child: Center(
-                      child: Icon(
-                        Icons.add,
-                        color: AppColor.greenPrimaryColor,
-                        size: 50,
-                      ),
-                    ),
+                    child: controller.imageUrl.isEmpty
+                        ? Center(
+                            child: Icon(
+                              Icons.add,
+                              color: AppColor.greenPrimaryColor,
+                              size: 50,
+                            ),
+                          )
+                        : ClipRRect(
+                            borderRadius: BorderRadius.all(Radius.circular(15)),
+                            child: Image.network(
+                              cvSettingNo1
+                                  .getImageUrl(controller.imageUrl.value),
+                              fit: BoxFit.cover,
+                              errorBuilder: (context, error, stackTrace) {
+                                return Center(
+                                  child: Icon(
+                                    Icons.broken_image,
+                                    color: Colors.grey,
+                                    size: 50,
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
                   ),
                 ),
                 const SizedBox(height: 10),

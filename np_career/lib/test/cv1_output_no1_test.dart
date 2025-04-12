@@ -7,6 +7,7 @@ import 'package:np_career/model/knowledge.dart';
 import 'package:np_career/model/activity.dart';
 import 'package:np_career/model/award.dart';
 import 'package:np_career/model/certificate.dart';
+import 'package:intl/intl.dart';
 
 class ButtonTrigger extends StatelessWidget {
   const ButtonTrigger({super.key});
@@ -25,7 +26,7 @@ class ButtonTrigger extends StatelessWidget {
               position: "Nhân viên tư vấn",
               linkImage:
                   "https://drive.google.com/file/d/1gIISUN3vuGFXXVVC2IIFwd5FMvV22JKb/view?usp=sharing",
-              dateOfBirth: "15/05/1990",
+              dateOfBirth: DateFormat("dd/MM/yyyy").parse("15/05/1990"),
               sex: "Nam/Nữ/khác",
               phoneNumber: "0123456789",
               email: "tencuaban@example.com",

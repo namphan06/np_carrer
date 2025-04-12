@@ -1,10 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:np_career/cv_no1/cv_input_no1/cv_input_no1_fb.dart';
+import 'package:np_career/model/activity.dart';
+import 'package:np_career/model/award.dart';
+import 'package:np_career/model/certificate.dart';
+import 'package:np_career/model/cv_model.dart';
+import 'package:np_career/model/knowledge.dart';
+import 'package:np_career/model/skill.dart';
+import 'package:np_career/model/work_experience.dart';
+import 'package:uuid/uuid.dart';
 
 class CvInputNo1Controller extends GetxController {
+  final CvInputNo1Fb cvInputNo1Fb = Get.put(CvInputNo1Fb());
   var selectDate = Rxn<DateTime>();
   var choiceSex = false.obs;
   var selectSex = "".obs;
+  final imageUrl = ''.obs;
 
   TextEditingController linkImgController = TextEditingController();
   TextEditingController fullNameController = TextEditingController();
@@ -21,6 +32,13 @@ class CvInputNo1Controller extends GetxController {
     {"name": TextEditingController(), "indicator": TextEditingController()}
   ].obs;
 
+  List<Skill> get skillList => listSkill.map((e) {
+        return Skill.fromMap({
+          'name': e['name']!.text,
+          'indicator': int.tryParse(e['indicator']!.text) ?? 0,
+        });
+      }).toList();
+
   RxList<Map<String, dynamic>> listWorkExperience = <Map<String, dynamic>>[
     {
       "company": TextEditingController(),
@@ -30,6 +48,17 @@ class CvInputNo1Controller extends GetxController {
     }
   ].obs;
 
+  List<WorkExperience> get workExperienceList => listWorkExperience.map((e) {
+        return WorkExperience.fromMap({
+          'company': e['company']!.text,
+          'date': e['date']!.text,
+          'position': e['position']!.text,
+          'list': (e['list'] as RxList<TextEditingController>)
+              .map((controller) => controller.text)
+              .toList(),
+        });
+      }).toList();
+
   RxList<Map<String, dynamic>> listKnowledge = <Map<String, dynamic>>[
     {
       "school": TextEditingController(),
@@ -37,6 +66,16 @@ class CvInputNo1Controller extends GetxController {
       "list": <TextEditingController>[].obs
     }
   ].obs;
+
+  List<Knowledge> get knowledgeList => listKnowledge.map((e) {
+        return Knowledge.fromMap({
+          'school': e['school']!.text,
+          'date': e['date']!.text,
+          'list': (e['list'] as RxList<TextEditingController>)
+              .map((controller) => controller.text)
+              .toList(),
+        });
+      }).toList();
 
   RxList<Map<String, dynamic>> listActivities = <Map<String, dynamic>>[
     {
@@ -47,13 +86,38 @@ class CvInputNo1Controller extends GetxController {
     }
   ].obs;
 
+  List<Activity> get activityList => listActivities.map((e) {
+        return Activity.fromMap({
+          'name': e['name']!.text,
+          'date': e['date']!.text,
+          'position': e['position']!.text,
+          'list': (e['list'] as RxList<TextEditingController>)
+              .map((controller) => controller.text)
+              .toList(),
+        });
+      }).toList();
+
   RxList<Map<String, dynamic>> listAward = <Map<String, dynamic>>[
     {"name": TextEditingController(), "date": TextEditingController()}
   ].obs;
 
+  List<Award> get awardList => listAward.map((e) {
+        return Award.fromMap({
+          'name': e['name']!.text,
+          'date': e['date']!.text,
+        });
+      }).toList();
+
   RxList<Map<String, dynamic>> listCertificate = <Map<String, dynamic>>[
     {"name": TextEditingController(), "date": TextEditingController()}
   ].obs;
+
+  List<Certificate> get certificateList => listCertificate.map((e) {
+        return Certificate.fromMap({
+          'name': e['name']!.text,
+          'date': e['date']!.text,
+        });
+      }).toList();
 
   Future<void> pickDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -269,6 +333,38 @@ class CvInputNo1Controller extends GetxController {
   void removeRowCertificate(int index) {
     if (index >= 0 && index < listCertificate.length) {
       listCertificate.removeAt(index);
+    }
+  }
+
+  Future<void> addCv() async {
+    try {
+      var uuid = Uuid();
+      String randomId = uuid.v4();
+      CvModel cvModel = CvModel(
+          uid: randomId,
+          linkImage: imageUrl.value,
+          fullName: fullNameController.text,
+          position: positionController.text,
+          dateOfBirth: selectDate.value!,
+          sex: selectSex.value,
+          phoneNumber: phoneNumberController.text,
+          email: emailController.text,
+          address: addressController.text,
+          website: websiteController.text,
+          occupationalGoals: occupationalGoalsController.text,
+          skills: skillList,
+          workExperience: workExperienceList,
+          knowledge: knowledgeList,
+          activities: activityList,
+          award: awardList,
+          certificate: certificateList,
+          moreInformation: moreInformationController.text,
+          introducer: introducerController.text,
+          type: 'cv_no1');
+
+      cvInputNo1Fb.createCvNo1(cvModel);
+    } catch (err) {
+      Get.snackbar("Error", err.toString());
     }
   }
 }

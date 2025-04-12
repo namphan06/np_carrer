@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 class CvSettingNo1 extends GetxController {
   String getImageUrl(String url) {
@@ -14,5 +15,9 @@ class CvSettingNo1 extends GetxController {
 
     // Nếu không phải link Google Drive thì trả về link bình thường
     return url;
+  }
+
+  String formatDate(DateTime date) {
+    return DateFormat('dd/MM/yyyy').format(date);
   }
 }

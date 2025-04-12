@@ -21,6 +21,7 @@ class Cv1Output extends StatefulWidget {
 
 class _Cv1OutputState extends State<Cv1Output> {
   final CvSettingNo1 controller = Get.put(CvSettingNo1());
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -88,7 +89,9 @@ class _Cv1OutputState extends State<Cv1Output> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               _buildPersonalInfo(
-                                  "Ngày sinh", widget.cvModel.dateOfBirth),
+                                  "Ngày sinh",
+                                  controller
+                                      .formatDate(widget.cvModel.dateOfBirth)),
                               _buildPersonalInfo(
                                   "Giới tính", widget.cvModel.sex),
                               _buildPersonalInfo(
