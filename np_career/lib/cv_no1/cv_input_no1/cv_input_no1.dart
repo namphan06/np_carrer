@@ -5,6 +5,7 @@ import 'package:np_career/core/app_color.dart';
 import 'package:np_career/cv_no1/cv_input_no1/cv_input_no1_controller.dart';
 import 'package:np_career/cv_template/cv_setting/cv_setting_no1.dart';
 import 'package:np_career/enum/enum_sex.dart';
+import 'package:np_career/view/user/build_your_resume/by_style/resume_by_style.dart';
 
 class CvInputNo1 extends StatefulWidget {
   final String type;
@@ -35,7 +36,48 @@ class _CvInputNo1State extends State<CvInputNo1> {
         ),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Get.dialog(AlertDialog(
+                title: Text(
+                  "Would you like to save the CV",
+                  style: TextStyle(
+                      color: AppColor.greenPrimaryColor,
+                      fontWeight: FontWeight.bold),
+                ),
+                actions: [
+                  SizedBox(
+                    width: 100,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Get.back();
+                      },
+                      child: Text(
+                        "Cancel",
+                        style: TextStyle(
+                            color: AppColor.lightBackgroundColor,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 100,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        controller.addCv(widget.type);
+                        Get.back();
+                        Get.to(ResumeByStyle());
+                      },
+                      child: Text(
+                        "Submit",
+                        style: TextStyle(
+                            color: AppColor.lightBackgroundColor,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ),
+                ],
+              ));
+            },
             icon: SvgPicture.asset(
               "assets/icon/download.svg",
               width: 30,

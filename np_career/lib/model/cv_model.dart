@@ -11,7 +11,7 @@ class CvModel {
   final String linkImage;
   final String fullName;
   final String position;
-  final DateTime dateOfBirth;
+  final Timestamp dateOfBirth;
   final String sex;
   final String phoneNumber;
   final String email;

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
@@ -17,7 +18,8 @@ class CvSettingNo1 extends GetxController {
     return url;
   }
 
-  String formatDate(DateTime date) {
+  String formatDate(Timestamp timestamp) {
+    DateTime date = timestamp.toDate();
     return DateFormat('dd/MM/yyyy').format(date);
   }
 }

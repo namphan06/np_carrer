@@ -8,9 +8,9 @@ class CvInputNo1Fb {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  Future<void> createCvNo1(CvModel model) async {
+  Future<void> createCvNo1(CvModel model, String type) async {
     try {
-      await _firestore.collection("cv_no1").doc(model.uid).set({
+      await _firestore.collection("cv1").doc(model.uid).set({
         'id': model.uid,
         ...model.toJson(),
       });
@@ -28,7 +28,7 @@ class CvInputNo1Fb {
       existingCvs.add({
         'id': model.uid,
         'position': model.position,
-        'type': 'cv_no1',
+        'type': 'cv1',
       });
 
       await userDoc.set({'cvs': existingCvs});

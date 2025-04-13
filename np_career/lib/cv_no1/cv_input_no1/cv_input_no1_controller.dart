@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:np_career/cv_no1/cv_input_no1/cv_input_no1_fb.dart';
@@ -336,7 +337,11 @@ class CvInputNo1Controller extends GetxController {
     }
   }
 
-  Future<void> addCv() async {
+  Timestamp convertToTimestamp(DateTime date) {
+    return Timestamp.fromDate(date);
+  }
+
+  Future<void> addCv(String type) async {
     try {
       var uuid = Uuid();
       String randomId = uuid.v4();
@@ -345,7 +350,7 @@ class CvInputNo1Controller extends GetxController {
           linkImage: imageUrl.value,
           fullName: fullNameController.text,
           position: positionController.text,
-          dateOfBirth: selectDate.value!,
+          dateOfBirth: convertToTimestamp(selectDate.value!),
           sex: selectSex.value,
           phoneNumber: phoneNumberController.text,
           email: emailController.text,
@@ -360,9 +365,9 @@ class CvInputNo1Controller extends GetxController {
           certificate: certificateList,
           moreInformation: moreInformationController.text,
           introducer: introducerController.text,
-          type: 'cv_no1');
+          type: type);
 
-      cvInputNo1Fb.createCvNo1(cvModel);
+      cvInputNo1Fb.createCvNo1(cvModel, type);
     } catch (err) {
       Get.snackbar("Error", err.toString());
     }

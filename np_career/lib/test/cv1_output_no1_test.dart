@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:np_career/enum/enum_cv_no1_output.dart';
 import 'package:np_career/model/cv_model.dart';
@@ -26,7 +27,8 @@ class ButtonTrigger extends StatelessWidget {
               position: "Nhân viên tư vấn",
               linkImage:
                   "https://drive.google.com/file/d/1gIISUN3vuGFXXVVC2IIFwd5FMvV22JKb/view?usp=sharing",
-              dateOfBirth: DateFormat("dd/MM/yyyy").parse("15/05/1990"),
+              dateOfBirth: Timestamp.fromDate(
+                  DateFormat("dd/MM/yyyy").parse("15/05/1990")),
               sex: "Nam/Nữ/khác",
               phoneNumber: "0123456789",
               email: "tencuaban@example.com",

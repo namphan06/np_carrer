@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/instance_manager.dart';
 import 'package:np_career/core/app_color.dart';
+import 'package:np_career/resume_management/resume_management_screen.dart';
 import 'package:np_career/test/cv1_output_no1_test.dart';
 import 'package:np_career/view/screen/home.dart';
 import 'package:np_career/view/user/build_your_resume/by_style/resume_by_style.dart';
@@ -267,7 +268,7 @@ class _HomeScreenUserState extends State<HomeScreenUser> {
                                         "assets/images/manage-dashboard-analytic-svgrepo-com.svg",
                                     lableContainer: "Resume Management",
                                     selectedContainer: () {
-                                      Get.to(JobApplied());
+                                      Get.to(ResumeManagementScreen());
                                     }),
                                 SizedBox(
                                   width: 30,
