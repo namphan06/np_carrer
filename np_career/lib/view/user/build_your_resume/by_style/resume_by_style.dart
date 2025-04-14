@@ -7,6 +7,7 @@ import 'package:np_career/enum/enum_language.dart';
 import 'package:np_career/enum/enum_style_cv.dart';
 import 'package:np_career/view/screen/home.dart';
 import 'package:np_career/view/user/build_your_resume/by_style/resume_by_style_controller.dart';
+import 'package:np_career/view/user/home/home_screen_user.dart';
 
 class ResumeByStyle extends StatelessWidget {
   const ResumeByStyle({super.key});
@@ -23,7 +24,7 @@ class ResumeByStyle extends StatelessWidget {
         backgroundColor: AppColor.orangePrimaryColor,
         leading: IconButton(
             onPressed: () {
-              Get.back();
+              Get.to(HomeScreenUser());
             },
             icon: Icon(
               Icons.arrow_back_ios,
