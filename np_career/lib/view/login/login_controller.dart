@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
+import 'package:np_career/company/home/home_company.dart';
 import 'package:np_career/model/user_model.dart';
 import 'package:np_career/view/login/login_fb.dart';
 import 'package:np_career/view/user/home/home_screen_user.dart';
@@ -74,7 +75,7 @@ class LoginController extends GetxController {
         if (userModel.role == "user") {
           Get.to(HomeScreenUser());
         } else if (userModel.role == "company") {
-          Get.snackbar("Company", "Actor Company");
+          Get.to(HomeCompany());
         } else {
           Get.snackbar("Error", "Actor empty");
         }
