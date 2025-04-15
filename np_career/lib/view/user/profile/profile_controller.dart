@@ -6,7 +6,7 @@ class ProfileController extends GetxController {
   var nameController = "".obs;
   var roleController = "".obs;
 
-  final LoginFb _loginFb = Get.put(LoginFb());
+  final LoginFb _loginFb = Get.find<LoginFb>();
   @override
   void onInit() {
     // TODO: implement onInit

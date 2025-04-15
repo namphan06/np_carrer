@@ -4,6 +4,8 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/get_instance.dart';
 import 'package:np_career/core/app_color.dart';
+import 'package:np_career/view/login/login.dart';
+import 'package:np_career/view/login/login_fb.dart';
 import 'package:np_career/view/user/profile/change_password/change_password_screen.dart';
 import 'package:np_career/view/user/profile/my_profile/my_profile_screen.dart';
 import 'package:np_career/view/user/profile/profile_controller.dart';
@@ -17,6 +19,7 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   final ProfileController profileController = Get.put(ProfileController());
+  final LoginFb _loginFb = Get.find<LoginFb>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -115,7 +118,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
               height: 25,
             ),
             GestureDetector(
-              onTap: () {},
+              onTap: () {
+                _loginFb.signOut();
+              },
               child: Container(
                 width: double.infinity,
                 padding: EdgeInsets.all(10),

@@ -7,7 +7,7 @@ class HomeUserController extends GetxController {
   var nameController = "".obs;
   var emailController = "".obs;
 
-  final LoginFb _loginFb = Get.put(LoginFb());
+  final LoginFb _loginFb = Get.find<LoginFb>();
 
   @override
   void onInit() {

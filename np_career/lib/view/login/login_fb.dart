@@ -1,10 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_navigation/src/snackbar/snackbar.dart';
 import 'package:get/state_manager.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:np_career/model/user_model.dart';
+import 'package:np_career/view/login/login.dart';
 import 'package:np_career/view/screen/home.dart';
 
 class LoginFb {
@@ -93,10 +95,14 @@ class LoginFb {
 
   Future<void> signOut() async {
     try {
-      _auth.signOut();
+      await _auth.signOut();
       await GoogleSignIn().signOut();
+
+      Get.offAll(() => Login());
     } catch (err) {
-      Get.snackbar("Error", err.toString());
+      Future.delayed(Duration(milliseconds: 300), () {
+        Get.snackbar("Error", err.toString());
+      });
     }
   }
 
