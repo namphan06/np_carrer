@@ -1,17 +1,31 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
+import 'package:np_career/model/my_profile_model.dart';
+import 'package:np_career/model/work_experience.dart';
+import 'package:np_career/view/user/profile/my_profile/my_profile_fb.dart';
 
 class MyProfileController extends GetxController {
+  final MyProfileFb _fb = Get.put(MyProfileFb());
   var selectDate = Rxn<DateTime>();
   var choiceSex = false.obs;
   var selectSex = "".obs;
-  var isSharing;
+  var isSharing = RxnBool();
+  var selectedPosition = "".obs;
+  var typeCv = "".obs;
+  var idCv = "".obs;
   RxList<String> list_type_job = <String>[].obs;
   RxList<String> list_type_job_category = <String>[].obs;
   RxString searchQuery = ''.obs;
 
   RxString selectedNationality = "".obs;
   RxString selectedEducationLevel = "".obs;
+
+  TextEditingController fullName = TextEditingController();
+  TextEditingController phoneNumber = TextEditingController();
+  TextEditingController address = TextEditingController();
+  TextEditingController hiringReason = TextEditingController();
 
   RxList<Map<String, dynamic>> listWorkExperience = <Map<String, dynamic>>[
     {
@@ -21,6 +35,17 @@ class MyProfileController extends GetxController {
       "list": <TextEditingController>[].obs
     }
   ].obs;
+
+  List<WorkExperience> get workExperienceList => listWorkExperience.map((e) {
+        return WorkExperience.fromMap({
+          'company': e['company']!.text,
+          'date': e['date']!.text,
+          'position': e['position']!.text,
+          'list': (e['list'] as RxList<TextEditingController>)
+              .map((controller) => controller.text)
+              .toList(),
+        });
+      }).toList();
 
   Future<void> pickDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -70,6 +95,34 @@ class MyProfileController extends GetxController {
       (listWorkExperience[parentIndex]['list'] as RxList<TextEditingController>)
           .removeAt(detailIndex);
       refresh();
+    }
+  }
+
+  Timestamp convertToTimestamp(DateTime date) {
+    return Timestamp.fromDate(date);
+  }
+
+  Future<void> createMyProfile() async {
+    try {
+      MyProfileModel myProfileModel = MyProfileModel(
+          fullName: fullName.text,
+          phoneNumber: phoneNumber.text,
+          address: address.text,
+          nationality: selectedNationality.value,
+          educationLevel: selectedEducationLevel.value,
+          dateOfBirth: convertToTimestamp(selectDate.value!),
+          sex: selectSex.value,
+          hiringReason: hiringReason.text,
+          workExperience: workExperienceList,
+          preferredJobType: list_type_job,
+          jobInterests: list_type_job_category,
+          securitySetting: isSharing.value ?? false,
+          resumePosition: selectedPosition.value,
+          resumeType: typeCv.value,
+          resumeId: idCv.value);
+      _fb.saveMyProfile(myProfileModel);
+    } catch (err) {
+      Get.snackbar("Error", err.toString());
     }
   }
 }

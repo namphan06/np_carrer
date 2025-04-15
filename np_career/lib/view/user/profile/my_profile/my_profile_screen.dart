@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/instance_manager.dart';
@@ -9,7 +10,10 @@ import 'package:np_career/enum/enum_sex.dart';
 import 'package:np_career/enum/enum_type_job.dart';
 import 'package:np_career/enum/enum_type_job_category.dart';
 import 'package:np_career/main.dart';
+import 'package:np_career/resume_management/resume_management_controller.dart';
+import 'package:np_career/resume_management/resume_management_fb.dart';
 import 'package:np_career/view/user/profile/my_profile/my_profile_controller.dart';
+import 'package:np_career/view/user/profile/profile_screen.dart';
 
 class MyProfileScreen extends StatefulWidget {
   const MyProfileScreen({super.key});
@@ -20,6 +24,11 @@ class MyProfileScreen extends StatefulWidget {
 
 class _MyProfileScreenState extends State<MyProfileScreen> {
   final MyProfileController controller = Get.put(MyProfileController());
+
+  final ResumeManagementController controllerRs =
+      Get.put(ResumeManagementController());
+  final ResumeManagementFb controllerFb = Get.put(ResumeManagementFb());
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -54,6 +63,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                   height: 5,
                 ),
                 TextField(
+                  controller: controller.fullName,
                   decoration: InputDecoration(
                     label: Text("Full name"),
                   ),
@@ -65,6 +75,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                   height: 10,
                 ),
                 TextField(
+                  controller: controller.phoneNumber,
                   decoration: InputDecoration(
                     label: Text("Phone number"),
                   ),
@@ -76,6 +87,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                   height: 10,
                 ),
                 TextField(
+                  controller: controller.address,
                   decoration: InputDecoration(
                     label: Text("Address"),
                   ),
@@ -379,6 +391,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                   height: 10,
                 ),
                 TextField(
+                  controller: controller.hiringReason,
                   decoration: InputDecoration(
                     label: Text("Hiring Reason"),
                   ),
@@ -832,7 +845,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                   height: 10,
                 ),
                 Text(
-                  "Security settigns",
+                  "Security settings",
                   style: TextStyle(
                       color: AppColor.orangePrimaryColor,
                       fontWeight: FontWeight.bold,
@@ -840,32 +853,32 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                 ),
                 Column(
                   children: [
-                    RadioListTile<bool>(
-                      activeColor: AppColor.greenPrimaryColor,
-                      value: true,
-                      groupValue: controller.isSharing,
-                      onChanged: (value) {
-                        setState(() {
-                          controller.isSharing = value;
-                        });
-                      },
-                      title: Text('Share my profile'),
-                      subtitle: Text(
-                        'Employers can view my profile and contact me about potential job opportunities.',
+                    Obx(
+                      () => RadioListTile<bool>(
+                        activeColor: AppColor.greenPrimaryColor,
+                        value: true,
+                        groupValue: controller.isSharing.value,
+                        onChanged: (value) {
+                          controller.isSharing.value = value;
+                        },
+                        title: Text('Share my profile'),
+                        subtitle: Text(
+                          'Employers can view my profile and contact me about potential job opportunities.',
+                        ),
                       ),
                     ),
-                    RadioListTile<bool>(
-                      activeColor: AppColor.greenPrimaryColor,
-                      value: false,
-                      groupValue: controller.isSharing,
-                      onChanged: (value) {
-                        setState(() {
-                          controller.isSharing = value;
-                        });
-                      },
-                      title: Text('Do not share my profile'),
-                      subtitle: Text(
-                        'My profile is only visible to employers when I apply for jobs directly.',
+                    Obx(
+                      () => RadioListTile<bool>(
+                        activeColor: AppColor.greenPrimaryColor,
+                        value: false,
+                        groupValue: controller.isSharing.value,
+                        onChanged: (value) {
+                          controller.isSharing.value = value;
+                        },
+                        title: Text('Do not share my profile'),
+                        subtitle: Text(
+                          'My profile is only visible to employers when I apply for jobs directly.',
+                        ),
                       ),
                     ),
                   ],
@@ -873,15 +886,232 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                 SizedBox(
                   height: 10,
                 ),
-                TextField(
-                  decoration: InputDecoration(
-                    label: Text("Resume"),
+                GestureDetector(
+                  onTap: () {
+                    Get.dialog(Padding(
+                      padding: const EdgeInsets.only(top: 145),
+                      child: Dialog(
+                        insetPadding: EdgeInsets.zero,
+                        child: Container(
+                          child: Padding(
+                            padding: const EdgeInsets.all(50),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Select cv",
+                                  style: TextStyle(
+                                      color: AppColor.greenPrimaryColor,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 30),
+                                ),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                TextField(
+                                  onChanged: (value) => controller
+                                      .searchQuery.value = value.toLowerCase(),
+                                  decoration: InputDecoration(
+                                    hintText: 'Search cv...',
+                                    prefixIcon: Icon(Icons.search),
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                  ),
+                                ),
+                                StreamBuilder<DocumentSnapshot>(
+                                  stream: controllerFb.getListCv(),
+                                  builder: (context, snapshot) {
+                                    if (snapshot.connectionState ==
+                                        ConnectionState.waiting) {
+                                      return CircularProgressIndicator();
+                                    }
+
+                                    if (!snapshot.hasData ||
+                                        !snapshot.data!.exists) {
+                                      return Text("No CVs found");
+                                    }
+
+                                    var data = snapshot.data!.data()
+                                        as Map<String, dynamic>;
+                                    var cvs = data["cvs"];
+
+                                    if (cvs == null || !(cvs is List)) {
+                                      return Text("No CVs available");
+                                    }
+
+                                    return Obx(() {
+                                      var filteredCvs = cvs.where((e) {
+                                        var cv = e as Map<String, dynamic>;
+                                        var position = (cv["position"] ?? "")
+                                            .toString()
+                                            .toLowerCase();
+                                        var query = controller.searchQuery.value
+                                            .toLowerCase();
+                                        return cv["type"] != "upload" &&
+                                            position.contains(query);
+                                      }).toList();
+                                      return Padding(
+                                        padding: const EdgeInsets.all(15),
+                                        child: Container(
+                                          height: size.height * 0.45,
+                                          child: ListView.separated(
+                                            scrollDirection: Axis.vertical,
+                                            itemCount: filteredCvs.length,
+                                            separatorBuilder:
+                                                (context, index) => Divider(
+                                              thickness: 1,
+                                              color: AppColor.lightTextColor
+                                                  .withOpacity(0.5),
+                                              indent: 15,
+                                              endIndent: 15,
+                                            ),
+                                            itemBuilder: (context, index) {
+                                              var cv = filteredCvs[index];
+                                              return InkWell(
+                                                onTap: () {
+                                                  controller.selectedPosition
+                                                      .value = cv["position"];
+                                                  controller.typeCv.value =
+                                                      cv['type'];
+                                                  controller.idCv.value =
+                                                      cv['id'];
+                                                  Get.back();
+                                                },
+                                                child: Card(
+                                                  margin: EdgeInsets.symmetric(
+                                                      vertical: 8),
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            12),
+                                                  ),
+                                                  elevation: 5,
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            20),
+                                                    child: Row(
+                                                      children: [
+                                                        // Thêm một biểu tượng nếu cần
+                                                        Icon(
+                                                          Icons
+                                                              .assignment_ind, // Biểu tượng CV
+                                                          color: AppColor
+                                                              .greenPrimaryColor,
+                                                          size: 30,
+                                                        ),
+                                                        SizedBox(width: 12),
+                                                        Expanded(
+                                                          child: Text(
+                                                            cv["position"] ??
+                                                                "Unnamed CV",
+                                                            style: TextStyle(
+                                                              color:
+                                                                  Colors.black,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w600,
+                                                              fontSize: 16,
+                                                            ),
+                                                            overflow: TextOverflow
+                                                                .ellipsis, // Đảm bảo không bị tràn chữ
+                                                          ),
+                                                        ),
+                                                        Icon(
+                                                          Icons
+                                                              .arrow_forward_ios,
+                                                          size: 18,
+                                                          color: AppColor
+                                                              .greenPrimaryColor,
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                          ),
+                                        ),
+                                      );
+                                    });
+                                  },
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ));
+                  },
+                  child: Container(
+                    padding: EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                        border: Border.all(
+                            color: AppColor.greenPrimaryColor, width: 3),
+                        borderRadius: BorderRadius.all(Radius.circular(15))),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "Resume",
+                          style: TextStyle(
+                              color: AppColor.greenPrimaryColor, fontSize: 20),
+                        ),
+                        Icon(
+                          Icons.arrow_drop_down,
+                          color: AppColor.greenPrimaryColor,
+                        ),
+                      ],
+                    ),
                   ),
-                  maxLines: 5,
-                  style: TextStyle(
-                      color: AppColor.greenPrimaryColor,
-                      fontWeight: FontWeight.bold),
                 ),
+                SizedBox(
+                  height: 10,
+                ),
+                if (controller.selectedPosition.isNotEmpty)
+                  Obx(
+                    () => InkWell(
+                      onTap: () => controllerRs.getCv(
+                          controller.idCv.value, controller.typeCv.value),
+                      child: Card(
+                        margin: EdgeInsets.symmetric(vertical: 8),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        elevation: 5,
+                        child: Padding(
+                          padding: const EdgeInsets.all(20),
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.assignment_ind,
+                                color: AppColor.greenPrimaryColor,
+                                size: 30,
+                              ),
+                              SizedBox(width: 12),
+                              Expanded(
+                                child: Text(
+                                  controller.selectedPosition.value,
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 16,
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                              Icon(
+                                Icons.arrow_forward_ios,
+                                size: 18,
+                                color: AppColor.greenPrimaryColor,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
                 SizedBox(
                   height: 10,
                 ),
@@ -903,7 +1133,10 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                       SizedBox(
                           width: size.width * 0.4,
                           child: ElevatedButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                controller.createMyProfile();
+                                Get.to(ProfileScreen());
+                              },
                               child: Text(
                                 "Create",
                                 style: TextStyle(
