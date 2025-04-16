@@ -198,8 +198,9 @@ class _ManagementJobPostState extends State<ManagementJobPost> {
                                 decoration: BoxDecoration(
                                   color: Colors.white,
                                   borderRadius: BorderRadius.circular(30),
-                                  border:
-                                      Border.all(color: Colors.red, width: 2),
+                                  border: Border.all(
+                                      color: AppColor.greenPrimaryColor,
+                                      width: 2),
                                 ),
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
@@ -251,9 +252,10 @@ class _ManagementJobPostState extends State<ManagementJobPost> {
                                                     false;
                                               },
                                               child: Container(
-                                                width: 20,
-                                                height: 20,
-                                                color: Colors.red,
+                                                width: 15,
+                                                height: 15,
+                                                color:
+                                                    AppColor.greenPrimaryColor,
                                               ),
                                             ),
                                           ),
@@ -266,9 +268,10 @@ class _ManagementJobPostState extends State<ManagementJobPost> {
                                                     true;
                                               },
                                               child: Container(
-                                                width: 20,
-                                                height: 20,
-                                                color: Colors.red,
+                                                width: 15,
+                                                height: 15,
+                                                color:
+                                                    AppColor.greenPrimaryColor,
                                               ),
                                             ),
                                           ),
