@@ -252,86 +252,188 @@ class _CreateJobPostState extends State<CreateJobPost> {
                 SizedBox(
                   height: 10,
                 ),
+                Text(
+                  "City",
+                  style: TextStyle(
+                      color: AppColor.orangePrimaryColor,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
                 GestureDetector(
                   onTap: () {
-                    Get.dialog(Dialog(
-                      child: Container(
-                        padding: EdgeInsets.all(16),
-                        child: Column(
-                          children: [
-                            Text(
-                              "City",
-                              style: TextStyle(
-                                  color: AppColor.greenPrimaryColor,
+                    Get.dialog(
+                      Dialog(
+                        insetPadding: EdgeInsets.zero,
+                        backgroundColor: AppColor.lightBackgroundColor,
+                        child: Container(
+                          padding: EdgeInsets.all(16),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'City',
+                                style: TextStyle(
                                   fontSize: 20,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            Expanded(
-                              child: ListView.separated(
-                                itemCount: EnumCity.values.length,
-                                separatorBuilder: (_, __) =>
-                                    Divider(color: Colors.grey[300]),
-                                itemBuilder: (context, index) {
-                                  final e = EnumCity.values[index];
-                                  return InkWell(
-                                    onTap: () {
-                                      controller.selectCity.value = e.label;
-                                      Get.back();
-                                    },
-                                    borderRadius: BorderRadius.circular(8),
-                                    child: Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                        vertical: 12,
-                                        horizontal: 8,
-                                      ),
-                                      child: Text(
-                                        e.label,
-                                        style: TextStyle(
-                                          color: Colors.black87,
-                                        ),
-                                      ),
-                                    ),
-                                  );
-                                },
+                                  fontWeight: FontWeight.bold,
+                                  color: AppColor.greenPrimaryColor,
+                                ),
                               ),
-                            ),
-                          ],
+                              SizedBox(height: 16),
+                              TextField(
+                                onChanged: (value) => controller
+                                    .searchQuery.value = value.toLowerCase(),
+                                decoration: InputDecoration(
+                                  hintText: 'Search city...',
+                                  prefixIcon: Icon(Icons.search),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(height: 16),
+                              Expanded(
+                                child: Obx(() {
+                                  final filteredList = EnumCity.values
+                                      .where((e) => e.label
+                                          .toLowerCase()
+                                          .contains(
+                                              controller.searchQueryC.value))
+                                      .toList();
+                                  return ListView.separated(
+                                    itemCount: filteredList.length,
+                                    separatorBuilder: (_, __) =>
+                                        Divider(color: Colors.grey[300]),
+                                    itemBuilder: (context, index) {
+                                      final e = filteredList[index];
+
+                                      return Obx(() {
+                                        final isSelectedC = controller.list_city
+                                            .contains(e.label);
+                                        return InkWell(
+                                          onTap: () {
+                                            if (isSelectedC) {
+                                              controller.list_city
+                                                  .remove(e.label);
+                                            } else {
+                                              controller.list_city.add(e.label);
+                                            }
+                                          },
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                          child: Container(
+                                            padding: const EdgeInsets.symmetric(
+                                                vertical: 12, horizontal: 8),
+                                            decoration: BoxDecoration(
+                                              color: isSelectedC
+                                                  ? Colors.orange
+                                                      .withOpacity(0.3)
+                                                  : null,
+                                              borderRadius:
+                                                  BorderRadius.circular(8),
+                                            ),
+                                            child: Text(
+                                              e.label,
+                                              style: TextStyle(
+                                                fontSize: 16,
+                                                color: isSelectedC
+                                                    ? Colors.orange
+                                                    : Colors.black87,
+                                                fontWeight: isSelectedC
+                                                    ? FontWeight.bold
+                                                    : FontWeight.normal,
+                                              ),
+                                            ),
+                                          ),
+                                        );
+                                      });
+                                    },
+                                  );
+                                }),
+                              ),
+                              SizedBox(height: 10),
+                              Align(
+                                alignment: Alignment.centerRight,
+                                child: ElevatedButton(
+                                  onPressed: () => Get.back(),
+                                  child: Text(
+                                    'Done',
+                                    style: TextStyle(
+                                        color: AppColor.lightBackgroundColor,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20),
+                                  ),
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: AppColor.greenPrimaryColor,
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
                         ),
                       ),
-                    ));
+                    );
                   },
-                  child: Obx(
-                    () => Container(
-                      padding: EdgeInsets.symmetric(horizontal: 15),
-                      height: 55,
-                      decoration: BoxDecoration(
-                          border: Border.all(
-                              color: AppColor.greenPrimaryColor, width: 2),
-                          borderRadius: BorderRadius.all(Radius.circular(10))),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            controller.selectCity.isEmpty
-                                ? "City"
-                                : controller.selectCity.value,
-                            style: TextStyle(
-                                fontSize: 16,
-                                color: AppColor.greenPrimaryColor,
-                                fontWeight: FontWeight.bold),
-                          ),
-                          Icon(
-                            Icons.arrow_drop_down,
-                            color: AppColor.greenPrimaryColor,
-                          ),
-                        ],
-                      ),
+                  child: Container(
+                    height: 55,
+                    padding: EdgeInsets.symmetric(horizontal: 12),
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                          color: AppColor.greenPrimaryColor, width: 2),
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(""),
+                        Icon(
+                          Icons.arrow_drop_down_outlined,
+                          color: AppColor.greenPrimaryColor,
+                        ),
+                      ],
                     ),
                   ),
                 ),
+                SizedBox(
+                  height: 10,
+                ),
+                Wrap(
+                    spacing: 10,
+                    runSpacing: 5,
+                    children: controller.list_city
+                        .map(
+                          (e) => Container(
+                            padding: EdgeInsets.symmetric(horizontal: 8),
+                            decoration: BoxDecoration(
+                                border: Border.all(
+                                    color: AppColor.greenPrimaryColor,
+                                    width: 2),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(15)),
+                                color: AppColor.greyColor.withOpacity(0.5)),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text(
+                                  e,
+                                  style: TextStyle(
+                                      color: AppColor.greenPrimaryColor),
+                                ),
+                                SizedBox(
+                                  width: 5,
+                                ),
+                                IconButton(
+                                    onPressed: () {
+                                      controller.list_city.remove(e);
+                                    },
+                                    icon: Icon(Icons.close))
+                              ],
+                            ),
+                          ),
+                        )
+                        .toList()),
                 SizedBox(
                   height: 10,
                 ),

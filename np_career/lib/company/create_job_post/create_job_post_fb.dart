@@ -33,7 +33,8 @@ class CreateJobPostFb {
         'city': model.city,
         'minSalary': model.minSalary,
         'maxSalary': model.maxSalary,
-        'nameCompany': nameCompany
+        'nameCompany': nameCompany,
+        'currencyUnit': model.currencyUnit
       });
 
       await userDoc.set({'jps': existingJps});

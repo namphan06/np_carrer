@@ -6,7 +6,7 @@ class JobPostModel {
   final int? minSalary;
   final int? maxSalary;
   final String? currencyUnit;
-  final String city;
+  final List<String> city;
   final String experience;
   final List<String> jobDescription;
   final List<String> requiredApplication;
@@ -40,7 +40,9 @@ class JobPostModel {
         minSalary: data['minSalary'],
         maxSalary: data['maxSalary'],
         currencyUnit: data['currencyUnit'],
-        city: data['city'],
+        city: List<String>.from(
+          data['city'] ?? [],
+        ),
         experience: data['experience'],
         jobDescription: List<String>.from(data['jobDescription'] ?? []),
         requiredApplication:

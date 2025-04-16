@@ -8,10 +8,12 @@ class CreateJobPostController extends GetxController {
   final CreateJobPostFb _fb = CreateJobPostFb();
 
   var selectCurrencyUnit = "".obs;
-  var selectCity = "".obs;
+  // var selectCity = "".obs;
   var selectExperience = "".obs;
   RxList<String> list_type_job_category = <String>[].obs;
+  RxList<String> list_city = <String>[].obs;
   RxString searchQuery = ''.obs;
+  RxString searchQueryC = ''.obs;
 
   RxList<RxString> listJobDescription = ["".obs].obs;
   RxList<RxString> listRequiredApplication = ["".obs].obs;
@@ -32,7 +34,7 @@ class CreateJobPostController extends GetxController {
       JobPostModel jobPostModel = JobPostModel(
           id: randomId,
           name: nameController.text,
-          city: selectCity.value,
+          city: list_city.toList(),
           experience: selectExperience.value,
           jobDescription: listJobDescription.map((e) => e.value).toList(),
           requiredApplication:

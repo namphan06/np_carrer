@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:np_career/company/create_job_post/create_job_post.dart';
+import 'package:np_career/company/management_fob_post/management_job_post.dart';
 import 'package:np_career/model/user_model.dart';
 import 'package:np_career/view/login/login_fb.dart';
 import 'package:np_career/view/screen/home.dart';
@@ -12,8 +13,8 @@ class HomeCompanyController extends GetxController {
         {
           'img':
               'assets/images/work_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.svg',
-          'text': 'Create Job Post',
-          'onTap': () => Get.to(CreateJobPost(
+          'text': 'Management Job Post',
+          'onTap': () => Get.to(ManagementJobPost(
                 nameCompany: nameController.value,
               ))
         },
