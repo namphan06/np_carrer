@@ -7,6 +7,7 @@ import 'package:np_career/core/app_color.dart';
 import 'package:np_career/view/screen/home.dart';
 import 'package:np_career/view/user/home/navbar/customer_bottom_navbar.dart';
 import 'package:np_career/view/user/home/navbar/navbar_controller.dart';
+import 'package:np_career/view/user/profile/profile_screen.dart';
 
 class HomeCompany extends StatefulWidget {
   const HomeCompany({super.key});
@@ -29,7 +30,7 @@ class _HomeCompanyState extends State<HomeCompany> {
           case 1:
             return Home();
           case 2:
-            return Home();
+            return ProfileScreen();
           default:
             return _buildHomeScree();
         }

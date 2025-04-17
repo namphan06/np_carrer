@@ -52,24 +52,26 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   SizedBox(
                     width: 25,
                   ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        profileController.nameController.value,
-                        style: TextStyle(
-                            color: AppColor.greenPrimaryColor,
-                            fontSize: 35,
-                            fontWeight: FontWeight.bold),
-                      ),
-                      Text(
-                        "Role : ${profileController.roleController.value}",
-                        style: TextStyle(
-                            color: AppColor.greenPrimaryColor,
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold),
-                      )
-                    ],
+                  Obx(
+                    () => Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          profileController.nameController.value,
+                          style: TextStyle(
+                              color: AppColor.greenPrimaryColor,
+                              fontSize: 35,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          "Role : ${profileController.roleController.value}",
+                          style: TextStyle(
+                              color: AppColor.greenPrimaryColor,
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold),
+                        )
+                      ],
+                    ),
                   )
                 ],
               ),
@@ -78,7 +80,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 "assets/images/account_circle_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.svg",
                 "assets/images/keyboard_arrow_right_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.svg",
                 "My profile",
-                () => Get.to(MyProfileScreen())),
+                profileController.handleMyProfile),
             SizedBox(
               height: 15,
             ),

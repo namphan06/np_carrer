@@ -1,15 +1,16 @@
 import 'package:get/get.dart';
 import 'package:np_career/model/user_model.dart';
 import 'package:np_career/view/login/login_fb.dart';
+import 'package:np_career/view/user/profile/my_profile/my_profile_screen.dart';
 
 class ProfileController extends GetxController {
   var nameController = "".obs;
   var roleController = "".obs;
 
   final LoginFb _loginFb = Get.find<LoginFb>();
+
   @override
   void onInit() {
-    // TODO: implement onInit
     getUser();
     super.onInit();
   }
@@ -21,6 +22,16 @@ class ProfileController extends GetxController {
       roleController.value = userModel.role;
     } catch (err) {
       Get.snackbar("Error", "Fail get user detail");
+    }
+  }
+
+  void handleMyProfile() {
+    if (roleController.value == 'user') {
+      Get.to(MyProfileScreen());
+    } else if (roleController.value == 'company') {
+      Get.snackbar('Role', 'Role Company');
+    } else {
+      Get.snackbar("Error", 'Don\'t have role');
     }
   }
 }

@@ -254,8 +254,10 @@ class _ManagementJobPostState extends State<ManagementJobPost> {
                                               child: Container(
                                                 width: 15,
                                                 height: 15,
-                                                color:
-                                                    AppColor.greenPrimaryColor,
+                                                decoration: BoxDecoration(
+                                                    color: AppColor
+                                                        .greenPrimaryColor,
+                                                    shape: BoxShape.circle),
                                               ),
                                             ),
                                           ),

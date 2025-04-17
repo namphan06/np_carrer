@@ -1,11 +1,15 @@
 import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:np_career/core/app_theme.dart';
 import 'package:np_career/firebase_options.dart';
 import 'package:np_career/view/login/login.dart';
 import 'package:np_career/view/signup/signup.dart';
+import 'package:np_career/view/user/home/home_screen_user.dart';
+import 'package:np_career/view/user/profile/profile_bilding.dart';
+import 'package:np_career/view/user/profile/profile_screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -46,6 +50,13 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: AppTheme.lightAppTheme,
       home: Login(),
+      getPages: [
+        GetPage(name: '/home_user', page: () => HomeScreenUser()),
+        GetPage(
+            name: '/profile',
+            page: () => ProfileScreen(),
+            binding: ProfileBinding())
+      ],
       debugShowCheckedModeBanner: false,
     );
   }
