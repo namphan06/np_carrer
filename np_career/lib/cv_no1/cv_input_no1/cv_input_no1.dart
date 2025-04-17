@@ -411,7 +411,7 @@ class _CvInputNo1State extends State<CvInputNo1> {
                                 child: Row(
                                   children: [
                                     SizedBox(
-                                      width: size.width * 0.47,
+                                      width: size.width * 0.42,
                                       child: TextField(
                                         controller: controller.listSkill[index]
                                             ['name'] as TextEditingController,
@@ -569,7 +569,7 @@ class _CvInputNo1State extends State<CvInputNo1> {
                                 Row(
                                   children: [
                                     SizedBox(
-                                      width: size.width * 0.42,
+                                      width: size.width * 0.408,
                                       child: TextField(
                                         controller:
                                             controller.listWorkExperience[index]
@@ -587,7 +587,7 @@ class _CvInputNo1State extends State<CvInputNo1> {
                                       width: 15,
                                     ),
                                     SizedBox(
-                                      width: size.width * 0.42,
+                                      width: size.width * 0.408,
                                       child: TextField(
                                         controller: controller
                                                 .listWorkExperience[index]
@@ -769,7 +769,7 @@ class _CvInputNo1State extends State<CvInputNo1> {
                           Row(
                             children: [
                               SizedBox(
-                                width: size.width * 0.42,
+                                width: size.width * 0.408,
                                 child: TextField(
                                   controller: controller.listKnowledge[index]
                                       ['school'] as TextEditingController,
@@ -783,7 +783,7 @@ class _CvInputNo1State extends State<CvInputNo1> {
                               ),
                               SizedBox(width: 15),
                               SizedBox(
-                                width: size.width * 0.42,
+                                width: size.width * 0.408,
                                 child: TextField(
                                   controller: controller.listKnowledge[index]
                                       ['date'] as TextEditingController,
@@ -943,7 +943,7 @@ class _CvInputNo1State extends State<CvInputNo1> {
                           Row(
                             children: [
                               SizedBox(
-                                width: size.width * 0.42,
+                                width: size.width * 0.408,
                                 child: TextField(
                                   controller: controller.listActivities[index]
                                       ['name'] as TextEditingController,
@@ -957,7 +957,7 @@ class _CvInputNo1State extends State<CvInputNo1> {
                               ),
                               SizedBox(width: 15),
                               SizedBox(
-                                width: size.width * 0.42,
+                                width: size.width * 0.408,
                                 child: TextField(
                                   controller: controller.listActivities[index]
                                       ['date'] as TextEditingController,
@@ -1100,7 +1100,7 @@ class _CvInputNo1State extends State<CvInputNo1> {
                                 child: Row(
                                   children: [
                                     SizedBox(
-                                      width: size.width * 0.47,
+                                      width: size.width * 0.42,
                                       child: TextField(
                                         controller: controller.listAward[index]
                                             ['name'] as TextEditingController,
@@ -1223,7 +1223,7 @@ class _CvInputNo1State extends State<CvInputNo1> {
                                   child: Row(
                                     children: [
                                       SizedBox(
-                                        width: size.width * 0.47,
+                                        width: size.width * 0.42,
                                         child: TextField(
                                           controller: controller
                                                   .listCertificate[index]

@@ -479,7 +479,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                                 Row(
                                   children: [
                                     SizedBox(
-                                      width: size.width * 0.42,
+                                      width: size.width * 0.405,
                                       child: TextField(
                                         controller:
                                             controller.listWorkExperience[index]
@@ -497,7 +497,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                                       width: 15,
                                     ),
                                     SizedBox(
-                                      width: size.width * 0.42,
+                                      width: size.width * 0.405,
                                       child: TextField(
                                         controller: controller
                                                 .listWorkExperience[index]

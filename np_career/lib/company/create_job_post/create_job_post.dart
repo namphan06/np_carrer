@@ -147,7 +147,7 @@ class _CreateJobPostState extends State<CreateJobPost> {
                       ),
                     ),
                     SizedBox(
-                      width: 15,
+                      width: 10,
                     ),
                     SizedBox(
                       width: size.width * 0.3,
@@ -164,7 +164,7 @@ class _CreateJobPostState extends State<CreateJobPost> {
                       ),
                     ),
                     SizedBox(
-                      width: 15,
+                      width: 10,
                     ),
                     GestureDetector(
                       onTap: () {
@@ -222,7 +222,7 @@ class _CreateJobPostState extends State<CreateJobPost> {
                       child: Obx(
                         () => Container(
                           padding: EdgeInsets.symmetric(horizontal: 5),
-                          width: size.width * 0.26,
+                          width: size.width * 0.27,
                           height: 55,
                           decoration: BoxDecoration(
                               border: Border.all(

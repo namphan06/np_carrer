@@ -97,7 +97,7 @@ class _ManagementJobPostState extends State<ManagementJobPost> {
                     String cityText = '';
 
                     if (city.isNotEmpty) {
-                      if (city.length > 2) {
+                      if (city.length > 1) {
                         cityText = '${city[0]} +${city.length - 1}';
                       } else {
                         cityText = city.join(', ');

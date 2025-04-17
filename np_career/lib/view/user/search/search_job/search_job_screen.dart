@@ -125,7 +125,7 @@ class _SearchJobScreenState extends State<SearchJobScreen> {
                                         Row(
                                           children: [
                                             SizedBox(
-                                              width: size.width * 0.27,
+                                              width: size.width * 0.269,
                                               child: TextField(
                                                 controller:
                                                     controller.minSalary,
@@ -148,7 +148,7 @@ class _SearchJobScreenState extends State<SearchJobScreen> {
                                               width: 15,
                                             ),
                                             SizedBox(
-                                              width: size.width * 0.27,
+                                              width: size.width * 0.269,
                                               child: TextField(
                                                 controller:
                                                     controller.maxSalary,
@@ -255,7 +255,7 @@ class _SearchJobScreenState extends State<SearchJobScreen> {
                                                 () => Container(
                                                   padding: EdgeInsets.symmetric(
                                                       horizontal: 5),
-                                                  width: size.width * 0.25,
+                                                  width: size.width * 0.252,
                                                   height: 55,
                                                   decoration: BoxDecoration(
                                                       border: Border.all(
@@ -1000,12 +1000,15 @@ class _SearchJobScreenState extends State<SearchJobScreen> {
                                   child: Text("No job posts available."));
                             }
 
+                            final filterJobPosts =
+                                controller.filterJobs(jobPosts);
+
                             return ListView.builder(
                               shrinkWrap: true,
                               physics: NeverScrollableScrollPhysics(),
-                              itemCount: jobPosts.length,
+                              itemCount: filterJobPosts.length,
                               itemBuilder: (context, index) {
-                                final job = jobPosts[index];
+                                final job = filterJobPosts[index];
                                 final name = job['name'] ?? 'No name';
                                 final companyName =
                                     job['nameCompany'] ?? 'No company';
@@ -1029,7 +1032,7 @@ class _SearchJobScreenState extends State<SearchJobScreen> {
                                     job['city'] as List<dynamic>? ?? [];
                                 String cityText = '';
                                 if (city.isNotEmpty) {
-                                  if (city.length > 2) {
+                                  if (city.length > 1) {
                                     cityText = '${city[0]} +${city.length - 1}';
                                   } else {
                                     cityText = city.join(', ');
@@ -1055,6 +1058,8 @@ class _SearchJobScreenState extends State<SearchJobScreen> {
                                     ],
                                   ),
                                   child: Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Expanded(
                                         child: Column(
@@ -1116,12 +1121,13 @@ class _SearchJobScreenState extends State<SearchJobScreen> {
                                                   child: Text(
                                                     cityText,
                                                     style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      color: AppColor
-                                                          .greenPrimaryColor
-                                                          .withOpacity(0.9),
-                                                    ),
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        color: AppColor
+                                                            .greenPrimaryColor
+                                                            .withOpacity(0.9),
+                                                        overflow: TextOverflow
+                                                            .ellipsis),
                                                   ),
                                                 ),
                                               ],
@@ -1129,6 +1135,40 @@ class _SearchJobScreenState extends State<SearchJobScreen> {
                                           ],
                                         ),
                                       ),
+                                      Obx(
+                                        () => Container(
+                                          decoration: BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              color: AppColor.greyColor
+                                                  .withOpacity(0.5)),
+                                          child: controller.savedJob == false
+                                              ? IconButton(
+                                                  onPressed: () {
+                                                    controller
+                                                        .toggleSavedJobStatus(
+                                                            job['id']);
+                                                  },
+                                                  icon: Icon(
+                                                    Icons
+                                                        .bookmark_border_outlined,
+                                                    size: 30,
+                                                    color: AppColor
+                                                        .greenPrimaryColor,
+                                                  ))
+                                              : IconButton(
+                                                  onPressed: () {
+                                                    controller
+                                                        .toggleSavedJobStatus(
+                                                            job['id']);
+                                                  },
+                                                  icon: Icon(
+                                                    Icons.bookmark,
+                                                    size: 30,
+                                                    color: AppColor
+                                                        .greenPrimaryColor,
+                                                  )),
+                                        ),
+                                      )
                                     ],
                                   ),
                                 );

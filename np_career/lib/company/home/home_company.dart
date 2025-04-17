@@ -158,7 +158,7 @@ class _HomeCompanyState extends State<HomeCompany> {
                 crossAxisCount: 3,
                 padding: EdgeInsets.all(16),
                 crossAxisSpacing: 10,
-                mainAxisSpacing: 10,
+                mainAxisSpacing: 25,
                 children: controller.items.map((item) {
                   return Column(
                     children: [
@@ -177,8 +177,8 @@ class _HomeCompanyState extends State<HomeCompany> {
                             child: SvgPicture.asset(
                               item['img'],
                               color: AppColor.greenPrimaryColor,
-                              width: 50,
-                              height: 50,
+                              width: 45,
+                              height: 45,
                             ),
                           ),
                         ),
@@ -187,8 +187,8 @@ class _HomeCompanyState extends State<HomeCompany> {
                         height: 5,
                       ),
                       Container(
-                        height: 30,
-                        width: 70,
+                        height: 15,
+                        width: 80,
                         child: Center(
                           child: Text(
                             item['text'],
