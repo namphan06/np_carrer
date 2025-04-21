@@ -88,7 +88,7 @@ class _CvInputNo1State extends State<CvInputNo1> {
         ],
       ),
       body: Padding(
-        padding: const EdgeInsets.all(15),
+        padding: EdgeInsets.all(size.width * 0.02),
         child: SingleChildScrollView(
           child: Obx(() {
             return Column(
@@ -401,7 +401,7 @@ class _CvInputNo1State extends State<CvInputNo1> {
                           return Column(
                             children: [
                               Container(
-                                padding: EdgeInsets.all(10),
+                                padding: EdgeInsets.all(size.width * 0.02),
                                 decoration: BoxDecoration(
                                     border: Border.all(
                                         color: AppColor.greenPrimaryColor,
@@ -411,7 +411,7 @@ class _CvInputNo1State extends State<CvInputNo1> {
                                 child: Row(
                                   children: [
                                     SizedBox(
-                                      width: size.width * 0.42,
+                                      width: size.width * 0.46,
                                       child: TextField(
                                         controller: controller.listSkill[index]
                                             ['name'] as TextEditingController,
@@ -423,9 +423,9 @@ class _CvInputNo1State extends State<CvInputNo1> {
                                             label: Text("Name")),
                                       ),
                                     ),
-                                    SizedBox(width: 8),
+                                    SizedBox(width: size.width * 0.02),
                                     SizedBox(
-                                      width: size.width * 0.21,
+                                      width: size.width * 0.22,
                                       child: TextField(
                                         controller: controller.listSkill[index]
                                                 ['indicator']
@@ -494,7 +494,7 @@ class _CvInputNo1State extends State<CvInputNo1> {
                   height: 20,
                 ),
                 Container(
-                  padding: EdgeInsets.all(10),
+                  padding: EdgeInsets.all(size.width * 0.02),
                   decoration: BoxDecoration(
                       border: Border.all(
                           color: AppColor.greenPrimaryColor, width: 3),
@@ -537,7 +537,7 @@ class _CvInputNo1State extends State<CvInputNo1> {
                       return Column(
                         children: [
                           Container(
-                            padding: EdgeInsets.all(10),
+                            padding: EdgeInsets.all(size.width * 0.02),
                             decoration: BoxDecoration(
                                 border: Border.all(
                                     color: AppColor.orangePrimaryColor,
@@ -552,8 +552,9 @@ class _CvInputNo1State extends State<CvInputNo1> {
                                     onTap: () => controller
                                         .removeRowWorkExperience(index),
                                     child: Container(
-                                      margin: EdgeInsets.all(8),
-                                      padding: EdgeInsets.all(8),
+                                      margin: EdgeInsets.all(size.width * 0.02),
+                                      padding:
+                                          EdgeInsets.all(size.width * 0.02),
                                       decoration: BoxDecoration(
                                           shape: BoxShape.circle,
                                           color: AppColor.orangeRedColor),
@@ -569,7 +570,7 @@ class _CvInputNo1State extends State<CvInputNo1> {
                                 Row(
                                   children: [
                                     SizedBox(
-                                      width: size.width * 0.408,
+                                      width: size.width * 0.435,
                                       child: TextField(
                                         controller:
                                             controller.listWorkExperience[index]
@@ -584,10 +585,10 @@ class _CvInputNo1State extends State<CvInputNo1> {
                                       ),
                                     ),
                                     SizedBox(
-                                      width: 15,
+                                      width: size.width * 0.03,
                                     ),
                                     SizedBox(
-                                      width: size.width * 0.408,
+                                      width: size.width * 0.435,
                                       child: TextField(
                                         controller: controller
                                                 .listWorkExperience[index]
@@ -913,7 +914,7 @@ class _CvInputNo1State extends State<CvInputNo1> {
                   itemCount: controller.listActivities.length,
                   itemBuilder: (context, index) {
                     return Container(
-                      padding: EdgeInsets.all(10),
+                      padding: EdgeInsets.all(size.width * 0.02),
                       decoration: BoxDecoration(
                           border: Border.all(
                               color: AppColor.orangePrimaryColor, width: 3),
@@ -926,8 +927,8 @@ class _CvInputNo1State extends State<CvInputNo1> {
                               onTap: () =>
                                   controller.removeRowActivities(index),
                               child: Container(
-                                margin: EdgeInsets.all(8),
-                                padding: EdgeInsets.all(8),
+                                margin: EdgeInsets.all(size.width * 0.02),
+                                padding: EdgeInsets.all(size.width * 0.02),
                                 decoration: BoxDecoration(
                                     shape: BoxShape.circle,
                                     color: AppColor.orangeRedColor),
@@ -943,7 +944,7 @@ class _CvInputNo1State extends State<CvInputNo1> {
                           Row(
                             children: [
                               SizedBox(
-                                width: size.width * 0.408,
+                                width: size.width * 0.435,
                                 child: TextField(
                                   controller: controller.listActivities[index]
                                       ['name'] as TextEditingController,
@@ -955,9 +956,9 @@ class _CvInputNo1State extends State<CvInputNo1> {
                                       InputDecoration(label: Text("Name")),
                                 ),
                               ),
-                              SizedBox(width: 15),
+                              SizedBox(width: size.width * 0.03),
                               SizedBox(
-                                width: size.width * 0.408,
+                                width: size.width * 0.435,
                                 child: TextField(
                                   controller: controller.listActivities[index]
                                       ['date'] as TextEditingController,
@@ -1090,7 +1091,7 @@ class _CvInputNo1State extends State<CvInputNo1> {
                           return Column(
                             children: [
                               Container(
-                                padding: EdgeInsets.all(10),
+                                padding: EdgeInsets.all(size.width * 0.02),
                                 decoration: BoxDecoration(
                                     border: Border.all(
                                         color: AppColor.greenPrimaryColor,
@@ -1100,7 +1101,7 @@ class _CvInputNo1State extends State<CvInputNo1> {
                                 child: Row(
                                   children: [
                                     SizedBox(
-                                      width: size.width * 0.42,
+                                      width: size.width * 0.46,
                                       child: TextField(
                                         controller: controller.listAward[index]
                                             ['name'] as TextEditingController,
@@ -1112,9 +1113,9 @@ class _CvInputNo1State extends State<CvInputNo1> {
                                             label: Text("Name")),
                                       ),
                                     ),
-                                    SizedBox(width: 8),
+                                    SizedBox(width: size.width * 0.02),
                                     SizedBox(
-                                      width: size.width * 0.21,
+                                      width: size.width * 0.22,
                                       child: TextField(
                                         controller: controller.listAward[index]
                                             ['date'] as TextEditingController,
@@ -1182,7 +1183,7 @@ class _CvInputNo1State extends State<CvInputNo1> {
                   height: 20,
                 ),
                 Container(
-                    padding: EdgeInsets.all(10),
+                    padding: EdgeInsets.all(size.width * 0.02),
                     decoration: BoxDecoration(
                         border: Border.all(
                             color: AppColor.orangePrimaryColor, width: 3),
@@ -1223,7 +1224,7 @@ class _CvInputNo1State extends State<CvInputNo1> {
                                   child: Row(
                                     children: [
                                       SizedBox(
-                                        width: size.width * 0.42,
+                                        width: size.width * 0.46,
                                         child: TextField(
                                           controller: controller
                                                   .listCertificate[index]
@@ -1236,9 +1237,9 @@ class _CvInputNo1State extends State<CvInputNo1> {
                                               label: Text("Name")),
                                         ),
                                       ),
-                                      SizedBox(width: 8),
+                                      SizedBox(width: size.width * 0.02),
                                       SizedBox(
-                                        width: size.width * 0.21,
+                                        width: size.width * 0.22,
                                         child: TextField(
                                           controller: controller
                                                   .listCertificate[index]

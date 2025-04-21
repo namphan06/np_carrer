@@ -53,7 +53,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(15),
+        padding: EdgeInsets.all(size.width * 0.02),
         child: Obx(
           () => SingleChildScrollView(
             child: Column(
@@ -462,8 +462,9 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                                     onTap: () => controller
                                         .removeRowWorkExperience(index),
                                     child: Container(
-                                      margin: EdgeInsets.all(8),
-                                      padding: EdgeInsets.all(8),
+                                      margin: EdgeInsets.all(size.width * 0.02),
+                                      padding:
+                                          EdgeInsets.all(size.width * 0.02),
                                       decoration: BoxDecoration(
                                           shape: BoxShape.circle,
                                           color: AppColor.orangeRedColor),
@@ -479,7 +480,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                                 Row(
                                   children: [
                                     SizedBox(
-                                      width: size.width * 0.405,
+                                      width: size.width * 0.435,
                                       child: TextField(
                                         controller:
                                             controller.listWorkExperience[index]
@@ -494,10 +495,10 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                                       ),
                                     ),
                                     SizedBox(
-                                      width: 15,
+                                      width: size.width * 0.03,
                                     ),
                                     SizedBox(
-                                      width: size.width * 0.405,
+                                      width: size.width * 0.435,
                                       child: TextField(
                                         controller: controller
                                                 .listWorkExperience[index]

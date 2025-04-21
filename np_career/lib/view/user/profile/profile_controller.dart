@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:np_career/company/profile_company/profile_company.dart';
 import 'package:np_career/model/user_model.dart';
 import 'package:np_career/view/login/login_fb.dart';
 import 'package:np_career/view/user/profile/my_profile/my_profile_screen.dart';
@@ -29,7 +30,7 @@ class ProfileController extends GetxController {
     if (roleController.value == 'user') {
       Get.to(MyProfileScreen());
     } else if (roleController.value == 'company') {
-      Get.snackbar('Role', 'Role Company');
+      Get.to(ProfileCompany());
     } else {
       Get.snackbar("Error", 'Don\'t have role');
     }
