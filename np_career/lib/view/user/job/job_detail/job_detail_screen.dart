@@ -44,6 +44,7 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
             EdgeInsets.symmetric(vertical: 15, horizontal: size.width * 0.02),
         child: SingleChildScrollView(
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
                 padding: EdgeInsets.all(15),
@@ -164,13 +165,248 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
                         ),
                         Text(widget.job.experience)
                       ],
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Container(
+                      padding: EdgeInsets.all(5),
+                      decoration: BoxDecoration(
+                          border: Border.all(
+                              color: AppColor.greenPrimaryColor, width: 2),
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                          color: AppColor.greyColor.withOpacity(0.5)),
+                      child: Text(
+                          "Application deadline : ${widget.job.applicationDeadline}"),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Row(
+                      children: [
+                        Flexible(
+                          flex: 2,
+                          child: ElevatedButton(
+                              onPressed: () {},
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(
+                                    vertical: 5, horizontal: size.width * 0.05),
+                                child: Row(
+                                  children: [
+                                    Icon(
+                                      Icons.send,
+                                      color: AppColor.lightBackgroundColor,
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    Text(
+                                      "Apply now",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: AppColor.lightBackgroundColor),
+                                    ),
+                                  ],
+                                ),
+                              )),
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Flexible(
+                          flex: 1,
+                          child: ElevatedButton(
+                              onPressed: () {},
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor:
+                                      AppColor.lightBackgroundColor),
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(vertical: 5),
+                                child: Row(
+                                  children: [
+                                    Icon(
+                                      Icons.favorite_outline,
+                                      color: AppColor.greenPrimaryColor,
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    Text(
+                                      "Save",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: AppColor.greenPrimaryColor),
+                                    ),
+                                  ],
+                                ),
+                              )),
+                        ),
+                      ],
                     )
                   ],
                 ),
+              ),
+              SizedBox(
+                height: 15,
+              ),
+              Text(
+                "Job Details",
+                style: TextStyle(
+                    color: AppColor.orangePrimaryColor,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20),
+              ),
+              Wrap(
+                spacing: 10,
+                runSpacing: 10,
+                children: widget.job.jobInterests
+                    .map<Widget>((e) => Container(
+                          padding: EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(15)),
+                            color: AppColor.greyColor,
+                          ),
+                          child: Text(
+                            e,
+                            style:
+                                TextStyle(color: AppColor.lightBackgroundColor),
+                          ),
+                        ))
+                    .toList(),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              // Job Description Section
+              _buildSection("Job Description", widget.job.jobDescription),
+              SizedBox(height: 15),
+
+              // Required Application Section
+              _buildSection(
+                  "Required Application", widget.job.requiredApplication),
+              SizedBox(height: 15),
+
+              // Benefits Section
+              _buildSection("Benefits", widget.job.benefits),
+              SizedBox(height: 15),
+
+              // Work Location Section
+              _buildSection("Work Location", widget.job.workLocation),
+              SizedBox(height: 15),
+
+              // Time Work Section
+              _buildSection("Time Work", [widget.job.timeWork]),
+              SizedBox(
+                height: 10,
+              ),
+              Text("Application deadline : ${widget.job.applicationDeadline}"),
+              SizedBox(
+                height: 10,
+              ),
+              Row(
+                children: [
+                  Flexible(
+                    flex: 2,
+                    child: ElevatedButton(
+                        onPressed: () {},
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(
+                              vertical: 5, horizontal: size.width * 0.05),
+                          child: Text(
+                            "Apply now",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: AppColor.lightBackgroundColor),
+                          ),
+                        )),
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Flexible(
+                    flex: 1,
+                    child: ElevatedButton(
+                        onPressed: () {},
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: AppColor.lightBackgroundColor),
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(vertical: 5),
+                          child: Text(
+                            "Save",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: AppColor.greenPrimaryColor),
+                          ),
+                        )),
+                  ),
+                  Flexible(
+                    flex: 2,
+                    child: Container(),
+                  )
+                ],
               )
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildSection(String title, List<String> items) {
+    return Card(
+      margin: EdgeInsets.symmetric(horizontal: 10),
+      elevation: 5,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(15.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _buildSectionHeader(title),
+            SizedBox(height: 10),
+            ...items.map((e) => _buildItem(e)).toList(),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSectionHeader(String title) {
+    return Row(
+      children: [
+        Icon(Icons.info_outline, color: AppColor.orangePrimaryColor),
+        SizedBox(width: 8),
+        Text(
+          title,
+          style: TextStyle(
+            color: AppColor.orangePrimaryColor,
+            fontWeight: FontWeight.bold,
+            fontSize: 18,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildItem(String text) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 20.0, top: 8.0),
+      child: Row(
+        children: [
+          Icon(Icons.check_circle_outline, color: AppColor.greenPrimaryColor),
+          SizedBox(width: 10),
+          Expanded(
+            child: Text(
+              "$text",
+              style: TextStyle(
+                color: Colors.black87,
+                fontSize: 16,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
