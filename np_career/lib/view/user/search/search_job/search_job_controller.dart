@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:np_career/model/job_post_model.dart';
 import 'package:np_career/view/user/search/search_job/search_job_fb.dart';
 
-class SearchJobController {
+class SearchJobController extends GetxController {
+  final SearchJobFb _fb = Get.put(SearchJobFb());
+
   var isExpanded = false.obs;
   var selectCurrencyUnit = "".obs;
   var selectExperience = "".obs;
@@ -17,7 +20,11 @@ class SearchJobController {
 
   RxBool savedJob = false.obs;
 
-  SearchJobFb _fb = Get.put(SearchJobFb());
+  JobPostModel? job;
+
+  void loadJobDetail(String job_id) async {
+    job = await _fb.getJobDetail(job_id);
+  }
 
   List<Map<String, dynamic>> filterJobs(List<Map<String, dynamic>> jobPosts) {
     final currencyUnit = selectCurrencyUnit.value;
@@ -31,19 +38,17 @@ class SearchJobController {
     return jobPosts.where((job) {
       final jobMin = job['minSalary'];
       final jobMax = job['maxSalary'];
-      // Lọc theo đơn vị tiền tệ
+
       if (currencyUnit.isNotEmpty &&
           job['currencyUnit']?.toString() != currencyUnit) {
         return false;
       }
 
-      // Lọc theo kinh nghiệm
       if (experience.isNotEmpty &&
           job['experience']?.toString() != experience) {
         return false;
       }
 
-      // Lọc theo danh mục công việc (jobInterests là danh sách)
       if (typeJobCategories.isNotEmpty) {
         final jobInterests =
             (job['jobInterests'] as List?)?.cast<String>() ?? [];
@@ -52,7 +57,6 @@ class SearchJobController {
         }
       }
 
-      // Lọc theo thành phố (city là danh sách)
       if (cities.isNotEmpty) {
         final jobCities = (job['city'] as List?)?.cast<String>() ?? [];
         if (!cities.any((city) => jobCities.contains(city))) {
@@ -60,7 +64,6 @@ class SearchJobController {
         }
       }
 
-      // Lọc theo tên
       if (nameKeyword.isNotEmpty &&
           !(job['name']?.toString().toLowerCase() ?? '')
               .contains(nameKeyword)) {
@@ -68,35 +71,25 @@ class SearchJobController {
       }
 
       if (min != null) {
-        // Nếu dữ liệu có cả min và max -> kiểm tra nếu cả hai đều nhỏ hơn min => loại
         if (jobMin != null && jobMax != null) {
           if (jobMin < min && jobMax < min) return false;
-        }
-        // Nếu chỉ có min trong dữ liệu
-        else if (jobMin != null && jobMin < min) {
+        } else if (jobMin != null && jobMin < min) {
           return false;
-        }
-        // Nếu chỉ có max trong dữ liệu
-        else if (jobMax != null && jobMax < min) {
+        } else if (jobMax != null && jobMax < min) {
           return false;
         }
       }
 
-// Nếu người dùng nhập max
       if (max != null) {
-        // Nếu dữ liệu có cả min và max -> kiểm tra nếu cả hai đều lớn hơn max => loại
         if (jobMin != null && jobMax != null) {
           if (jobMin > max && jobMax > max) return false;
-        }
-        // Nếu chỉ có min trong dữ liệu
-        else if (jobMin != null && jobMin > max) {
+        } else if (jobMin != null && jobMin > max) {
           return false;
-        }
-        // Nếu chỉ có max trong dữ liệu
-        else if (jobMax != null && jobMax > max) {
+        } else if (jobMax != null && jobMax > max) {
           return false;
         }
       }
+
       return true;
     }).toList();
   }

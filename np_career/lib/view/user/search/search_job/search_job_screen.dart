@@ -8,6 +8,8 @@ import 'package:np_career/enum/enum_city.dart';
 import 'package:np_career/enum/enum_currency_unit.dart';
 import 'package:np_career/enum/enum_experience.dart';
 import 'package:np_career/enum/enum_type_job_category.dart';
+import 'package:np_career/model/job_post_model.dart';
+import 'package:np_career/view/user/job/job_detail/job_detail_screen.dart';
 import 'package:np_career/view/user/search/search_job/search_job_controller.dart';
 import 'package:np_career/view/user/search/search_job/search_job_fb.dart';
 
@@ -1015,6 +1017,7 @@ class _SearchJobScreenState extends State<SearchJobScreen> {
                                 final minSalary = job['minSalary'];
                                 final maxSalary = job['maxSalary'];
                                 final currency = job['currencyUnit'] ?? '';
+                                controller.loadJobDetail(job['id']);
 
                                 String salary;
                                 if (minSalary == null && maxSalary == null) {
@@ -1039,137 +1042,147 @@ class _SearchJobScreenState extends State<SearchJobScreen> {
                                   }
                                 }
 
-                                return AnimatedContainer(
-                                  duration: Duration(milliseconds: 300),
-                                  curve: Curves.easeInOut,
-                                  margin: EdgeInsets.symmetric(
-                                      vertical: 8, horizontal: 16),
-                                  padding: EdgeInsets.all(12),
-                                  decoration: BoxDecoration(
-                                    color: AppColor.orangePrimaryColor
-                                        .withOpacity(0.66),
-                                    borderRadius: BorderRadius.circular(15),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.black.withOpacity(0.2),
-                                        offset: Offset(0, 4),
-                                        blurRadius: 10,
-                                      ),
-                                    ],
-                                  ),
-                                  child: Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Expanded(
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              name,
-                                              style: TextStyle(
-                                                fontSize: 30,
-                                                fontWeight: FontWeight.bold,
-                                                color:
-                                                    AppColor.greenPrimaryColor,
-                                              ),
-                                              overflow: TextOverflow.ellipsis,
-                                            ),
-                                            SizedBox(height: 5),
-                                            Text(
-                                              "Company: $companyName",
-                                              style: TextStyle(
-                                                fontSize: 16,
-                                                color: Colors.grey[600],
-                                              ),
-                                              overflow: TextOverflow.ellipsis,
-                                            ),
-                                            SizedBox(height: 10),
-                                            Row(
-                                              children: [
-                                                Container(
-                                                  padding: EdgeInsets.all(5),
-                                                  decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            15),
-                                                    color: AppColor.greyColor
-                                                        .withOpacity(0.8),
-                                                  ),
-                                                  child: Text(
-                                                    salary,
-                                                    style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      color: AppColor
-                                                          .greenPrimaryColor
-                                                          .withOpacity(0.9),
-                                                    ),
-                                                  ),
+                                return GestureDetector(
+                                  onTap: () {
+                                    if (controller.job != null) {
+                                      Get.to(() => JobDetailScreen(
+                                          job: controller.job!));
+                                    } else {
+                                      Get.snackbar('Error', 'Information null');
+                                    }
+                                  },
+                                  child: AnimatedContainer(
+                                    duration: Duration(milliseconds: 300),
+                                    curve: Curves.easeInOut,
+                                    margin: EdgeInsets.symmetric(
+                                        vertical: 8, horizontal: 16),
+                                    padding: EdgeInsets.all(12),
+                                    decoration: BoxDecoration(
+                                      color: AppColor.orangePrimaryColor
+                                          .withOpacity(0.66),
+                                      borderRadius: BorderRadius.circular(15),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.black.withOpacity(0.2),
+                                          offset: Offset(0, 4),
+                                          blurRadius: 10,
+                                        ),
+                                      ],
+                                    ),
+                                    child: Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Expanded(
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                name,
+                                                style: TextStyle(
+                                                  fontSize: 30,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: AppColor
+                                                      .greenPrimaryColor,
                                                 ),
-                                                SizedBox(width: 5),
-                                                Container(
-                                                  padding: EdgeInsets.all(5),
-                                                  decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            15),
-                                                    color: AppColor.greyColor
-                                                        .withOpacity(0.8),
-                                                  ),
-                                                  child: Text(
-                                                    cityText,
-                                                    style: TextStyle(
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
+                                              SizedBox(height: 5),
+                                              Text(
+                                                "Company: $companyName",
+                                                style: TextStyle(
+                                                  fontSize: 16,
+                                                  color: Colors.grey[600],
+                                                ),
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
+                                              SizedBox(height: 10),
+                                              Row(
+                                                children: [
+                                                  Container(
+                                                    padding: EdgeInsets.all(5),
+                                                    decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              15),
+                                                      color: AppColor.greyColor
+                                                          .withOpacity(0.8),
+                                                    ),
+                                                    child: Text(
+                                                      salary,
+                                                      style: TextStyle(
                                                         fontWeight:
                                                             FontWeight.bold,
                                                         color: AppColor
                                                             .greenPrimaryColor
                                                             .withOpacity(0.9),
-                                                        overflow: TextOverflow
-                                                            .ellipsis),
+                                                      ),
+                                                    ),
                                                   ),
-                                                ),
-                                              ],
-                                            ),
-                                          ],
+                                                  SizedBox(width: 5),
+                                                  Container(
+                                                    padding: EdgeInsets.all(5),
+                                                    decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              15),
+                                                      color: AppColor.greyColor
+                                                          .withOpacity(0.8),
+                                                    ),
+                                                    child: Text(
+                                                      cityText,
+                                                      style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          color: AppColor
+                                                              .greenPrimaryColor
+                                                              .withOpacity(0.9),
+                                                          overflow: TextOverflow
+                                                              .ellipsis),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
                                         ),
-                                      ),
-                                      Obx(
-                                        () => Container(
-                                          decoration: BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              color: AppColor.greyColor
-                                                  .withOpacity(0.5)),
-                                          child: controller.savedJob == false
-                                              ? IconButton(
-                                                  onPressed: () {
-                                                    controller
-                                                        .toggleSavedJobStatus(
-                                                            job['id']);
-                                                  },
-                                                  icon: Icon(
-                                                    Icons
-                                                        .bookmark_border_outlined,
-                                                    size: 30,
-                                                    color: AppColor
-                                                        .greenPrimaryColor,
-                                                  ))
-                                              : IconButton(
-                                                  onPressed: () {
-                                                    controller
-                                                        .toggleSavedJobStatus(
-                                                            job['id']);
-                                                  },
-                                                  icon: Icon(
-                                                    Icons.bookmark,
-                                                    size: 30,
-                                                    color: AppColor
-                                                        .greenPrimaryColor,
-                                                  )),
-                                        ),
-                                      )
-                                    ],
+                                        Obx(
+                                          () => Container(
+                                            decoration: BoxDecoration(
+                                                shape: BoxShape.circle,
+                                                color: AppColor.greyColor
+                                                    .withOpacity(0.5)),
+                                            child: controller.savedJob == false
+                                                ? IconButton(
+                                                    onPressed: () {
+                                                      controller
+                                                          .toggleSavedJobStatus(
+                                                              job['id']);
+                                                    },
+                                                    icon: Icon(
+                                                      Icons
+                                                          .bookmark_border_outlined,
+                                                      size: 30,
+                                                      color: AppColor
+                                                          .greenPrimaryColor,
+                                                    ))
+                                                : IconButton(
+                                                    onPressed: () {
+                                                      controller
+                                                          .toggleSavedJobStatus(
+                                                              job['id']);
+                                                    },
+                                                    icon: Icon(
+                                                      Icons.bookmark,
+                                                      size: 30,
+                                                      color: AppColor
+                                                          .greenPrimaryColor,
+                                                    )),
+                                          ),
+                                        )
+                                      ],
+                                    ),
                                   ),
                                 );
                               },

@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:np_career/model/job_post_model.dart';
 
 class SearchJobFb {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -47,5 +48,29 @@ class SearchJobFb {
     final List<dynamic> jobs = docSnap.data()?['jobs'] ?? [];
 
     return jobs.contains(jobId);
+  }
+
+  Future<JobPostModel?> getJobDetail(String job_id) async {
+    try {
+      final snap = await _firestore.collection("jobs").doc(job_id).get();
+
+      if (!snap.exists) {
+        Get.snackbar(
+          "Error",
+          "Job information not found.",
+          snackPosition: SnackPosition.BOTTOM,
+        );
+        return null;
+      }
+
+      return JobPostModel.fromSnap(snap);
+    } catch (e) {
+      Get.snackbar(
+        "Error",
+        "Failed to load job data: $e",
+        snackPosition: SnackPosition.BOTTOM,
+      );
+      return null;
+    }
   }
 }
