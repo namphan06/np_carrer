@@ -4,25 +4,33 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:np_career/core/app_color.dart';
 import 'package:np_career/model/job_post_model.dart';
+import 'package:np_career/view/user/job/job_detail/job_detail_controller.dart';
+import 'package:np_career/view/user/search/search_job/search_job_controller.dart';
+import 'package:np_career/view/user/search/search_job/search_job_screen.dart';
 
 class JobDetailScreen extends StatefulWidget {
   final JobPostModel job;
-  const JobDetailScreen({super.key, required this.job});
+  final bool isSave;
+  const JobDetailScreen({super.key, required this.job, required this.isSave});
 
   @override
   State<JobDetailScreen> createState() => _JobDetailScreenState();
 }
 
 class _JobDetailScreenState extends State<JobDetailScreen> {
+  JobDetailController controller = Get.put(JobDetailController());
+  SearchJobController searchController = Get.put(SearchJobController());
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    controller.savedJob.value = widget.isSave;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppColor.orangePrimaryColor,
         leading: IconButton(
           onPressed: () {
-            Get.back();
+            searchController.fetchSavedJobStatus();
+            Get.back(result: true);
           },
           icon: Icon(
             Icons.arrow_back_ios,
@@ -52,199 +60,211 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
                     borderRadius: BorderRadius.all(Radius.circular(10)),
                     border: Border.all(
                         color: AppColor.greenPrimaryColor, width: 2)),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      widget.job.name,
-                      style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: AppColor.greenPrimaryColor),
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Row(
-                      children: [
-                        Container(
-                          padding: EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color:
-                                  AppColor.greenPrimaryColor.withOpacity(0.5)),
-                          child: Icon(
-                            Icons.attach_money,
-                            color: AppColor.lightBackgroundColor,
-                          ),
-                        ),
-                        SizedBox(
-                          width: 15,
-                        ),
-                        Text(
-                          () {
-                            final min = widget.job.minSalary;
-                            final max = widget.job.maxSalary;
-                            final currency = widget.job.currencyUnit ?? '';
+                child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              widget.job.name,
+                              style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                  color: AppColor.greenPrimaryColor),
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Row(
+                              children: [
+                                Container(
+                                  padding: EdgeInsets.all(10),
+                                  decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: AppColor.greenPrimaryColor
+                                          .withOpacity(0.5)),
+                                  child: Icon(
+                                    Icons.attach_money,
+                                    color: AppColor.lightBackgroundColor,
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 15,
+                                ),
+                                Text(
+                                  () {
+                                    final min = widget.job.minSalary;
+                                    final max = widget.job.maxSalary;
+                                    final currency =
+                                        widget.job.currencyUnit ?? '';
 
-                            if (min != null && max != null) {
-                              return "$min - $max $currency";
-                            } else if (min != null) {
-                              return "$min $currency";
-                            } else if (max != null) {
-                              return "$max $currency";
-                            } else {
-                              return "Negotiable";
-                            }
-                          }(),
-                        )
-                      ],
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Row(
-                      children: [
-                        Container(
-                          padding: EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color:
-                                  AppColor.greenPrimaryColor.withOpacity(0.5)),
-                          child: Icon(
-                            Icons.location_on,
-                            color: AppColor.lightBackgroundColor,
-                          ),
-                        ),
-                        SizedBox(
-                          width: 15,
-                        ),
-                        Text.rich(
-                          TextSpan(
-                            children: [
-                              for (int i = 0;
-                                  i <
-                                      (widget.job.city.length > 2
-                                          ? 2
-                                          : widget.job.city.length);
-                                  i++) ...[
-                                TextSpan(text: widget.job.city[i]),
-                                if (i < 1 && widget.job.city.length > 1)
-                                  TextSpan(text: ", "),
+                                    if (min != null && max != null) {
+                                      return "$min - $max $currency";
+                                    } else if (min != null) {
+                                      return "$min $currency";
+                                    } else if (max != null) {
+                                      return "$max $currency";
+                                    } else {
+                                      return "Negotiable";
+                                    }
+                                  }(),
+                                )
                               ],
-                              if (widget.job.city.length > 2)
-                                TextSpan(
-                                  text: "+${widget.job.city.length - 2}",
-                                  style: TextStyle(
-                                      color: AppColor.greenPrimaryColor,
-                                      fontWeight: FontWeight.bold),
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Row(
+                              children: [
+                                Container(
+                                  padding: EdgeInsets.all(10),
+                                  decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: AppColor.greenPrimaryColor
+                                          .withOpacity(0.5)),
+                                  child: Icon(
+                                    Icons.location_on,
+                                    color: AppColor.lightBackgroundColor,
+                                  ),
                                 ),
-                            ],
-                          ),
-                        )
-                      ],
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Row(
-                      children: [
-                        Container(
-                          padding: EdgeInsets.all(10),
+                                SizedBox(
+                                  width: 15,
+                                ),
+                                Text.rich(
+                                  TextSpan(
+                                    children: [
+                                      for (int i = 0;
+                                          i <
+                                              (widget.job.city.length > 2
+                                                  ? 2
+                                                  : widget.job.city.length);
+                                          i++) ...[
+                                        TextSpan(text: widget.job.city[i]),
+                                        if (i < 1 && widget.job.city.length > 1)
+                                          TextSpan(text: ", "),
+                                      ],
+                                      if (widget.job.city.length > 2)
+                                        TextSpan(
+                                          text:
+                                              "+${widget.job.city.length - 2}",
+                                          style: TextStyle(
+                                              color: AppColor.greenPrimaryColor,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                    ],
+                                  ),
+                                )
+                              ],
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Row(
+                              children: [
+                                Container(
+                                  padding: EdgeInsets.all(10),
+                                  decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: AppColor.greenPrimaryColor
+                                          .withOpacity(0.5)),
+                                  child: Icon(
+                                    FontAwesomeIcons.hourglass,
+                                    color: AppColor.lightBackgroundColor,
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 15,
+                                ),
+                                Text(widget.job.experience)
+                              ],
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Container(
+                              padding: EdgeInsets.all(5),
+                              decoration: BoxDecoration(
+                                  border: Border.all(
+                                      color: AppColor.greenPrimaryColor,
+                                      width: 2),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(10)),
+                                  color: AppColor.greyColor.withOpacity(0.5)),
+                              child: Text(
+                                  "Application deadline : ${widget.job.applicationDeadline}"),
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Row(
+                              children: [
+                                SizedBox(
+                                  width: size.width * 0.6,
+                                  child: ElevatedButton(
+                                      onPressed: () {},
+                                      child: Padding(
+                                        padding: EdgeInsets.symmetric(
+                                            vertical: 10,
+                                            horizontal: size.width * 0.01),
+                                        child: Row(
+                                          children: [
+                                            Icon(
+                                              Icons.send,
+                                              color:
+                                                  AppColor.lightBackgroundColor,
+                                              size: 25,
+                                            ),
+                                            SizedBox(
+                                              width: 20,
+                                            ),
+                                            Text(
+                                              "Apply now",
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  color: AppColor
+                                                      .lightBackgroundColor,
+                                                  fontSize: 20),
+                                            ),
+                                          ],
+                                        ),
+                                      )),
+                                ),
+                              ],
+                            )
+                          ],
+                        ),
+                      ),
+                      Obx(
+                        () => Container(
                           decoration: BoxDecoration(
                               shape: BoxShape.circle,
-                              color:
-                                  AppColor.greenPrimaryColor.withOpacity(0.5)),
-                          child: Icon(
-                            FontAwesomeIcons.hourglass,
-                            color: AppColor.lightBackgroundColor,
-                          ),
+                              color: AppColor.greyColor.withOpacity(0.5)),
+                          child: controller.savedJob == false
+                              ? IconButton(
+                                  onPressed: () {
+                                    controller
+                                        .toggleSavedJobStatus(widget.job.id);
+                                  },
+                                  icon: Icon(
+                                    Icons.bookmark_border_outlined,
+                                    size: 30,
+                                    color: AppColor.greenPrimaryColor,
+                                  ))
+                              : IconButton(
+                                  onPressed: () {
+                                    controller
+                                        .toggleSavedJobStatus(widget.job.id);
+                                  },
+                                  icon: Icon(
+                                    Icons.bookmark,
+                                    size: 30,
+                                    color: AppColor.greenPrimaryColor,
+                                  )),
                         ),
-                        SizedBox(
-                          width: 15,
-                        ),
-                        Text(widget.job.experience)
-                      ],
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Container(
-                      padding: EdgeInsets.all(5),
-                      decoration: BoxDecoration(
-                          border: Border.all(
-                              color: AppColor.greenPrimaryColor, width: 2),
-                          borderRadius: BorderRadius.all(Radius.circular(10)),
-                          color: AppColor.greyColor.withOpacity(0.5)),
-                      child: Text(
-                          "Application deadline : ${widget.job.applicationDeadline}"),
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Row(
-                      children: [
-                        Flexible(
-                          flex: 2,
-                          child: ElevatedButton(
-                              onPressed: () {},
-                              child: Padding(
-                                padding: EdgeInsets.symmetric(
-                                    vertical: 5, horizontal: size.width * 0.05),
-                                child: Row(
-                                  children: [
-                                    Icon(
-                                      Icons.send,
-                                      color: AppColor.lightBackgroundColor,
-                                    ),
-                                    SizedBox(
-                                      width: 10,
-                                    ),
-                                    Text(
-                                      "Apply now",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: AppColor.lightBackgroundColor),
-                                    ),
-                                  ],
-                                ),
-                              )),
-                        ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Flexible(
-                          flex: 1,
-                          child: ElevatedButton(
-                              onPressed: () {},
-                              style: ElevatedButton.styleFrom(
-                                  backgroundColor:
-                                      AppColor.lightBackgroundColor),
-                              child: Padding(
-                                padding: EdgeInsets.symmetric(vertical: 5),
-                                child: Row(
-                                  children: [
-                                    Icon(
-                                      Icons.favorite_outline,
-                                      color: AppColor.greenPrimaryColor,
-                                    ),
-                                    SizedBox(
-                                      width: 10,
-                                    ),
-                                    Text(
-                                      "Save",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: AppColor.greenPrimaryColor),
-                                    ),
-                                  ],
-                                ),
-                              )),
-                        ),
-                      ],
-                    )
-                  ],
-                ),
+                      )
+                    ]),
               ),
               SizedBox(
                 height: 15,
@@ -317,25 +337,6 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 color: AppColor.lightBackgroundColor),
-                          ),
-                        )),
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Flexible(
-                    flex: 1,
-                    child: ElevatedButton(
-                        onPressed: () {},
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: AppColor.lightBackgroundColor),
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(vertical: 5),
-                          child: Text(
-                            "Save",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: AppColor.greenPrimaryColor),
                           ),
                         )),
                   ),

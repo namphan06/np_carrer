@@ -27,6 +27,7 @@ class _SearchJobScreenState extends State<SearchJobScreen> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    controller.fetchSavedJobStatus();
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(15),
@@ -1017,7 +1018,6 @@ class _SearchJobScreenState extends State<SearchJobScreen> {
                                 final minSalary = job['minSalary'];
                                 final maxSalary = job['maxSalary'];
                                 final currency = job['currencyUnit'] ?? '';
-                                controller.loadJobDetail(job['id']);
 
                                 String salary;
                                 if (minSalary == null && maxSalary == null) {
@@ -1043,13 +1043,22 @@ class _SearchJobScreenState extends State<SearchJobScreen> {
                                 }
 
                                 return GestureDetector(
-                                  onTap: () {
-                                    if (controller.job != null) {
-                                      Get.to(() => JobDetailScreen(
-                                          job: controller.job!));
-                                    } else {
-                                      Get.snackbar('Error', 'Information null');
-                                    }
+                                  onTap: () async {
+                                    // if (controller.job != null) {
+                                    //   Get.to(() => JobDetailScreen(
+                                    //         job: JobPostModel.fromMap(job),
+                                    //         isSave: controller
+                                    //             .savedJobStatusList[index],
+                                    //       ));
+                                    // } else {
+                                    //   Get.snackbar('Error', 'Information null');
+                                    // }
+                                    await controller.loadJobDetail(job['id']);
+                                    Get.to(() => JobDetailScreen(
+                                          job: controller.job!,
+                                          isSave: controller
+                                              .savedJobStatusList[index],
+                                        ));
                                   },
                                   child: AnimatedContainer(
                                     duration: Duration(milliseconds: 300),
@@ -1153,12 +1162,17 @@ class _SearchJobScreenState extends State<SearchJobScreen> {
                                                 shape: BoxShape.circle,
                                                 color: AppColor.greyColor
                                                     .withOpacity(0.5)),
-                                            child: controller.savedJob == false
+                                            child: controller.savedJobStatusList
+                                                            .length >
+                                                        index &&
+                                                    controller.savedJobStatusList[
+                                                            index] ==
+                                                        false
                                                 ? IconButton(
                                                     onPressed: () {
                                                       controller
                                                           .toggleSavedJobStatus(
-                                                              job['id']);
+                                                              index, job['id']);
                                                     },
                                                     icon: Icon(
                                                       Icons
@@ -1171,7 +1185,7 @@ class _SearchJobScreenState extends State<SearchJobScreen> {
                                                     onPressed: () {
                                                       controller
                                                           .toggleSavedJobStatus(
-                                                              job['id']);
+                                                              index, job['id']);
                                                     },
                                                     icon: Icon(
                                                       Icons.bookmark,
@@ -1180,7 +1194,7 @@ class _SearchJobScreenState extends State<SearchJobScreen> {
                                                           .greenPrimaryColor,
                                                     )),
                                           ),
-                                        )
+                                        ),
                                       ],
                                     ),
                                   ),

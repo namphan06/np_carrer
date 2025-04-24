@@ -1,21 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
+
 import 'package:np_career/model/job_post_model.dart';
 
-class SearchJobFb {
+class JobDetailFb {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   FirebaseAuth _auth = FirebaseAuth.instance;
-
-  Stream<QuerySnapshot> getListJob() {
-    try {
-      return _firestore.collection('job_company').snapshots();
-    } catch (err) {
-      Get.snackbar("Error", err.toString());
-      return const Stream.empty();
-    }
-  }
 
   Future<void> toggleSavedJob({
     required String jobId,
@@ -81,29 +72,5 @@ class SearchJobFb {
     print("fb : ${jobStatusList}");
 
     return jobStatusList;
-  }
-
-  Future<JobPostModel?> getJobDetail(String job_id) async {
-    try {
-      final snap = await _firestore.collection("jobs").doc(job_id).get();
-
-      if (!snap.exists) {
-        Get.snackbar(
-          "Error",
-          "Job information not found.",
-          snackPosition: SnackPosition.BOTTOM,
-        );
-        return null;
-      }
-
-      return JobPostModel.fromSnap(snap);
-    } catch (e) {
-      Get.snackbar(
-        "Error",
-        "Failed to load job data: $e",
-        snackPosition: SnackPosition.BOTTOM,
-      );
-      return null;
-    }
   }
 }

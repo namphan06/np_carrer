@@ -56,6 +56,29 @@ class JobPostModel {
         timeWork: data['timeWork']);
   }
 
+  factory JobPostModel.fromMap(Map<String, dynamic> data) {
+    return JobPostModel(
+        id: data['id'],
+        name: data['name'],
+        minSalary: data['minSalary'],
+        maxSalary: data['maxSalary'],
+        currencyUnit: data['currencyUnit'],
+        city: List<String>.from(
+          data['city'] ?? [],
+        ),
+        experience: data['experience'],
+        jobDescription: List<String>.from(data['jobDescription'] ?? []),
+        requiredApplication:
+            List<String>.from(data['requiredApplication'] ?? []),
+        benefits: List<String>.from(data['benefits'] ?? []),
+        workLocation: List<String>.from(data['workLocation'] ?? []),
+        applicationDeadline: data['applicationDeadline'],
+        jobInterests: List<String>.from(
+          data['jobInterests'] ?? [],
+        ),
+        timeWork: data['timeWork']);
+  }
+
   Map<String, dynamic> toJson() => {
         'id': id,
         'name': name,
