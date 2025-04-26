@@ -1,3 +1,4 @@
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:np_career/enum/enum_cv_no1_output.dart';
 import 'package:np_career/model/cv_model.dart';
@@ -9,6 +10,9 @@ class ResumeManagementController extends GetxController {
   var searchQuery = "".obs;
   var selectedPosition = "".obs;
 
+  TextEditingController linkController = TextEditingController();
+  TextEditingController positionController = TextEditingController();
+
   Future<void> getCv(String uid, String type) async {
     try {
       CvModel model = await _fb.getCvModel(uid, type);
@@ -16,5 +20,30 @@ class ResumeManagementController extends GetxController {
     } catch (err) {
       Get.snackbar("Error", err.toString());
     }
+  }
+
+  Future<void> uploadCv() async {
+    try {
+      await _fb.uploadCv(linkController.text, positionController.text);
+    } catch (err) {
+      Get.snackbar("Error", err.toString());
+    }
+  }
+
+  Future<List<Map<String, dynamic>>> getCvsWithLinks(List cvs) async {
+    List<Map<String, dynamic>> result = [];
+
+    for (var e in cvs) {
+      var cv = e as Map<String, dynamic>;
+      var position = (cv["position"] ?? "").toString().toLowerCase();
+
+      if (cv["type"] == "upload" &&
+          position.contains(selectedPosition.value.toLowerCase())) {
+        String link = await _fb.getLink(cv['id']);
+        result.add({...cv, 'link': link});
+      }
+    }
+
+    return result;
   }
 }

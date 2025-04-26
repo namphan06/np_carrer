@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:np_career/core/app_color.dart';
 import 'package:np_career/resume_management/resume_management_controller.dart';
 import 'package:np_career/resume_management/resume_management_fb.dart';
+import 'package:np_career/view/pdf_viewr.dart';
 
 class ResumeManagementScreen extends StatefulWidget {
   const ResumeManagementScreen({super.key});
@@ -281,7 +282,7 @@ class _ResumeManagementScreenState extends State<ResumeManagementScreen> {
             ),
             Obx(() => controller.selectChoice.value == "np"
                 ? build_np_careers()
-                : build_upload())
+                : build_upload(size))
           ],
         ),
       ),
@@ -289,135 +290,400 @@ class _ResumeManagementScreenState extends State<ResumeManagementScreen> {
   }
 
   Widget build_np_careers() {
-    return StreamBuilder<DocumentSnapshot>(
-      stream: controllerFb.getListCv(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return CircularProgressIndicator();
-        }
+    return Expanded(
+      child: SingleChildScrollView(
+        child: StreamBuilder<DocumentSnapshot>(
+          stream: controllerFb.getListCv(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return CircularProgressIndicator();
+            }
 
-        if (!snapshot.hasData || !snapshot.data!.exists) {
-          return Text("No CVs found");
-        }
+            if (!snapshot.hasData || !snapshot.data!.exists) {
+              return Text("No CVs found");
+            }
 
-        var data = snapshot.data!.data() as Map<String, dynamic>;
-        var cvs = data["cvs"];
+            var data = snapshot.data!.data() as Map<String, dynamic>;
+            var cvs = data["cvs"];
 
-        if (cvs == null || !(cvs is List)) {
-          return Text("No CVs available");
-        }
+            if (cvs == null || !(cvs is List)) {
+              return Text("No CVs available");
+            }
 
-        return Obx(() {
-          var filteredCvs = cvs.where((e) {
-            var cv = e as Map<String, dynamic>;
-            var position = (cv["position"] ?? "").toString().toLowerCase();
-            var query = controller.selectedPosition.value.toLowerCase();
-            return cv["type"] != "upload" && position.contains(query);
-          }).toList();
+            return Obx(() {
+              var filteredCvs = cvs.where((e) {
+                var cv = e as Map<String, dynamic>;
+                var position = (cv["position"] ?? "").toString().toLowerCase();
+                var query = controller.selectedPosition.value.toLowerCase();
+                return cv["type"] != "upload" && position.contains(query);
+              }).toList();
 
-          return Padding(
-            padding: const EdgeInsets.all(15),
-            child: Column(
-              children: filteredCvs.map<Widget>((e) {
-                return GestureDetector(
-                  onTap: () => controller.getCv(e['id'], e['type']),
-                  child: Container(
-                    width: double.infinity,
-                    margin: EdgeInsets.symmetric(vertical: 8),
-                    padding: EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                          color: AppColor.greenPrimaryColor, width: 3),
-                      borderRadius: BorderRadius.all(Radius.circular(15)),
-                      color: AppColor.orangePrimaryColor.withOpacity(0.66),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Position : ${e["position"] ?? ''}",
-                          style: TextStyle(
-                              color: AppColor.greenPrimaryColor,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20),
+              return Padding(
+                padding: const EdgeInsets.all(15),
+                child: Column(
+                  children: filteredCvs.map<Widget>((e) {
+                    return GestureDetector(
+                      onTap: () => controller.getCv(e['id'], e['type']),
+                      child: Container(
+                        width: double.infinity,
+                        margin: EdgeInsets.symmetric(vertical: 8),
+                        padding: EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                              color: AppColor.greenPrimaryColor, width: 3),
+                          borderRadius: BorderRadius.all(Radius.circular(15)),
+                          color: AppColor.orangePrimaryColor.withOpacity(0.66),
                         ),
-                        Text(
-                          "Type : ${e["type"] ?? ''}",
-                          style: TextStyle(
-                              color: AppColor.greenPrimaryColor,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Position : ${e["position"] ?? ''}",
+                              style: TextStyle(
+                                  color: AppColor.greenPrimaryColor,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20),
+                            ),
+                            Text(
+                              "Type : ${e["type"] ?? ''}",
+                              style: TextStyle(
+                                  color: AppColor.greenPrimaryColor,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20),
+                            ),
+                            Text(
+                              "${e["id"] ?? ''}",
+                              style: TextStyle(
+                                  color: AppColor.greenPrimaryColor,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20),
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Align(
+                              alignment: Alignment.centerRight,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  Container(
+                                    decoration: BoxDecoration(
+                                        border: Border.all(
+                                            color: AppColor.greenPrimaryColor,
+                                            width: 3),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(15)),
+                                        color: AppColor.greyColor),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(10),
+                                      child: Text(
+                                        "Update",
+                                        style: TextStyle(
+                                            color: AppColor.greenPrimaryColor,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(width: 5),
+                                  Container(
+                                    decoration: BoxDecoration(
+                                        border: Border.all(
+                                            color: AppColor.greenPrimaryColor,
+                                            width: 3),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(15)),
+                                        color: Colors.redAccent),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(10),
+                                      child: Text(
+                                        "Delete",
+                                        style: TextStyle(
+                                            color:
+                                                AppColor.lightBackgroundColor,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
                         ),
-                        Text(
-                          "${e["id"] ?? ''}",
+                      ),
+                    );
+                  }).toList(),
+                ),
+              );
+            });
+          },
+        ),
+      ),
+    );
+  }
+
+  Widget build_upload(Size size) {
+    return Expanded(
+      child: Column(
+        children: [
+          // Vùng cuộn nội dung
+          Expanded(
+            child: StreamBuilder<DocumentSnapshot>(
+              stream: controllerFb.getListCv(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(child: CircularProgressIndicator());
+                }
+
+                if (!snapshot.hasData || !snapshot.data!.exists) {
+                  return Center(child: Text("No CVs found"));
+                }
+
+                var data = snapshot.data!.data() as Map<String, dynamic>;
+                var cvs = data["cvs"];
+
+                if (cvs == null || !(cvs is List)) {
+                  return Center(child: Text("No CVs available"));
+                }
+
+                return FutureBuilder<List<Map<String, dynamic>>>(
+                  // Dữ liệu bất đồng bộ, lấy link cho mỗi CV
+                  future: controller.getCvsWithLinks(cvs),
+                  builder: (context, futureSnapshot) {
+                    if (futureSnapshot.connectionState ==
+                        ConnectionState.waiting) {
+                      return Center(child: CircularProgressIndicator());
+                    }
+
+                    if (!futureSnapshot.hasData ||
+                        futureSnapshot.data!.isEmpty) {
+                      return Center(child: Text("No matching CVs found"));
+                    }
+
+                    var filteredCvs = futureSnapshot.data!;
+
+                    return SingleChildScrollView(
+                      padding: const EdgeInsets.all(15),
+                      child: Column(
+                        children: filteredCvs.map<Widget>((e) {
+                          return GestureDetector(
+                            onTap: () => Get.to(PdfViewrScreen(
+                                pdfLink: e['link'], position: e["position"])),
+                            child: Container(
+                              width: double.infinity,
+                              margin: EdgeInsets.symmetric(vertical: 8),
+                              padding: EdgeInsets.all(12),
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                    color: AppColor.greenPrimaryColor,
+                                    width: 3),
+                                borderRadius: BorderRadius.circular(15),
+                                color: AppColor.orangePrimaryColor
+                                    .withOpacity(0.66),
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "Position : ${e["position"] ?? ''}",
+                                    style: TextStyle(
+                                        color: AppColor.greenPrimaryColor,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20),
+                                  ),
+                                  Text(
+                                    "Type : ${e["type"] ?? ''}",
+                                    style: TextStyle(
+                                        color: AppColor.greenPrimaryColor,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20),
+                                  ),
+                                  Text(
+                                    "${e["id"] ?? ''}",
+                                    style: TextStyle(
+                                        color: AppColor.greenPrimaryColor,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20),
+                                  ),
+                                  SizedBox(height: 10),
+                                  Align(
+                                    alignment: Alignment.centerRight,
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: [
+                                        Container(
+                                          decoration: BoxDecoration(
+                                              border: Border.all(
+                                                  color: AppColor
+                                                      .greenPrimaryColor,
+                                                  width: 3),
+                                              borderRadius:
+                                                  BorderRadius.circular(15),
+                                              color: AppColor.greyColor),
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(10),
+                                            child: Text(
+                                              "Update",
+                                              style: TextStyle(
+                                                  color: AppColor
+                                                      .greenPrimaryColor,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                          ),
+                                        ),
+                                        SizedBox(width: 5),
+                                        Container(
+                                          decoration: BoxDecoration(
+                                              border: Border.all(
+                                                  color: AppColor
+                                                      .greenPrimaryColor,
+                                                  width: 3),
+                                              borderRadius:
+                                                  BorderRadius.circular(15),
+                                              color: Colors.redAccent),
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(10),
+                                            child: Text(
+                                              "Delete",
+                                              style: TextStyle(
+                                                  color: AppColor
+                                                      .lightBackgroundColor,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
+                        }).toList(),
+                      ),
+                    );
+                  },
+                );
+              },
+            ),
+          ),
+
+          Padding(
+            padding: const EdgeInsets.all(10),
+            child: Align(
+              alignment: Alignment.centerRight,
+              child: GestureDetector(
+                onTap: () {
+                  Get.dialog(
+                    AlertDialog(
+                      backgroundColor: AppColor.lightBackgroundColor,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20)),
+                      title: Center(
+                        child: Text(
+                          "Enter Image Link",
                           style: TextStyle(
-                              color: AppColor.greenPrimaryColor,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20),
+                            color: AppColor.orangePrimaryColor,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20,
+                          ),
+                        ),
+                      ),
+                      content: SingleChildScrollView(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            TextField(
+                              controller: controller.linkController,
+                              style: TextStyle(
+                                color: AppColor.greenPrimaryColor,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              decoration: InputDecoration(
+                                labelText: "Image Link",
+                                labelStyle: TextStyle(
+                                    color: AppColor.greenPrimaryColor),
+                              ),
+                            ),
+                            SizedBox(height: 15),
+                            TextField(
+                              controller: controller.positionController,
+                              style: TextStyle(
+                                color: AppColor.greenPrimaryColor,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              decoration: InputDecoration(
+                                labelText: "Position",
+                                labelStyle: TextStyle(
+                                    color: AppColor.greenPrimaryColor),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      actionsPadding:
+                          EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                      actionsAlignment: MainAxisAlignment.spaceBetween,
+                      actions: [
+                        SizedBox(
+                          width: 100,
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.grey,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                            ),
+                            onPressed: () => Get.back(),
+                            child: Text(
+                              "Cancel",
+                              style: TextStyle(
+                                color: AppColor.lightBackgroundColor,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
                         ),
                         SizedBox(
-                          height: 10,
-                        ),
-                        Align(
-                          alignment: Alignment.centerRight,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              Container(
-                                decoration: BoxDecoration(
-                                    border: Border.all(
-                                        color: AppColor.greenPrimaryColor,
-                                        width: 3),
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(15)),
-                                    color: AppColor.greyColor),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(10),
-                                  child: Text(
-                                    "Update",
-                                    style: TextStyle(
-                                        color: AppColor.greenPrimaryColor,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                ),
+                          width: 100,
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: AppColor.greenPrimaryColor,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
                               ),
-                              SizedBox(width: 5),
-                              Container(
-                                decoration: BoxDecoration(
-                                    border: Border.all(
-                                        color: AppColor.greenPrimaryColor,
-                                        width: 3),
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(15)),
-                                    color: Colors.redAccent),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(10),
-                                  child: Text(
-                                    "Delete",
-                                    style: TextStyle(
-                                        color: AppColor.lightBackgroundColor,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                ),
+                            ),
+                            onPressed: () {
+                              controller.uploadCv();
+                              Get.back();
+                            },
+                            child: Text(
+                              "Submit",
+                              style: TextStyle(
+                                color: AppColor.lightBackgroundColor,
+                                fontWeight: FontWeight.bold,
                               ),
-                            ],
+                            ),
                           ),
                         ),
                       ],
                     ),
+                  );
+                },
+                child: Container(
+                  padding: EdgeInsets.all(15),
+                  decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: AppColor.greenPrimaryColor),
+                  child: Icon(
+                    Icons.upload_file,
+                    color: AppColor.orangePrimaryColor,
                   ),
-                );
-              }).toList(),
+                ),
+              ),
             ),
-          );
-        });
-      },
-    );
-  }
-
-  Widget build_upload() {
-    return Center(
-      child: Text("Upload"),
+          )
+        ],
+      ),
     );
   }
 }
