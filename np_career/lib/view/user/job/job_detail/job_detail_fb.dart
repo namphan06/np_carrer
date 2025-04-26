@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
+import 'package:np_career/model/cv_model.dart';
 
 import 'package:np_career/model/job_post_model.dart';
+import 'package:uuid/uuid.dart';
 
 class JobDetailFb {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -72,5 +74,48 @@ class JobDetailFb {
     print("fb : ${jobStatusList}");
 
     return jobStatusList;
+  }
+
+  Stream<DocumentSnapshot> getListCv() {
+    return _firestore
+        .collection("cv_user")
+        .doc(_auth.currentUser!.uid)
+        .snapshots();
+  }
+
+  Future<void> applyCv(String cvId, String companyId, String jobId) async {
+    try {
+      await _firestore
+          .collection("job_actions")
+          .doc(_auth.currentUser!.uid)
+          .set({
+        'applied_list': FieldValue.arrayUnion([
+          {
+            'id': Uuid().v4(),
+            'cvId': cvId,
+            'userId': _auth.currentUser!.uid,
+            'companyId': companyId,
+            'jobId': jobId,
+          }
+        ]),
+      }, SetOptions(merge: true)); // merge để giữ dữ liệu cũ, chỉ thêm mới
+    } catch (err) {
+      Get.snackbar("Error", err.toString());
+    }
+  }
+
+  Future<CvModel> getCvModel(String uid, String type) async {
+    try {
+      DocumentSnapshot snapshot =
+          await _firestore.collection(type).doc(uid).get();
+
+      if (snapshot.exists) {
+        return CvModel.fromSnap(snapshot);
+      } else {
+        throw Exception("CV not found");
+      }
+    } catch (err) {
+      throw Exception("Error getting CV: $err");
+    }
   }
 }

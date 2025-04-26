@@ -686,4 +686,6 @@ class _ResumeManagementScreenState extends State<ResumeManagementScreen> {
       ),
     );
   }
+
+ 
 }

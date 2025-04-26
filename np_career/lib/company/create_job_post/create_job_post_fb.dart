@@ -36,7 +36,8 @@ class CreateJobPostFb {
         'nameCompany': nameCompany,
         'currencyUnit': model.currencyUnit,
         'experience': model.experience,
-        'jobInterests': model.jobInterests
+        'jobInterests': model.jobInterests,
+        'companyId': _auth.currentUser!.uid
       });
 
       await userDoc.set({'jps': existingJps});

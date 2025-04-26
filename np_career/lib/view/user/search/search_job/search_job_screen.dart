@@ -1058,6 +1058,7 @@ class _SearchJobScreenState extends State<SearchJobScreen> {
                                           job: controller.job!,
                                           isSave: controller
                                               .savedJobStatusList[index],
+                                          companyId: job['companyId'],
                                         ));
                                   },
                                   child: AnimatedContainer(

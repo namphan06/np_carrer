@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
@@ -5,13 +6,19 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:np_career/core/app_color.dart';
 import 'package:np_career/model/job_post_model.dart';
 import 'package:np_career/view/user/job/job_detail/job_detail_controller.dart';
+import 'package:np_career/view/user/job/job_detail/job_detail_fb.dart';
 import 'package:np_career/view/user/search/search_job/search_job_controller.dart';
 import 'package:np_career/view/user/search/search_job/search_job_screen.dart';
 
 class JobDetailScreen extends StatefulWidget {
   final JobPostModel job;
   final bool isSave;
-  const JobDetailScreen({super.key, required this.job, required this.isSave});
+  final String companyId;
+  const JobDetailScreen(
+      {super.key,
+      required this.job,
+      required this.isSave,
+      required this.companyId});
 
   @override
   State<JobDetailScreen> createState() => _JobDetailScreenState();
@@ -20,6 +27,7 @@ class JobDetailScreen extends StatefulWidget {
 class _JobDetailScreenState extends State<JobDetailScreen> {
   JobDetailController controller = Get.put(JobDetailController());
   SearchJobController searchController = Get.put(SearchJobController());
+  JobDetailFb fb = Get.put(JobDetailFb());
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -203,7 +211,12 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
                                 SizedBox(
                                   width: size.width * 0.6,
                                   child: ElevatedButton(
-                                      onPressed: () {},
+                                      onPressed: () {
+                                        Get.dialog(
+                                          buildSelectCvDialog(context),
+                                          // barrierDismissible: false,
+                                        );
+                                      },
                                       child: Padding(
                                         padding: EdgeInsets.symmetric(
                                             vertical: 10,
@@ -328,7 +341,12 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
                   Flexible(
                     flex: 2,
                     child: ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Get.dialog(
+                            buildSelectCvDialog(context),
+                            // barrierDismissible: false,
+                          );
+                        },
                         child: Padding(
                           padding: EdgeInsets.symmetric(
                               vertical: 5, horizontal: size.width * 0.05),
@@ -408,6 +426,158 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget buildSelectCvDialog(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+
+    return Dialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Container(
+          height: size.height * 0.8,
+          padding: EdgeInsets.all(20),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            color: Colors.white,
+          ),
+          child: Column(
+            children: [
+              Text(
+                "Select Your CV",
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 24,
+                    color: AppColor.orangePrimaryColor),
+              ),
+              SizedBox(height: 20),
+              Expanded(
+                child: StreamBuilder<DocumentSnapshot>(
+                  stream: fb.getListCv(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Center(child: CircularProgressIndicator());
+                    }
+
+                    if (!snapshot.hasData || !snapshot.data!.exists) {
+                      return Center(child: Text("No CVs found"));
+                    }
+
+                    var data = snapshot.data!.data() as Map<String, dynamic>;
+                    var cvs = data["cvs"];
+
+                    if (cvs == null || !(cvs is List)) {
+                      return Center(child: Text("No CVs available"));
+                    }
+
+                    return ListView.builder(
+                      itemCount: cvs.length,
+                      itemBuilder: (context, index) {
+                        var cv = cvs[index];
+                        return InkWell(
+                          onTap: () {
+                            controller.getCv(cv['id'], cv['type']);
+                          },
+                          child: Card(
+                            margin: EdgeInsets.symmetric(vertical: 8),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            elevation: 5,
+                            child: Padding(
+                              padding: const EdgeInsets.all(20),
+                              child: Row(
+                                children: [
+                                  Obx(
+                                    () => Radio<int>(
+                                      value: index,
+                                      groupValue:
+                                          (controller.cvId.value == cv["id"])
+                                              ? index
+                                              : -1,
+                                      onChanged: (value) {
+                                        controller.cvId.value = cv["id"];
+                                        controller.companyId.value =
+                                            widget.companyId;
+                                      },
+                                    ),
+                                  ),
+                                  SizedBox(width: 12),
+                                  Expanded(
+                                    child: Text(
+                                      cv["position"] ?? "Unnamed CV",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 16,
+                                      ),
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
+                                  Icon(
+                                    Icons.arrow_forward_ios,
+                                    size: 18,
+                                    color: AppColor.greenPrimaryColor,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                    );
+                  },
+                ),
+              ),
+              SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    width: size.width * 0.6,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        padding: EdgeInsets.symmetric(vertical: 12),
+                        backgroundColor: AppColor.greenPrimaryColor,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                      onPressed: () {
+                        fb.applyCv(controller.cvId.value,
+                            controller.companyId.value, widget.job.id);
+                        Get.back();
+                      },
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.send,
+                            color: Colors.white,
+                            size: 25,
+                          ),
+                          SizedBox(width: 20),
+                          Text(
+                            "Apply now",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                              fontSize: 20,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
