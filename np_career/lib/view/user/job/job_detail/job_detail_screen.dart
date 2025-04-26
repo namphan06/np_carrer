@@ -456,6 +456,17 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
                     color: AppColor.orangePrimaryColor),
               ),
               SizedBox(height: 20),
+              TextField(
+                onChanged: (value) =>
+                    controller.searchQuery.value = value.toLowerCase(),
+                decoration: InputDecoration(
+                  hintText: 'Search cv...',
+                  prefixIcon: Icon(Icons.search),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+              ),
               Expanded(
                 child: StreamBuilder<DocumentSnapshot>(
                   stream: fb.getListCv(),
@@ -475,61 +486,70 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
                       return Center(child: Text("No CVs available"));
                     }
 
-                    return ListView.builder(
-                      itemCount: cvs.length,
-                      itemBuilder: (context, index) {
-                        var cv = cvs[index];
-                        return InkWell(
-                          onTap: () {
-                            controller.getCv(cv['id'], cv['type']);
-                          },
-                          child: Card(
-                            margin: EdgeInsets.symmetric(vertical: 8),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            elevation: 5,
-                            child: Padding(
-                              padding: const EdgeInsets.all(20),
-                              child: Row(
-                                children: [
-                                  Obx(
-                                    () => Radio<int>(
-                                      value: index,
-                                      groupValue:
-                                          (controller.cvId.value == cv["id"])
-                                              ? index
-                                              : -1,
-                                      onChanged: (value) {
-                                        controller.cvId.value = cv["id"];
-                                        controller.companyId.value =
-                                            widget.companyId;
-                                      },
-                                    ),
-                                  ),
-                                  SizedBox(width: 12),
-                                  Expanded(
-                                    child: Text(
-                                      cv["position"] ?? "Unnamed CV",
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.w600,
-                                        fontSize: 16,
+                    return Obx(() {
+                      var filteredCvs = cvs.where((cv) {
+                        final position =
+                            (cv["position"] ?? "").toString().toLowerCase();
+                        final search =
+                            controller.searchQuery.value.toLowerCase();
+                        return position.contains(search);
+                      }).toList();
+                      return ListView.builder(
+                        itemCount: filteredCvs.length,
+                        itemBuilder: (context, index) {
+                          var cv = filteredCvs[index];
+                          return InkWell(
+                            onTap: () {
+                              controller.getCv(cv['id'], cv['type']);
+                            },
+                            child: Card(
+                              margin: EdgeInsets.symmetric(vertical: 8),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              elevation: 5,
+                              child: Padding(
+                                padding: const EdgeInsets.all(20),
+                                child: Row(
+                                  children: [
+                                    Obx(
+                                      () => Radio<int>(
+                                        value: index,
+                                        groupValue:
+                                            (controller.cvId.value == cv["id"])
+                                                ? index
+                                                : -1,
+                                        onChanged: (value) {
+                                          controller.cvId.value = cv["id"];
+                                          controller.companyId.value =
+                                              widget.companyId;
+                                        },
                                       ),
-                                      overflow: TextOverflow.ellipsis,
                                     ),
-                                  ),
-                                  Icon(
-                                    Icons.arrow_forward_ios,
-                                    size: 18,
-                                    color: AppColor.greenPrimaryColor,
-                                  ),
-                                ],
+                                    SizedBox(width: 12),
+                                    Expanded(
+                                      child: Text(
+                                        cv["position"] ?? "Unnamed CV",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 16,
+                                        ),
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ),
+                                    Icon(
+                                      Icons.arrow_forward_ios,
+                                      size: 18,
+                                      color: AppColor.greenPrimaryColor,
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
-                          ),
-                        );
-                      },
-                    );
+                          );
+                        },
+                      );
+                    });
                   },
                 ),
               ),
