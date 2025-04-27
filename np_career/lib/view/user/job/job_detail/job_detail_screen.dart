@@ -523,6 +523,7 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
                                           controller.cvId.value = cv["id"];
                                           controller.companyId.value =
                                               widget.companyId;
+                                          controller.typeCv.value = cv["type"];
                                         },
                                       ),
                                     ),
@@ -568,8 +569,11 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
                         ),
                       ),
                       onPressed: () {
-                        fb.applyCv(controller.cvId.value,
-                            controller.companyId.value, widget.job.id);
+                        fb.applyCv(
+                            controller.cvId.value,
+                            controller.companyId.value,
+                            widget.job.id,
+                            controller.typeCv.value);
                         Get.back();
                       },
                       child: Row(

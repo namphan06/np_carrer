@@ -8,6 +8,7 @@ class JobDetailController extends GetxController {
   RxBool savedJob = false.obs;
   RxString cvId = "".obs;
   RxString companyId = "".obs;
+  RxString typeCv = "".obs;
   var searchQuery = "".obs;
   @override
   void onInit() {

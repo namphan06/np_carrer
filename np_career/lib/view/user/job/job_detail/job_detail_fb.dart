@@ -83,7 +83,8 @@ class JobDetailFb {
         .snapshots();
   }
 
-  Future<void> applyCv(String cvId, String companyId, String jobId) async {
+  Future<void> applyCv(
+      String cvId, String companyId, String jobId, String typeCv) async {
     try {
       await _firestore
           .collection("job_actions")
@@ -96,6 +97,7 @@ class JobDetailFb {
             'userId': _auth.currentUser!.uid,
             'companyId': companyId,
             'jobId': jobId,
+            'typeCV': typeCv
           }
         ]),
       }, SetOptions(merge: true)); // merge để giữ dữ liệu cũ, chỉ thêm mới

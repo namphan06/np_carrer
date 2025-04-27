@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:np_career/company/application_apply/application_apply_controller.dart';
 import 'package:np_career/company/application_apply/application_apply_fb.dart';
 import 'package:np_career/core/app_color.dart';
+import 'package:np_career/model/cv_model.dart';
 
 class ApplicationApplyScreen extends StatefulWidget {
   final String jobId;
@@ -14,6 +16,7 @@ class ApplicationApplyScreen extends StatefulWidget {
 
 class _ApplicationApplyScreenState extends State<ApplicationApplyScreen> {
   ApplicationApplyFb _fb = Get.put(ApplicationApplyFb());
+  ApplicationApplyController controller = Get.put(ApplicationApplyController());
 
   @override
   Widget build(BuildContext context) {
@@ -78,8 +81,9 @@ class _ApplicationApplyScreenState extends State<ApplicationApplyScreen> {
                   itemBuilder: (context, index) {
                     final application = applicationList[index];
                     return FutureBuilder(
-                      future: Future.wait(
-                          [_fb.getUserDetail(application['userId'])]),
+                      future: Future.wait([
+                        _fb.getUserDetail(application['userId']),
+                      ]),
                       builder: (context, snapshot) {
                         if (snapshot.connectionState ==
                             ConnectionState.waiting) {
@@ -94,86 +98,94 @@ class _ApplicationApplyScreenState extends State<ApplicationApplyScreen> {
                         }
 
                         final user = snapshot.data![0] as Map<String, dynamic>;
-                        return Card(
-                          color: AppColor.orangePrimaryColor.withOpacity(0.66),
-                          margin: EdgeInsets.symmetric(
-                              vertical: 15, horizontal: 20),
-                          elevation: 5,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(12.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  children: [
-                                    Icon(Icons.person,
-                                        color: Colors.blueGrey[700]),
-                                    SizedBox(width: 10),
-                                    Text(
-                                      'User: ${user['username'] ?? "N/A"}',
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.blueGrey[800],
+
+                        return GestureDetector(
+                          onTap: () {
+                            controller.getCv(
+                                application['cvId'], application['typeCV']);
+                          },
+                          child: Card(
+                            color:
+                                AppColor.orangePrimaryColor.withOpacity(0.66),
+                            margin: EdgeInsets.symmetric(
+                                vertical: 15, horizontal: 20),
+                            elevation: 5,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(12.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Icon(Icons.person,
+                                          color: Colors.blueGrey[700]),
+                                      SizedBox(width: 10),
+                                      Text(
+                                        'User: ${user['username'] ?? "N/A"}',
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.blueGrey[800],
+                                        ),
                                       ),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(height: 5),
-                                Row(
-                                  children: [
-                                    Icon(Icons.email,
-                                        color: Colors.blueGrey[700]),
-                                    SizedBox(width: 10),
-                                    Text(
-                                      'Email: ${user['email'] ?? "N/A"}',
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        color: Colors.blueGrey[600],
+                                    ],
+                                  ),
+                                  SizedBox(height: 5),
+                                  Row(
+                                    children: [
+                                      Icon(Icons.email,
+                                          color: Colors.blueGrey[700]),
+                                      SizedBox(width: 10),
+                                      Text(
+                                        'Email: ${user['email'] ?? "N/A"}',
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          color: Colors.blueGrey[600],
+                                        ),
                                       ),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(height: 5),
-                                Row(
-                                  children: [
-                                    Icon(Icons.phone,
-                                        color: Colors.blueGrey[700]),
-                                    SizedBox(width: 10),
-                                    Text(
-                                      'Phone: ${user['phone'] ?? "N/A"}',
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        color: Colors.blueGrey[600],
+                                    ],
+                                  ),
+                                  SizedBox(height: 5),
+                                  Row(
+                                    children: [
+                                      Icon(Icons.phone,
+                                          color: Colors.blueGrey[700]),
+                                      SizedBox(width: 10),
+                                      Text(
+                                        'Phone: ${user['phone'] ?? "N/A"}',
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          color: Colors.blueGrey[600],
+                                        ),
                                       ),
-                                    ),
-                                  ],
-                                ),
-                                Divider(color: Colors.grey),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    SizedBox(
-                                      width: size.width * 0.2,
-                                      child: ElevatedButton(
-                                        onPressed: () {},
-                                        child: Text("Accept"),
+                                    ],
+                                  ),
+                                  Divider(color: Colors.grey),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      SizedBox(
+                                        width: size.width * 0.2,
+                                        child: ElevatedButton(
+                                          onPressed: () {},
+                                          child: Text("Accept"),
+                                        ),
                                       ),
-                                    ),
-                                    SizedBox(width: 10),
-                                    SizedBox(
-                                      width: size.width * 0.2,
-                                      child: ElevatedButton(
-                                        onPressed: () {},
-                                        child: Text("Reject"),
+                                      SizedBox(width: 10),
+                                      SizedBox(
+                                        width: size.width * 0.2,
+                                        child: ElevatedButton(
+                                          onPressed: () {},
+                                          child: Text("Reject"),
+                                        ),
                                       ),
-                                    ),
-                                  ],
-                                )
-                              ],
+                                    ],
+                                  )
+                                ],
+                              ),
                             ),
                           ),
                         );
