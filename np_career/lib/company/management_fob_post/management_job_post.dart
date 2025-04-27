@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:np_career/company/application_apply/application_apply_screen.dart';
 import 'package:np_career/company/create_job_post/create_job_post.dart';
 import 'package:np_career/company/management_fob_post/management_job_post_controller.dart';
 import 'package:np_career/company/management_fob_post/management_job_post_fb.dart';
@@ -242,7 +243,11 @@ class _ManagementJobPostState extends State<ManagementJobPost> {
                                               visualDensity:
                                                   VisualDensity.compact,
                                               onPressed: () {
-                                                // person logic
+                                                Get.to(ApplicationApplyScreen(
+                                                  jobId: job['id'],
+                                                ));
+                                                isExpandedList[index].value =
+                                                    false;
                                               },
                                             ),
                                           ),

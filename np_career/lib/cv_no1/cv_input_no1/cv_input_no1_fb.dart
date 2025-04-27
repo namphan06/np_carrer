@@ -10,7 +10,7 @@ class CvInputNo1Fb {
 
   Future<void> createCvNo1(CvModel model, String type) async {
     try {
-      await _firestore.collection("cv1").doc(model.uid).set({
+      await _firestore.collection(type).doc(model.uid).set({
         'id': model.uid,
         ...model.toJson(),
       });
@@ -28,7 +28,7 @@ class CvInputNo1Fb {
       existingCvs.add({
         'id': model.uid,
         'position': model.position,
-        'type': 'cv1',
+        'type': type,
       });
 
       await userDoc.set({'cvs': existingCvs});
