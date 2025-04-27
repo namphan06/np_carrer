@@ -15,8 +15,10 @@ class MyProfileController extends GetxController {
   var selectedPosition = "".obs;
   var typeCv = "".obs;
   var idCv = "".obs;
+  RxString searchQueryC = ''.obs;
   RxList<String> list_type_job = <String>[].obs;
   RxList<String> list_type_job_category = <String>[].obs;
+  RxList<String> list_city = <String>[].obs;
   RxString searchQuery = ''.obs;
 
   RxString selectedNationality = "".obs;
@@ -119,7 +121,8 @@ class MyProfileController extends GetxController {
           securitySetting: isSharing.value ?? false,
           resumePosition: selectedPosition.value,
           resumeType: typeCv.value,
-          resumeId: idCv.value);
+          resumeId: idCv.value,
+          city: list_city);
       _fb.saveMyProfile(myProfileModel);
     } catch (err) {
       Get.snackbar("Error", err.toString());

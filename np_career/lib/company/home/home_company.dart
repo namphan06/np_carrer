@@ -3,6 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:np_career/company/home/home_company_controller.dart';
+import 'package:np_career/company/search/search_application/search_application.dart';
 import 'package:np_career/core/app_color.dart';
 import 'package:np_career/view/screen/home.dart';
 import 'package:np_career/view/user/home/navbar/customer_bottom_navbar.dart';
@@ -28,7 +29,7 @@ class _HomeCompanyState extends State<HomeCompany> {
           case 0:
             return _buildHomeScree();
           case 1:
-            return Home();
+            return SearchApplication();
           case 2:
             return ProfileScreen();
           default:

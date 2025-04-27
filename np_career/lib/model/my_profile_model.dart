@@ -17,6 +17,7 @@ class MyProfileModel {
   final String resumePosition;
   final String resumeType;
   final String resumeId;
+  final List<String> city;
 
   const MyProfileModel({
     required this.fullName,
@@ -34,6 +35,7 @@ class MyProfileModel {
     required this.resumePosition,
     required this.resumeType,
     required this.resumeId,
+    required this.city,
   });
 
   factory MyProfileModel.fromSnap(DocumentSnapshot snap) {
@@ -58,6 +60,9 @@ class MyProfileModel {
       resumePosition: data['resumePosition'] ?? '',
       resumeType: data['resumeType'] ?? '',
       resumeId: data['resumeId'] ?? '',
+      city: List<String>.from(
+        data['city'] ?? [],
+      ),
     );
   }
 
@@ -78,6 +83,7 @@ class MyProfileModel {
       'resumePosition': resumePosition,
       'resumeType': resumeType,
       'resumeId': resumeId,
+      'city': city,
     };
   }
 }

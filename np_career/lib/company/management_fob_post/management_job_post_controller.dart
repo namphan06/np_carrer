@@ -1,5 +1,7 @@
 import 'package:get/get.dart';
 
 class ManagementJobPostController {
-  final RxBool isExpanded = false.obs;
+  List<RxBool> createExpandedList(int length) {
+    return List.generate(length, (_) => false.obs);
+  }
 }

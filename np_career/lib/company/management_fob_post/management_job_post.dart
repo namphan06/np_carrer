@@ -82,6 +82,8 @@ class _ManagementJobPostState extends State<ManagementJobPost> {
                     final currency = job['currencyUnit'] ?? '';
 
                     String salary;
+                    final List<RxBool> isExpandedList =
+                        controller.createExpandedList(jobPosts.length);
 
                     if (minSalary == null && maxSalary == null) {
                       salary = "Negotiable";
@@ -193,7 +195,7 @@ class _ManagementJobPostState extends State<ManagementJobPost> {
                               AnimatedContainer(
                                 duration: Duration(milliseconds: 300),
                                 curve: Curves.easeInOut,
-                                height: controller.isExpanded.value ? 160 : 60,
+                                height: isExpandedList[index].value ? 160 : 60,
                                 width: 60,
                                 decoration: BoxDecoration(
                                   color: Colors.white,
@@ -205,7 +207,7 @@ class _ManagementJobPostState extends State<ManagementJobPost> {
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: controller.isExpanded.value
+                                  children: isExpandedList[index].value
                                       ? [
                                           Expanded(
                                             child: IconButton(
@@ -248,7 +250,7 @@ class _ManagementJobPostState extends State<ManagementJobPost> {
                                             padding: const EdgeInsets.all(8.0),
                                             child: GestureDetector(
                                               onTap: () {
-                                                controller.isExpanded.value =
+                                                isExpandedList[index].value =
                                                     false;
                                               },
                                               child: Container(
@@ -266,7 +268,7 @@ class _ManagementJobPostState extends State<ManagementJobPost> {
                                           Center(
                                             child: GestureDetector(
                                               onTap: () {
-                                                controller.isExpanded.value =
+                                                isExpandedList[index].value =
                                                     true;
                                               },
                                               child: Container(
