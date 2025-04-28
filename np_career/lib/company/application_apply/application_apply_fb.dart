@@ -41,4 +41,37 @@ class ApplicationApplyFb {
       throw Exception("Error getting CV: $err");
     }
   }
+
+  Future<void> updateResponseStatus(
+      String applicationId, String response, String userId) async {
+    try {
+      // Truyền vào jobId và userId để xác định chính xác ứng viên cần cập nhật
+      final jobActionRef = _firestore.collection('job_actions').doc(userId);
+
+      // Lấy danh sách ứng viên đã ứng tuyển
+      final jobActionSnapshot = await jobActionRef.get();
+
+      if (jobActionSnapshot.exists) {
+        final jobActionData = jobActionSnapshot.data() as Map<String, dynamic>;
+        final applications = jobActionData['applied_list'] as List<dynamic>;
+
+        // Cập nhật trường response của ứng viên cần thay đổi
+        for (var i = 0; i < applications.length; i++) {
+          if (applications[i]['id'] == applicationId) {
+            applications[i]['response'] = response.toLowerCase();
+            break;
+          }
+        }
+
+        // Cập nhật lại danh sách ứng viên vào Firebase
+        await jobActionRef.update({
+          'applied_list': applications, // Cập nhật toàn bộ danh sách ứng viên
+        });
+      } else {
+        print('Job action not found');
+      }
+    } catch (e) {
+      print('Error updating response: $e');
+    }
+  }
 }
