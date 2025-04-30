@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:np_career/company/application_apply/interview_schedule/interview_schedule_controller.dart';
 import 'package:np_career/company/application_apply/interview_schedule/interview_schedule_fb.dart';
+import 'package:np_career/core/app_color.dart';
 
 class InterviewScheduleScreen extends StatefulWidget {
   const InterviewScheduleScreen({super.key});
@@ -20,151 +21,231 @@ class _InterviewScheduleScreenState extends State<InterviewScheduleScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Lịch Phỏng Vấn"),
-        backgroundColor: Colors.blueAccent,
+        backgroundColor: AppColor.orangePrimaryColor,
+        leading: IconButton(
+          onPressed: () {
+            Get.back();
+          },
+          icon: Icon(
+            Icons.arrow_back_ios,
+            color: AppColor.lightBackgroundColor,
+          ),
+        ),
+        title: Center(
+          child: Text(
+            "Interview Schedule",
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: AppColor.lightBackgroundColor,
+            ),
+          ),
+        ),
       ),
-      body: Column(
-        children: [
-          const SizedBox(height: 10),
-          // Toggle Buttons
-          Obx(() => ToggleButtons(
-                borderRadius: BorderRadius.circular(10),
-                isSelected: [
-                  controller.isAllScheduleSelected.value,
-                  !controller.isAllScheduleSelected.value
-                ],
-                onPressed: (int index) {
-                  controller.isAllScheduleSelected.value = index == 0;
-                },
-                children: const [
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 16.0),
-                    child: Text('Hiển thị tất cả'),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 16.0),
-                    child: Text('Theo ngày'),
-                  ),
-                ],
-              )),
-          const SizedBox(height: 10),
-          // Date Picker
-          Obx(() => controller.isAllScheduleSelected.value
-              ? const SizedBox.shrink()
-              : ElevatedButton.icon(
-                  onPressed: () => controller.selectDate(context),
-                  icon: const Icon(Icons.date_range),
-                  label: Text(controller.selectedDate.value == null
-                      ? 'Chọn ngày'
-                      : 'Ngày: ${DateFormat('dd/MM/yyyy').format(controller.selectedDate.value!)}'),
-                )),
-          const SizedBox(height: 10),
-          // Data List
-          Expanded(
-            child: Obx(() {
-              final showAll = controller.isAllScheduleSelected.value;
-              final selectedDate = controller.selectedDate.value;
-              return StreamBuilder<List<Map<String, dynamic>>>(
-                stream: _fb.getJobScheduleStream(showAll, selectedDate),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(child: CircularProgressIndicator());
-                  }
-                  if (snapshot.hasError) {
-                    return const Center(
-                        child: Text('Có lỗi xảy ra!',
-                            style: TextStyle(color: Colors.red)));
-                  }
-                  if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                    return const Center(child: Text('Không có dữ liệu'));
-                  }
+      body: Padding(
+        padding: const EdgeInsets.all(12),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Toggle Buttons
+            Card(
+              elevation: 2,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12)),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 10),
+                child: Obx(() => Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        ChoiceChip(
+                          label: const Text('Show All'),
+                          selected: controller.isAllScheduleSelected.value,
+                          onSelected: (selected) {
+                            controller.isAllScheduleSelected.value = true;
+                          },
+                          selectedColor: AppColor.greenPrimaryColor,
+                          labelStyle: TextStyle(
+                              color: controller.isAllScheduleSelected.value
+                                  ? Colors.white
+                                  : Colors.black),
+                        ),
+                        ChoiceChip(
+                          label: const Text('By Date'),
+                          selected: !controller.isAllScheduleSelected.value,
+                          onSelected: (selected) {
+                            controller.isAllScheduleSelected.value = false;
+                          },
+                          selectedColor: AppColor.greenPrimaryColor,
+                          labelStyle: TextStyle(
+                              color: !controller.isAllScheduleSelected.value
+                                  ? Colors.white
+                                  : Colors.black),
+                        ),
+                      ],
+                    )),
+              ),
+            ),
+            const SizedBox(height: 12),
 
-                  final listSchedule = snapshot.data!;
+            // Date Picker Button
+            Obx(() => controller.isAllScheduleSelected.value
+                ? const SizedBox.shrink()
+                : Center(
+                    child: ElevatedButton.icon(
+                      onPressed: () => controller.selectDate(context),
+                      icon: const Icon(Icons.calendar_today_outlined),
+                      label: Text(
+                        controller.selectedDate.value == null
+                            ? 'Pick a date'
+                            : 'Date: ${DateFormat('dd/MM/yyyy').format(controller.selectedDate.value!)}',
+                        style: const TextStyle(fontSize: 16),
+                      ),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColor.greenPrimaryColor,
+                        foregroundColor: Colors.white,
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 24, vertical: 12),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8)),
+                      ),
+                    ),
+                  )),
+            const SizedBox(height: 12),
 
-                  return ListView.builder(
-                    padding: const EdgeInsets.symmetric(horizontal: 12),
-                    itemCount: listSchedule.length,
-                    itemBuilder: (context, index) {
-                      final item = listSchedule[index];
-                      final jobName =
-                          item['jobName'] ?? 'Không có tên công việc';
-                      final cvList = item['listCv'] ?? [];
+            // Interview Schedule List
+            Expanded(
+              child: Obx(() {
+                final showAll = controller.isAllScheduleSelected.value;
+                final selectedDate = controller.selectedDate.value;
+                return StreamBuilder<List<Map<String, dynamic>>>(
+                  stream: _fb.getJobScheduleStream(showAll, selectedDate),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(child: CircularProgressIndicator());
+                    }
+                    if (snapshot.hasError) {
+                      return const Center(
+                          child: Text('An error occurred!',
+                              style: TextStyle(color: Colors.red)));
+                    }
+                    if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                      return const Center(child: Text('No data available'));
+                    }
 
-                      return Obx(() {
-                        final isExpanded =
-                            controller.expandedCards.contains(index);
+                    final listSchedule = snapshot.data!;
 
-                        return Card(
-                          margin: const EdgeInsets.symmetric(vertical: 8),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          elevation: 4,
-                          child: Column(
-                            children: [
-                              ListTile(
-                                title: Text(
-                                  jobName,
-                                  style: const TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.blueAccent),
-                                ),
-                                trailing: Icon(isExpanded
-                                    ? Icons.keyboard_arrow_up
-                                    : Icons.keyboard_arrow_down),
-                                onTap: () {
-                                  isExpanded
-                                      ? controller.expandedCards.remove(index)
-                                      : controller.expandedCards.add(index);
-                                },
-                              ),
-                              AnimatedCrossFade(
-                                firstChild: const SizedBox.shrink(),
-                                secondChild: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 16, vertical: 8),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: cvList.map<Widget>((cv) {
-                                      return Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            vertical: 4.0),
-                                        child: Row(
-                                          children: [
-                                            const Icon(Icons.person,
-                                                color: Colors.blueAccent),
-                                            const SizedBox(width: 8),
-                                            Expanded(
-                                              child: Text(
-                                                '${cv['userName']} (${cv['type']})',
-                                                style: const TextStyle(
-                                                    fontSize: 16),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      );
-                                    }).toList(),
+                    return ListView.builder(
+                      padding: const EdgeInsets.symmetric(horizontal: 12),
+                      itemCount: listSchedule.length,
+                      itemBuilder: (context, index) {
+                        final item = listSchedule[index];
+                        final jobName =
+                            item['jobName'] ?? 'No job name available';
+                        final cvList = item['listCv'] ?? [];
+
+                        return Obx(() {
+                          final isExpanded =
+                              controller.expandedCards.contains(index);
+
+                          return Card(
+                            margin: const EdgeInsets.symmetric(vertical: 8),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            elevation: 4,
+                            child: Column(
+                              children: [
+                                ListTile(
+                                  title: Text(
+                                    jobName,
+                                    style: const TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                        color: AppColor.greenPrimaryColor),
                                   ),
+                                  trailing: Icon(isExpanded
+                                      ? Icons.keyboard_arrow_up
+                                      : Icons.keyboard_arrow_down),
+                                  onTap: () {
+                                    isExpanded
+                                        ? controller.expandedCards.remove(index)
+                                        : controller.expandedCards.add(index);
+                                  },
                                 ),
-                                crossFadeState: isExpanded
-                                    ? CrossFadeState.showSecond
-                                    : CrossFadeState.showFirst,
-                                duration: const Duration(milliseconds: 300),
-                              ),
-                            ],
-                          ),
-                        );
-                      });
-                    },
-                  );
-                },
-              );
-            }),
-          )
-        ],
+                                AnimatedCrossFade(
+                                  firstChild: const SizedBox.shrink(),
+                                  secondChild: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 16, vertical: 8),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: cvList.map<Widget>((cv) {
+                                        return InkWell(
+                                          onTap: () => controller.getCv(
+                                              cv['idCv'], cv['type']),
+                                          child: Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                vertical: 4.0),
+                                            child: Row(
+                                              children: [
+                                                const Icon(Icons.person,
+                                                    color: AppColor
+                                                        .greenPrimaryColor),
+                                                const SizedBox(width: 8),
+                                                Expanded(
+                                                  child: Text(
+                                                    '${cv['userName']} (${cv['type']})',
+                                                    style: const TextStyle(
+                                                        fontSize: 16),
+                                                  ),
+                                                ),
+                                                // IconButton(
+                                                //     onPressed: () {
+                                                //       controller.getCv(
+                                                //           cv['idCv'], cv['type']);
+                                                //       // Future.delayed(
+                                                //       //     Duration(seconds: 1),
+                                                //       //     () {
+                                                //       //   controller
+                                                //       //       .captureAndSave();
+                                                //       // });
+                                                //     },
+                                                //     icon: Icon(Icons.download))
+                                                // IconButton(
+                                                //     onPressed: () {
+                                                //       controller.getCv(
+                                                //           cv['idCv'], cv['type']);
+                                                //     },
+                                                //     icon: Icon(
+                                                //       Icons.remove_red_eye,
+                                                //       color: AppColor
+                                                //           .greenPrimaryColor,
+                                                //       size: 30.0,
+                                                //     ))
+                                              ],
+                                            ),
+                                          ),
+                                        );
+                                      }).toList(),
+                                    ),
+                                  ),
+                                  crossFadeState: isExpanded
+                                      ? CrossFadeState.showSecond
+                                      : CrossFadeState.showFirst,
+                                  duration: const Duration(milliseconds: 300),
+                                ),
+                              ],
+                            ),
+                          );
+                        });
+                      },
+                    );
+                  },
+                );
+              }),
+            )
+          ],
+        ),
       ),
     );
   }

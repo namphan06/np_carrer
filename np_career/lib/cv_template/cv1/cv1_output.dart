@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_instance/get_instance.dart';
 import 'package:get/state_manager.dart';
+import 'package:np_career/company/application_apply/interview_schedule/interview_schedule_controller.dart';
 import 'package:np_career/core/app_color.dart';
 import 'package:np_career/cv_template/cv_setting/cv_setting_no1.dart';
 import 'package:np_career/model/activity.dart';
@@ -21,244 +22,251 @@ class Cv1Output extends StatefulWidget {
 
 class _Cv1OutputState extends State<Cv1Output> {
   final CvSettingNo1 controller = Get.put(CvSettingNo1());
+  final InterviewScheduleController controller_interview =
+      Get.put(InterviewScheduleController());
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Container(
-                height: 50,
-                decoration: BoxDecoration(color: AppColor.greenPrimaryCv1),
-                child: Row(
+    return RepaintBoundary(
+      key: controller_interview.repaintKey,
+      child: Scaffold(
+        body: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Container(
+                  height: 50,
+                  decoration: BoxDecoration(color: AppColor.greenPrimaryCv1),
+                  child: Row(
+                    children: [
+                      Container(
+                        width: 150,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(10)),
+                            color: AppColor.lightBackgroundColor),
+                        child: Center(
+                            child: Text(
+                          widget.cvModel.fullName,
+                          style: TextStyle(
+                              color: AppColor.greenPrimaryCv1,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20),
+                          textAlign: TextAlign.center,
+                        )),
+                      ),
+                      Spacer(),
+                      Padding(
+                        padding: const EdgeInsets.only(right: 10),
+                        child: Text(
+                          widget.cvModel.position,
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: AppColor.greyColor),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 15,
+                ),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
                       width: 150,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(10)),
-                          color: AppColor.lightBackgroundColor),
-                      child: Center(
-                          child: Text(
-                        widget.cvModel.fullName,
-                        style: TextStyle(
-                            color: AppColor.greenPrimaryCv1,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20),
-                        textAlign: TextAlign.center,
-                      )),
-                    ),
-                    Spacer(),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 10),
-                      child: Text(
-                        widget.cvModel.position,
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: AppColor.greyColor),
+                      decoration:
+                          BoxDecoration(color: AppColor.greenPrimaryCv1),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            width: 150,
+                            child: ClipRRect(
+                                child: Image.network(
+                              controller.getImageUrl(widget.cvModel.linkImage),
+                            )),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(10),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                _buildPersonalInfo(
+                                    "Ngày sinh",
+                                    controller.formatDate(
+                                        widget.cvModel.dateOfBirth)),
+                                _buildPersonalInfo(
+                                    "Giới tính", widget.cvModel.sex),
+                                _buildPersonalInfo("Số điện thoại",
+                                    widget.cvModel.phoneNumber),
+                                _buildPersonalInfo(
+                                    "Email", widget.cvModel.email),
+                                _buildPersonalInfo(
+                                    "Địa chỉ", widget.cvModel.address),
+                                _buildPersonalInfo(
+                                    "Website", widget.cvModel.website),
+                                SizedBox(
+                                  height: 15,
+                                ),
+                                _buildObjective(),
+                                SizedBox(
+                                  height: 15,
+                                ),
+                                _buildSkills(widget.cvModel.skills),
+                                SizedBox(
+                                  height: 245,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
                       ),
-                    )
-                  ],
-                ),
-              ),
-              SizedBox(
-                height: 15,
-              ),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    width: 150,
-                    decoration: BoxDecoration(color: AppColor.greenPrimaryCv1),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          width: 150,
-                          child: ClipRRect(
-                              child: Image.network(
-                            controller.getImageUrl(widget.cvModel.linkImage),
-                          )),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(10),
+                    ),
+                    Expanded(
+                      child: Padding(
+                        padding: EdgeInsets.all(10),
+                        child: Container(
                           child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              _buildPersonalInfo(
-                                  "Ngày sinh",
-                                  controller
-                                      .formatDate(widget.cvModel.dateOfBirth)),
-                              _buildPersonalInfo(
-                                  "Giới tính", widget.cvModel.sex),
-                              _buildPersonalInfo(
-                                  "Số điện thoại", widget.cvModel.phoneNumber),
-                              _buildPersonalInfo("Email", widget.cvModel.email),
-                              _buildPersonalInfo(
-                                  "Địa chỉ", widget.cvModel.address),
-                              _buildPersonalInfo(
-                                  "Website", widget.cvModel.website),
-                              SizedBox(
-                                height: 15,
-                              ),
-                              _buildObjective(),
-                              SizedBox(
-                                height: 15,
-                              ),
-                              _buildSkills(widget.cvModel.skills),
-                              SizedBox(
-                                height: 245,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Expanded(
-                    child: Padding(
-                      padding: EdgeInsets.all(10),
-                      child: Container(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Text(
-                                  "KINH NGHIỆM LÀM VIỆC",
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 15,
-                                    color: AppColor.greenPrimaryCv1,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            ...widget.cvModel.workExperience
-                                .map((e) => _buildExperience(e))
-                                .toList(),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      "HỌC VẤN",
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 15,
-                                        color: AppColor.greenPrimaryCv1,
-                                      ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "KINH NGHIỆM LÀM VIỆC",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 15,
+                                      color: AppColor.greenPrimaryCv1,
                                     ),
-                                  ],
-                                ),
-                                ...widget.cvModel.knowledge
-                                    .map((e) => _buildKnowledge(e))
-                                    .toList(),
-                              ],
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  "HOẠT ĐỘNG",
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 15,
-                                    color: AppColor.greenPrimaryCv1,
                                   ),
-                                ),
-                                ...widget.cvModel.activities
-                                    .map((e) => buildActivity(e))
-                                    .toList(),
-                              ],
-                            ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    Expanded(
-                                      child: Text(
-                                        "DANH HIỆU VÀ GIẢI THƯỞNG",
+                                ],
+                              ),
+                              ...widget.cvModel.workExperience
+                                  .map((e) => _buildExperience(e))
+                                  .toList(),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        "HỌC VẤN",
                                         style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: 15,
                                           color: AppColor.greenPrimaryCv1,
                                         ),
-                                        maxLines: 2,
                                       ),
-                                    ),
-                                  ],
-                                ),
-                                ...widget.cvModel.award
-                                    .map((e) => _buildAward(e))
-                                    .toList(),
-                              ],
-                            ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      "CHỨNG CHỈ",
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 15,
-                                        color: AppColor.greenPrimaryCv1,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                ...widget.cvModel.certificate
-                                    .map((e) => _buildCertificate(e))
-                                    .toList(),
-                              ],
-                            ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Text(
-                                  "THÔNG TIN THÊM",
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 15,
-                                    color: AppColor.greenPrimaryCv1,
+                                    ],
                                   ),
-                                ),
-                              ],
-                            ),
-                            Text(widget.cvModel.moreInformation),
-                            _buildInstructor(widget.cvModel.introducer),
-                          ],
+                                  ...widget.cvModel.knowledge
+                                      .map((e) => _buildKnowledge(e))
+                                      .toList(),
+                                ],
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "HOẠT ĐỘNG",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 15,
+                                      color: AppColor.greenPrimaryCv1,
+                                    ),
+                                  ),
+                                  ...widget.cvModel.activities
+                                      .map((e) => buildActivity(e))
+                                      .toList(),
+                                ],
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Expanded(
+                                        child: Text(
+                                          "DANH HIỆU VÀ GIẢI THƯỞNG",
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 15,
+                                            color: AppColor.greenPrimaryCv1,
+                                          ),
+                                          maxLines: 2,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  ...widget.cvModel.award
+                                      .map((e) => _buildAward(e))
+                                      .toList(),
+                                ],
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        "CHỨNG CHỈ",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 15,
+                                          color: AppColor.greenPrimaryCv1,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  ...widget.cvModel.certificate
+                                      .map((e) => _buildCertificate(e))
+                                      .toList(),
+                                ],
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "THÔNG TIN THÊM",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 15,
+                                      color: AppColor.greenPrimaryCv1,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Text(widget.cvModel.moreInformation),
+                              _buildInstructor(widget.cvModel.introducer),
+                            ],
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ],
-              ),
-            ],
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),

@@ -141,7 +141,7 @@ class ApplicationApplyFb {
         'list_schedule': listSchedule,
       });
 
-      print("Đã cập nhật job vào ngày $formattedDate");
+      print("Job updated on $formattedDate");
     }
   }
 }

@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
+import 'package:np_career/model/cv_model.dart';
 
 class InterviewScheduleFb {
   FirebaseFirestore _fb = FirebaseFirestore.instance;
@@ -37,6 +38,20 @@ class InterviewScheduleFb {
         final list = data['list_schedule'] ?? [];
         return List<Map<String, dynamic>>.from(list);
       });
+    }
+  }
+
+  Future<CvModel> getCvModel(String uid, String type) async {
+    try {
+      DocumentSnapshot snapshot = await _fb.collection(type).doc(uid).get();
+
+      if (snapshot.exists) {
+        return CvModel.fromSnap(snapshot);
+      } else {
+        throw Exception("CV not found");
+      }
+    } catch (err) {
+      throw Exception("Error getting CV: $err");
     }
   }
 }
