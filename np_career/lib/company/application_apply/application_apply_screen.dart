@@ -9,7 +9,9 @@ import 'package:np_career/model/cv_model.dart';
 
 class ApplicationApplyScreen extends StatefulWidget {
   final String jobId;
-  const ApplicationApplyScreen({super.key, required this.jobId});
+  final String jobName;
+  const ApplicationApplyScreen(
+      {super.key, required this.jobId, required this.jobName});
 
   @override
   State<ApplicationApplyScreen> createState() => _ApplicationApplyScreenState();
@@ -36,7 +38,7 @@ class _ApplicationApplyScreenState extends State<ApplicationApplyScreen> {
         ),
         title: Center(
           child: Text(
-            "Application",
+            widget.jobName,
             style: TextStyle(
               fontWeight: FontWeight.bold,
               color: AppColor.lightBackgroundColor,
@@ -315,7 +317,14 @@ class _ApplicationApplyScreenState extends State<ApplicationApplyScreen> {
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         IconButton(
-                                            onPressed: () {},
+                                            onPressed: () {
+                                              _fb.addCvToJobInDate(context,
+                                                  idJob: application['jobId'],
+                                                  jobName: widget.jobName,
+                                                  idCV: application['cvId'],
+                                                  userName: user['username'],
+                                                  type: application['typeCV']);
+                                            },
                                             icon: Icon(
                                               Icons.event,
                                               size: 35,

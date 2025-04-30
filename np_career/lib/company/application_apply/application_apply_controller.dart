@@ -1,4 +1,7 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:np_career/company/application_apply/application_apply_fb.dart';
 import 'package:np_career/enum/enum_cv_no1_output.dart';
 import 'package:np_career/model/cv_model.dart';
@@ -39,7 +42,7 @@ class ApplicationApplyController extends GetxController {
       return;
     }
 
-    final String recipientEmail = "phanvuhoainam11d1@gmail.com";
+    final String recipientEmail = mailFrom;
     final String subject = "Job Application";
 
     // Tạo nội dung body gốc với xuống dòng

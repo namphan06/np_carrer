@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:np_career/company/application_apply/interview_schedule/interview_schedule_screen.dart';
 import 'package:np_career/company/create_job_post/create_job_post.dart';
 import 'package:np_career/company/management_fob_post/management_job_post.dart';
 import 'package:np_career/model/user_model.dart';
@@ -26,9 +27,9 @@ class HomeCompanyController extends GetxController {
         },
         {
           'img':
-              'assets/images/article_person_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.svg',
-          'text': 'Job Application CV',
-          'onTap': () => Get.to(Home())
+              'assets/images/event_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.svg',
+          'text': 'Interview Schedule',
+          'onTap': () => Get.to(InterviewScheduleScreen())
         },
         {
           'img':

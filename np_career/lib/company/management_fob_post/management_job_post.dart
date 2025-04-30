@@ -245,6 +245,7 @@ class _ManagementJobPostState extends State<ManagementJobPost> {
                                               onPressed: () {
                                                 Get.to(ApplicationApplyScreen(
                                                   jobId: job['id'],
+                                                  jobName: job['name'],
                                                 ));
                                                 isExpandedList[index].value =
                                                     false;

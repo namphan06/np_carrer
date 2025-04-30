@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:intl/intl.dart';
 import 'package:np_career/model/cv_model.dart';
 
 class ApplicationApplyFb {
@@ -72,6 +74,74 @@ class ApplicationApplyFb {
       }
     } catch (e) {
       print('Error updating response: $e');
+    }
+  }
+
+  Future<void> addCvToJobInDate(
+    BuildContext context, {
+    required String idJob,
+    required String jobName,
+    required String idCV,
+    required String userName,
+    required String type,
+  }) async {
+    DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2100),
+    );
+
+    if (picked != null) {
+      String formattedDate = DateFormat('dd_MM_yyyy').format(picked);
+      final docRef = FirebaseFirestore.instance
+          .collection('interview_schedule')
+          .doc(formattedDate);
+
+      // Lấy dữ liệu cũ nếu có
+      DocumentSnapshot snapshot = await docRef.get();
+      List<dynamic> listSchedule = [];
+
+      if (snapshot.exists && snapshot.data() != null) {
+        final data = snapshot.data() as Map<String, dynamic>;
+        listSchedule = data['list_schedule'] ?? [];
+      }
+
+      // Tìm kiếm job theo idJob
+      bool found = false;
+      for (var item in listSchedule) {
+        if (item['idJob'] == idJob) {
+          (item['listCv'] as List).add({
+            'idCv': idCV,
+            'userName': userName,
+            'type': type,
+          });
+          found = true;
+          break;
+        }
+      }
+
+      // Nếu chưa có thì thêm job mới
+      if (!found) {
+        listSchedule.add({
+          'idJob': idJob,
+          'jobName': jobName,
+          'listCv': [
+            {
+              'idCv': idCV,
+              'userName': userName,
+              'type': type,
+            }
+          ]
+        });
+      }
+
+      // Lưu lại lên Firebase
+      await docRef.set({
+        'list_schedule': listSchedule,
+      });
+
+      print("Đã cập nhật job vào ngày $formattedDate");
     }
   }
 }
