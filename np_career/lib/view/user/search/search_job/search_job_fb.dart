@@ -50,7 +50,7 @@ class SearchJobFb {
     return jobs.contains(jobId);
   }
 
-  Future<List<bool>> getSavedJobsStatus() async {
+  Future<Map<String, List>> getSavedJobsStatusAndIds() async {
     final savedDoc = await _firestore
         .collection('job_actions')
         .doc(_auth.currentUser!.uid)
@@ -62,6 +62,7 @@ class SearchJobFb {
     final jobDocs = jobQuery.docs;
 
     List<bool> jobStatusList = [];
+    List<String> jobIdList = [];
 
     for (var doc in jobDocs) {
       final jpsList = doc.data()['jps'] as List<dynamic>? ?? [];
@@ -69,18 +70,27 @@ class SearchJobFb {
       for (var job in jpsList) {
         final jobId = job['id'];
         if (jobId != null) {
-          jobStatusList.add(savedJobs.contains(jobId));
-          print("svJob: ${savedJobs.contains(jobId)} - id: $jobId");
+          final isSaved = savedJobs.contains(jobId);
+          if (isSaved) {
+            jobIdList.add(jobId);
+          }
+          jobStatusList.add(isSaved);
+          // print("svJob: $isSaved - id: $jobId");
         } else {
           jobStatusList.add(false);
-          print("jobId is null in jps for document: ${doc.id}");
+          jobIdList.add("null");
+          // print("jobId is null in jps for document: ${doc.id}");
         }
       }
     }
 
-    print("fb : ${jobStatusList}");
+    // print("fb : $jobStatusList");
+    // print("ids: $jobIdList");
 
-    return jobStatusList;
+    return {
+      'status': jobStatusList,
+      'ids': jobIdList,
+    };
   }
 
   Future<JobPostModel?> getJobDetail(String job_id) async {
