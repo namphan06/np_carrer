@@ -1,5 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:np_career/company/profile_company/profile_company.dart';
+import 'package:np_career/company/profile_company/profile_company_data.dart';
 import 'package:np_career/model/user_model.dart';
 import 'package:np_career/view/login/login_fb.dart';
 import 'package:np_career/view/user/profile/my_profile/my_profile_screen.dart';
@@ -26,11 +29,36 @@ class ProfileController extends GetxController {
     }
   }
 
-  void handleMyProfile() {
+  Future<bool> checkIfDocExists(String collectionName, String docId) async {
+    try {
+      DocumentSnapshot doc = await FirebaseFirestore.instance
+          .collection(collectionName)
+          .doc(docId)
+          .get();
+
+      return doc.exists;
+    } catch (e) {
+      print('Error: $e');
+      return false;
+    }
+  }
+
+  void handleMyProfile() async {
+    final uid = FirebaseAuth.instance.currentUser?.uid;
     if (roleController.value == 'user') {
       Get.to(MyProfileScreen());
     } else if (roleController.value == 'company') {
-      Get.to(ProfileCompany());
+      if (uid == null) {
+        Get.snackbar("Error", "User not logged in");
+        return;
+      }
+
+      bool exists = await checkIfDocExists('profile_company', uid);
+      if (exists) {
+        Get.to(ProfileCompanyData());
+      } else {
+        Get.to(ProfileCompany());
+      }
     } else {
       Get.snackbar("Error", 'Don\'t have role');
     }

@@ -17,4 +17,17 @@ class ProfileCompanyFb {
       print("Error saving ProfileCompany: $e");
     }
   }
+
+  Future<Map<String, dynamic>?> getProfileCompany() async {
+    final doc = await _firestore
+        .collection('profile_company')
+        .doc(_auth.currentUser!.uid)
+        .get();
+
+    if (doc.exists) {
+      return doc.data();
+    } else {
+      return null;
+    }
+  }
 }

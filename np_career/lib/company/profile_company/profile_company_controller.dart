@@ -24,6 +24,23 @@ class ProfileCompanyController extends GetxController {
   TextEditingController twitterController = TextEditingController();
   TextEditingController linkedInController = TextEditingController();
 
+  var profileData = <String, dynamic>{}.obs;
+
+  @override
+  void onInit() {
+    // TODO: implement onInit
+    super.onInit();
+    fetchProfileData();
+  }
+
+  void fetchProfileData() async {
+    final doc = await _fb.getProfileCompany();
+
+    if (doc == null) {
+      profileData.value = doc!;
+    }
+  }
+
   // Chuyển đổi giữa chế độ nhập thủ công và chọn file
   void switchMode(String selected) {
     mode.value = selected;
