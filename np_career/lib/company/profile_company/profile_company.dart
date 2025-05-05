@@ -62,7 +62,8 @@ class ProfileCompany extends StatelessWidget {
                       onPressed: () {
                         controller.saveProfile();
                         Get.back();
-                        Get.to(ProfileScreen());
+                        Get.back();
+                        Get.back();
                       },
                       child: Text(
                         "Submit",
@@ -204,6 +205,7 @@ class ProfileCompany extends StatelessWidget {
               Obx(() {
                 return controller.mode.value == 'manual'
                     ? TextField(
+                        controller: controller.inputController,
                         maxLines: null,
                         minLines: 5,
                         decoration: InputDecoration(
@@ -267,16 +269,18 @@ class ProfileCompany extends StatelessWidget {
                                             size.width * 0.9, // Kéo dài ô Text
                                         child: SingleChildScrollView(
                                           scrollDirection: Axis.vertical,
-                                          child: Text(
-                                            controller.inputText.value,
-                                            style: TextStyle(
-                                                color:
-                                                    AppColor.greenPrimaryColor,
-                                                fontWeight: FontWeight.w500),
-                                            // maxLines:
-                                            //     20, // Giới hạn số dòng hiển thị tối đa
-                                            // overflow: TextOverflow
-                                            //     .visible, // Không ẩn văn bản khi tràn
+                                          child: Obx(
+                                            () => Text(
+                                              controller.inputText.value,
+                                              style: TextStyle(
+                                                  color: AppColor
+                                                      .greenPrimaryColor,
+                                                  fontWeight: FontWeight.w500),
+                                              // maxLines:
+                                              //     20, // Giới hạn số dòng hiển thị tối đa
+                                              // overflow: TextOverflow
+                                              //     .visible, // Không ẩn văn bản khi tràn
+                                            ),
                                           ),
                                         ),
                                       )

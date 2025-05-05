@@ -112,7 +112,7 @@ class SearchJobController extends GetxController {
   Future<void> fetchSavedJobStatus() async {
     final result = await _fb.getSavedJobsStatusAndIds();
     savedJobStatusList.value = result['status'] as List<bool>;
-    print(savedJobStatusList);
+    // print(savedJobStatusList);
   }
 
   Future<void> fetchSavedJobIds() async {

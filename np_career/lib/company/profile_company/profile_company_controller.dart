@@ -25,6 +25,7 @@ class ProfileCompanyController extends GetxController {
   TextEditingController linkedInController = TextEditingController();
 
   var profileData = <String, dynamic>{}.obs;
+  final inputController = TextEditingController();
 
   @override
   void onInit() {
@@ -36,8 +37,20 @@ class ProfileCompanyController extends GetxController {
   void fetchProfileData() async {
     final doc = await _fb.getProfileCompany();
 
-    if (doc == null) {
-      profileData.value = doc!;
+    if (doc != null) {
+      profileData.value = doc;
+      websiteController.text = profileData['website'];
+      headcountController.text = profileData['headcount'];
+      addressController.text = profileData['address'];
+      facebookController.text = profileData['facebook'];
+      twitterController.text = profileData['twitter'];
+      linkedInController.text = profileData['linkedIn'];
+      inputController.text = profileData['preview'];
+      inputText.value = profileData['preview'];
+
+      inputController.addListener(() {
+        inputText.value = inputController.text;
+      });
     }
   }
 
