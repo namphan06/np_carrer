@@ -5,6 +5,7 @@ import 'package:np_career/company/profile_company/profile_company.dart';
 import 'package:np_career/company/profile_company/profile_company_data.dart';
 import 'package:np_career/model/user_model.dart';
 import 'package:np_career/view/login/login_fb.dart';
+import 'package:np_career/view/user/profile/my_profile/my_profile_data.dart';
 import 'package:np_career/view/user/profile/my_profile/my_profile_screen.dart';
 
 class ProfileController extends GetxController {
@@ -46,7 +47,17 @@ class ProfileController extends GetxController {
   void handleMyProfile() async {
     final uid = FirebaseAuth.instance.currentUser?.uid;
     if (roleController.value == 'user') {
-      Get.to(MyProfileScreen());
+      if (uid == null) {
+        Get.snackbar("Error", "User not logged in");
+        return;
+      }
+
+      bool exists1 = await checkIfDocExists('my_profile', uid);
+      if (exists1) {
+        Get.to(MyProfileData());
+      } else {
+        Get.to(MyProfileScreen());
+      }
     } else if (roleController.value == 'company') {
       if (uid == null) {
         Get.snackbar("Error", "User not logged in");

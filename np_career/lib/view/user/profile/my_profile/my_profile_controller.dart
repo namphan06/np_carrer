@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:np_career/enum/enum_cv_no1_output.dart';
+import 'package:np_career/model/cv_model.dart';
 import 'package:np_career/model/my_profile_model.dart';
 import 'package:np_career/model/work_experience.dart';
 import 'package:np_career/view/user/profile/my_profile/my_profile_fb.dart';
@@ -124,6 +126,15 @@ class MyProfileController extends GetxController {
           resumeId: idCv.value,
           city: list_city);
       _fb.saveMyProfile(myProfileModel);
+    } catch (err) {
+      Get.snackbar("Error", err.toString());
+    }
+  }
+
+  Future<void> getCv(String uid, String type) async {
+    try {
+      CvModel model = await _fb.getCvModel(uid, type);
+      EnumCvNo1Output.cv1_no1.run(type, model);
     } catch (err) {
       Get.snackbar("Error", err.toString());
     }
