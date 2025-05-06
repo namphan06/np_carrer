@@ -10,6 +10,7 @@ import 'package:np_career/core/app_color.dart';
 import 'package:np_career/enum/enum_city.dart';
 import 'package:np_career/enum/enum_experience.dart';
 import 'package:np_career/enum/enum_type_job_category.dart';
+import 'package:np_career/view/user/profile/my_profile/my_profile_data.dart';
 
 class SearchApplication extends StatefulWidget {
   const SearchApplication({super.key});
@@ -839,7 +840,7 @@ class _SearchApplicationState extends State<SearchApplication> {
                                 }
 
                                 return GestureDetector(
-                                  onTap: () async {
+                                  onTap: () {
                                     // await controller.loadJobDetail(job['id']);
                                     // Get.to(() => JobDetailScreen(
                                     //       job: controller.job!,
@@ -847,6 +848,9 @@ class _SearchApplicationState extends State<SearchApplication> {
                                     //           .savedJobStatusList[index],
                                     //       companyId: job['companyId'],
                                     //     ));
+                                    Get.to(MyProfileData(
+                                      userID: job['id'],
+                                    ));
                                   },
                                   child: AnimatedContainer(
                                     duration: Duration(milliseconds: 300),

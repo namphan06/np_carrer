@@ -21,6 +21,7 @@ class SearchJobController extends GetxController {
   RxBool savedJob = false.obs;
   RxList<bool> savedJobStatusList = <bool>[].obs;
   RxList<String> savedJobIdList = <String>[].obs;
+  RxList<String> appliedJobIdList = <String>[].obs;
 
   JobPostModel? job;
 
@@ -34,6 +35,7 @@ class SearchJobController extends GetxController {
 
     fetchSavedJobStatus();
     fetchSavedJobIds();
+    fetchAppliedJobIds();
   }
 
   List<Map<String, dynamic>> filterJobs(List<Map<String, dynamic>> jobPosts) {
@@ -118,6 +120,12 @@ class SearchJobController extends GetxController {
   Future<void> fetchSavedJobIds() async {
     final result = await _fb.getSavedJobsStatusAndIds();
     savedJobIdList.value = result['ids'] as List<String>;
+    print(savedJobIdList);
+  }
+
+  Future<void> fetchAppliedJobIds() async {
+    final result = await _fb.getAppliedJobIds();
+    appliedJobIdList.value = result as List<String>;
     print(savedJobIdList);
   }
 }

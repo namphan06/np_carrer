@@ -1008,7 +1008,17 @@ class _SearchJobScreenState extends State<SearchJobScreen> {
                                       // print("jobPost : ${job}");
                                       jobPosts.add(job as Map<String, dynamic>);
                                     }
+                                  } else if (widget.nameRole == "Applied Job") {
+                                    // print("jobID : ${job['id']}");
+
+                                    if (controller.appliedJobIdList
+                                        .contains(job['id'])) {
+                                      // print("jobPost : ${job}");
+                                      jobPosts.add(job as Map<String, dynamic>);
+                                    }
                                   } else if (widget.nameRole == null) {
+                                    controller.appliedJobIdList
+                                        .contains(job['id']);
                                     jobPosts.add(job as Map<String, dynamic>);
                                   }
                                 }
@@ -1089,6 +1099,12 @@ class _SearchJobScreenState extends State<SearchJobScreen> {
                                         color: AppColor.orangePrimaryColor
                                             .withOpacity(0.66),
                                         borderRadius: BorderRadius.circular(15),
+                                        border: Border.all(
+                                            color: controller.appliedJobIdList
+                                                    .contains(job['id'])
+                                                ? AppColor.greenPrimaryColor
+                                                : AppColor.greyColor,
+                                            width: 2),
                                         boxShadow: [
                                           BoxShadow(
                                             color:
@@ -1185,49 +1201,55 @@ class _SearchJobScreenState extends State<SearchJobScreen> {
                                             ),
                                           ),
                                           Obx(
-                                            () => Container(
-                                              decoration: BoxDecoration(
-                                                  shape: BoxShape.circle,
-                                                  color: AppColor.greyColor
-                                                      .withOpacity(0.5)),
-                                              child: controller
-                                                              .savedJobStatusList
-                                                              .length >
-                                                          index &&
-                                                      controller.savedJobStatusList[
-                                                              index] ==
-                                                          false
-                                                  ? IconButton(
-                                                      onPressed: () {
-                                                        controller
-                                                            .toggleSavedJobStatus(
-                                                                index,
-                                                                job['id']);
-                                                      },
-                                                      icon: Icon(
-                                                        Icons
-                                                            .bookmark_border_outlined,
-                                                        size: 30,
-                                                        color: AppColor
-                                                            .greenPrimaryColor,
-                                                      ))
-                                                  : IconButton(
-                                                      onPressed: () {
-                                                        controller
-                                                            .toggleSavedJobStatus(
-                                                                index,
-                                                                job['id']);
-                                                        if (widget.nameRole ==
-                                                            "Job Applied") {
-                                                          jobPosts.remove(job);
-                                                        }
-                                                      },
-                                                      icon: Icon(
-                                                        Icons.bookmark,
-                                                        size: 30,
-                                                        color: AppColor
-                                                            .greenPrimaryColor,
-                                                      )),
+                                            () => Column(
+                                              children: [
+                                                Container(
+                                                  decoration: BoxDecoration(
+                                                      shape: BoxShape.circle,
+                                                      color: AppColor.greyColor
+                                                          .withOpacity(0.5)),
+                                                  child: controller
+                                                                  .savedJobStatusList
+                                                                  .length >
+                                                              index &&
+                                                          controller.savedJobStatusList[
+                                                                  index] ==
+                                                              false
+                                                      ? IconButton(
+                                                          onPressed: () {
+                                                            controller
+                                                                .toggleSavedJobStatus(
+                                                                    index,
+                                                                    job['id']);
+                                                          },
+                                                          icon: Icon(
+                                                            Icons
+                                                                .bookmark_border_outlined,
+                                                            size: 30,
+                                                            color: AppColor
+                                                                .greenPrimaryColor,
+                                                          ))
+                                                      : IconButton(
+                                                          onPressed: () {
+                                                            controller
+                                                                .toggleSavedJobStatus(
+                                                                    index,
+                                                                    job['id']);
+                                                            if (widget
+                                                                    .nameRole ==
+                                                                "Job Applied") {
+                                                              jobPosts
+                                                                  .remove(job);
+                                                            }
+                                                          },
+                                                          icon: Icon(
+                                                            Icons.bookmark,
+                                                            size: 30,
+                                                            color: AppColor
+                                                                .greenPrimaryColor,
+                                                          )),
+                                                ),
+                                              ],
                                             ),
                                           ),
                                         ],

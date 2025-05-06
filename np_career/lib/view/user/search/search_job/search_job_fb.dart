@@ -93,6 +93,29 @@ class SearchJobFb {
     };
   }
 
+  Future<List<String>> getAppliedJobIds() async {
+    final appliedDoc = await _firestore
+        .collection('job_actions')
+        .doc(_auth.currentUser!.uid)
+        .get();
+
+    final appliedList =
+        appliedDoc.data()?['applied_list'] as List<dynamic>? ?? [];
+
+    List<String> jobIdList = [];
+
+    for (var item in appliedList) {
+      if (item is Map<String, dynamic> && item.containsKey('jobId')) {
+        final jobId = item['jobId'];
+        if (jobId != null) {
+          jobIdList.add(jobId.toString());
+        }
+      }
+    }
+
+    return jobIdList;
+  }
+
   Future<JobPostModel?> getJobDetail(String job_id) async {
     try {
       final snap = await _firestore.collection("jobs").doc(job_id).get();

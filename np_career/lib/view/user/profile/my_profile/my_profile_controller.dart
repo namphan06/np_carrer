@@ -75,7 +75,7 @@ class MyProfileController extends GetxController {
 
         update();
       } else {
-        Get.snackbar("Thông báo", "Không tìm thấy hồ sơ người dùng.");
+        // Get.snackbar("Thông báo", "Không tìm thấy hồ sơ người dùng.");
       }
     } catch (err) {
       Get.snackbar("Lỗi", err.toString());

@@ -189,7 +189,9 @@ class _HomeScreenUserState extends State<HomeScreenUser> {
                                         "assets/images/file-info-paper-person-profile-svgrepo-com.svg",
                                     lableContainer: "Jobs Applied",
                                     selectedContainer: () {
-                                      Get.to(JobApplied());
+                                      Get.to(SearchJobScreen(
+                                        nameRole: "Applied Job",
+                                      ));
                                     }),
                                 SizedBox(
                                   width: 30,

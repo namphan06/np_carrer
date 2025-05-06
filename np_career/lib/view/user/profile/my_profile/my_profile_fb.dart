@@ -20,10 +20,13 @@ class MyProfileFb {
     }
   }
 
-  Stream<MyProfileModel> getProfile() {
+  Stream<MyProfileModel> getProfile(String? userID) {
+    final uid =
+        (userID == null || userID.isEmpty) ? _auth.currentUser!.uid : userID;
+
     return FirebaseFirestore.instance
         .collection('my_profile')
-        .doc(_auth.currentUser!.uid)
+        .doc(uid)
         .snapshots()
         .map((doc) => MyProfileModel.fromSnap(doc));
   }

@@ -12,7 +12,8 @@ import 'package:np_career/view/user/profile/my_profile/my_profile_fb.dart';
 import 'package:np_career/view/user/profile/my_profile/my_profile_screen.dart';
 
 class MyProfileData extends StatefulWidget {
-  const MyProfileData({super.key});
+  String? userID;
+  MyProfileData({super.key, this.userID});
 
   @override
   State<MyProfileData> createState() => _MyProfileDataState();
@@ -32,22 +33,23 @@ class _MyProfileDataState extends State<MyProfileData> {
             vertical: size.height * 0.04, horizontal: size.width * 0.02),
         child: Column(
           children: [
-            Align(
-              alignment: Alignment.topRight,
-              child: InkWell(
-                onTap: () {
-                  Get.to(MyProfileScreen());
-                },
-                child: Text(
-                  "Update Profile",
-                  style: TextStyle(
-                    color: AppColor.greenPrimaryColor,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18,
+            if (widget.userID == null)
+              Align(
+                alignment: Alignment.topRight,
+                child: InkWell(
+                  onTap: () {
+                    Get.to(MyProfileScreen());
+                  },
+                  child: Text(
+                    "Update Profile",
+                    style: TextStyle(
+                      color: AppColor.greenPrimaryColor,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                    ),
                   ),
                 ),
               ),
-            ),
             const SizedBox(height: 30),
 
             /// Stack chứa Divider và Container icon
@@ -89,7 +91,7 @@ class _MyProfileDataState extends State<MyProfileData> {
             const SizedBox(height: 30),
 
             StreamBuilder<MyProfileModel>(
-              stream: _fb.getProfile(),
+              stream: _fb.getProfile(widget.userID),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return Center(child: CircularProgressIndicator());
