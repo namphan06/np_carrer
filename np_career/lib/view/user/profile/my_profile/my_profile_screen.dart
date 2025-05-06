@@ -681,7 +681,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                                       ),
                                     ),
                                     SizedBox(
-                                      width: size.width * 0.03,
+                                      width: size.width * 0.022,
                                     ),
                                     SizedBox(
                                       width: size.width * 0.435,
@@ -1322,7 +1322,8 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                           child: ElevatedButton(
                               onPressed: () {
                                 controller.createMyProfile();
-                                Get.to(ProfileScreen());
+                                Get.back();
+                                Get.back();
                               },
                               child: Text(
                                 "Create",

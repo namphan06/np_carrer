@@ -28,6 +28,18 @@ class MyProfileFb {
         .map((doc) => MyProfileModel.fromSnap(doc));
   }
 
+  Future<MyProfileModel?> getMyProfile() async {
+    DocumentSnapshot doc = await _firestore
+        .collection('my_profile')
+        .doc(_auth.currentUser!.uid)
+        .get();
+
+    if (doc.exists) {
+      return MyProfileModel.fromSnap(doc);
+    }
+    return null;
+  }
+
   Future<CvModel> getCvModel(String uid, String type) async {
     try {
       DocumentSnapshot snapshot =

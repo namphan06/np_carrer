@@ -28,7 +28,8 @@ class _ProfileCompanyDataState extends State<ProfileCompanyData> {
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.all(size.width * 0.04),
+          padding: EdgeInsets.symmetric(
+              vertical: size.height * 0.04, horizontal: size.width * 0.02),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -159,7 +160,7 @@ class _ProfileCompanyDataState extends State<ProfileCompanyData> {
                     width: size.width * 0.05,
                   ),
                   Container(
-                    width: size.width * 0.1,
+                    width: size.width * 0.12,
                     padding: EdgeInsets.all(10),
                     decoration: BoxDecoration(
                         border: Border.all(

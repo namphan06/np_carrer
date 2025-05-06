@@ -31,6 +31,57 @@ class MyProfileController extends GetxController {
   TextEditingController address = TextEditingController();
   TextEditingController hiringReason = TextEditingController();
 
+  @override
+  void onInit() {
+    super.onInit();
+    loadMyProfile();
+  }
+
+  Future<void> loadMyProfile() async {
+    try {
+      final profile = await _fb.getMyProfile();
+      if (profile != null) {
+        fullName.text = profile.fullName ?? '';
+        phoneNumber.text = profile.phoneNumber ?? '';
+        address.text = profile.address ?? '';
+        hiringReason.text = profile.hiringReason ?? '';
+
+        selectedNationality.value = profile.nationality ?? '';
+        selectedEducationLevel.value = profile.educationLevel ?? '';
+        selectSex.value = profile.sex ?? '';
+        isSharing.value = profile.securitySetting;
+        selectedPosition.value = profile.resumePosition ?? '';
+        typeCv.value = profile.resumeType ?? '';
+        idCv.value = profile.resumeId ?? '';
+        selectDate.value = profile.dateOfBirth?.toDate();
+
+        list_type_job.value = profile.preferredJobType ?? [];
+        list_type_job_category.value = profile.jobInterests ?? [];
+        list_city.value = profile.city ?? [];
+
+        // Gán Work Experience
+        listWorkExperience.clear();
+        for (var item in profile.workExperience) {
+          listWorkExperience.add({
+            "company": TextEditingController(text: item.company),
+            "date": TextEditingController(text: item.date),
+            "position": TextEditingController(text: item.position),
+            "list": item.list
+                .map((e) => TextEditingController(text: e))
+                .toList()
+                .obs,
+          }.obs);
+        }
+
+        update();
+      } else {
+        Get.snackbar("Thông báo", "Không tìm thấy hồ sơ người dùng.");
+      }
+    } catch (err) {
+      Get.snackbar("Lỗi", err.toString());
+    }
+  }
+
   RxList<Map<String, dynamic>> listWorkExperience = <Map<String, dynamic>>[
     {
       "company": TextEditingController(),
@@ -104,6 +155,11 @@ class MyProfileController extends GetxController {
 
   Timestamp convertToTimestamp(DateTime date) {
     return Timestamp.fromDate(date);
+  }
+
+  String formatTimestamp(Timestamp timestamp) {
+    DateTime date = timestamp.toDate();
+    return DateFormat('dd/MM/yyyy').format(date);
   }
 
   Future<void> createMyProfile() async {

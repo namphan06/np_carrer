@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:get/get.dart';
 import 'package:get/get_instance/get_instance.dart';
 import 'package:get/state_manager.dart';
 import 'package:np_career/core/app_color.dart';
@@ -8,6 +9,7 @@ import 'package:np_career/model/my_profile_model.dart';
 import 'package:np_career/model/work_experience.dart';
 import 'package:np_career/view/user/profile/my_profile/my_profile_controller.dart';
 import 'package:np_career/view/user/profile/my_profile/my_profile_fb.dart';
+import 'package:np_career/view/user/profile/my_profile/my_profile_screen.dart';
 
 class MyProfileData extends StatefulWidget {
   const MyProfileData({super.key});
@@ -26,13 +28,16 @@ class _MyProfileDataState extends State<MyProfileData> {
 
     return Scaffold(
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(10),
+        padding: EdgeInsets.symmetric(
+            vertical: size.height * 0.04, horizontal: size.width * 0.02),
         child: Column(
           children: [
             Align(
               alignment: Alignment.topRight,
               child: InkWell(
-                onTap: () {},
+                onTap: () {
+                  Get.to(MyProfileScreen());
+                },
                 child: Text(
                   "Update Profile",
                   style: TextStyle(
@@ -106,6 +111,11 @@ class _MyProfileDataState extends State<MyProfileData> {
                       icon: FontAwesomeIcons.user,
                       title: 'Full Name',
                       subtitle: profile.fullName,
+                    ),
+                    ProfileCard(
+                      icon: FontAwesomeIcons.calendar,
+                      title: 'Date of Birth',
+                      subtitle: controller.formatTimestamp(profile.dateOfBirth),
                     ),
                     ProfileCard(
                       icon: FontAwesomeIcons.phone,
@@ -197,9 +207,9 @@ class _MyProfileDataState extends State<MyProfileData> {
   }
 
   Widget ProfileSection({
-    required String sectionTitle, // Tiêu đề của nhóm
-    required List<Map<String, String>> items, // Danh sách các item để hiển thị
-    required IconData icon, // Icon dùng chung cho nhóm
+    required String sectionTitle,
+    required List<Map<String, String>> items,
+    required IconData icon,
   }) {
     return Padding(
       padding: const EdgeInsets.only(top: 20.0),
@@ -221,20 +231,14 @@ class _MyProfileDataState extends State<MyProfileData> {
               ),
             ),
             const SizedBox(height: 10),
-            // Sử dụng SingleChildScrollView để cuộn nếu danh sách quá dài
-            Container(
-              height: 100, // Giới hạn chiều cao của container
-              child: SingleChildScrollView(
-                child: Column(
-                  children: items.map((item) {
-                    return ProfileCard(
-                      icon: icon,
-                      title: item['title']!,
-                      subtitle: item['subtitle']!,
-                    );
-                  }).toList(),
-                ),
-              ),
+            Column(
+              children: items.map((item) {
+                return ProfileCard(
+                  icon: icon,
+                  title: item['title']!,
+                  subtitle: item['subtitle']!,
+                );
+              }).toList(),
             ),
           ],
         ),
@@ -257,7 +261,7 @@ class _MyProfileDataState extends State<MyProfileData> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "Work Experience", // Tiêu đề phần Work Experience
+              "Work Experience",
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
@@ -265,62 +269,55 @@ class _MyProfileDataState extends State<MyProfileData> {
               ),
             ),
             const SizedBox(height: 10),
-            // Sử dụng SingleChildScrollView để cuộn nếu danh sách quá dài
-            Container(
-              height: 350, // Giới hạn chiều cao của container
-              child: SingleChildScrollView(
-                child: Column(
-                  children: workExperience.map((exp) {
-                    return Card(
-                      margin: const EdgeInsets.symmetric(vertical: 10),
-                      elevation: 5,
-                      shape: RoundedRectangleBorder(
-                        side: BorderSide(
-                          color: AppColor.greyColor,
-                          width: 2,
+            Column(
+              children: workExperience.map((exp) {
+                return Card(
+                  margin: const EdgeInsets.symmetric(vertical: 10),
+                  elevation: 5,
+                  shape: RoundedRectangleBorder(
+                    side: BorderSide(
+                      color: AppColor.greyColor,
+                      width: 2,
+                    ),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        ProfileCard(
+                          icon: FontAwesomeIcons.building,
+                          title: 'Company',
+                          subtitle: exp.company,
                         ),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(10),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            // Hiển thị thông tin công ty, thời gian, vị trí
-                            ProfileCard(
-                              icon: FontAwesomeIcons.building,
-                              title: 'Company',
-                              subtitle: exp.company,
-                            ),
-                            ProfileCard(
-                              icon: FontAwesomeIcons.calendar,
-                              title: 'Date',
-                              subtitle: exp.date,
-                            ),
-                            ProfileCard(
-                              icon: FontAwesomeIcons.userTie,
-                              title: 'Position',
-                              subtitle: exp.position,
-                            ),
-                            // Hiển thị chi tiết công việc (nếu có)
-                            Padding(
-                              padding: const EdgeInsets.only(left: 16.0),
-                              child: Column(
-                                children: exp.list.map((detail) {
-                                  return Text(
-                                    '- $detail',
-                                    style: TextStyle(fontSize: 14),
-                                  );
-                                }).toList(),
-                              ),
-                            ),
-                          ],
+                        ProfileCard(
+                          icon: FontAwesomeIcons.calendar,
+                          title: 'Date',
+                          subtitle: exp.date,
                         ),
-                      ),
-                    );
-                  }).toList(),
-                ),
-              ),
+                        ProfileCard(
+                          icon: FontAwesomeIcons.userTie,
+                          title: 'Position',
+                          subtitle: exp.position,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 16.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: exp.list.map((detail) {
+                              return Text(
+                                '- $detail',
+                                style: TextStyle(fontSize: 14),
+                              );
+                            }).toList(),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              }).toList(),
             ),
           ],
         ),
