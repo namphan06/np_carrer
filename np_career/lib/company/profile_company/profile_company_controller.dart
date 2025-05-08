@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_archive/flutter_archive.dart';
 import 'package:get/get.dart';
@@ -17,6 +18,8 @@ class ProfileCompanyController extends GetxController {
   var mode = 'manual'.obs; // 'manual' or 'file'
   var inputText = ''.obs; // Lưu trữ nội dung trích xuất từ file
 
+  FirebaseAuth _auth = FirebaseAuth.instance;
+
   TextEditingController websiteController = TextEditingController();
   TextEditingController headcountController = TextEditingController();
   TextEditingController addressController = TextEditingController();
@@ -25,17 +28,23 @@ class ProfileCompanyController extends GetxController {
   TextEditingController linkedInController = TextEditingController();
 
   var profileData = <String, dynamic>{}.obs;
-  final inputController = TextEditingController();
+  // final inputController = TextEditingController();
+  var checkGet = true;
 
   @override
   void onInit() {
     // TODO: implement onInit
     super.onInit();
-    fetchProfileData();
+    final uid = Get.arguments?['uid'];
+    fetchProfileData(uid);
   }
 
-  void fetchProfileData() async {
-    final doc = await _fb.getProfileCompany();
+  void fetchProfileData(String? uid) async {
+    // final finalUid = uid ?? _auth.currentUser!.uid;
+    if (uid != null && uid.isNotEmpty) {
+      checkGet = false;
+    }
+    final doc = await _fb.getProfileCompany(uid);
 
     if (doc != null) {
       profileData.value = doc;
@@ -45,12 +54,12 @@ class ProfileCompanyController extends GetxController {
       facebookController.text = profileData['facebook'];
       twitterController.text = profileData['twitter'];
       linkedInController.text = profileData['linkedIn'];
-      inputController.text = profileData['preview'];
+      // inputController.text = profileData['preview'];
       inputText.value = profileData['preview'];
 
-      inputController.addListener(() {
-        inputText.value = inputController.text;
-      });
+      // inputController.addListener(() {
+      //   inputText.value = inputController.text;
+      // });
     }
   }
 

@@ -33,20 +33,22 @@ class _ProfileCompanyDataState extends State<ProfileCompanyData> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Align(
-                alignment: Alignment.topRight,
-                child: InkWell(
-                  onTap: () => Get.to(ProfileCompany()),
-                  child: Text(
-                    "Update Profile",
-                    style: TextStyle(
-                      color: AppColor.greenPrimaryColor,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
-                    ),
-                  ),
-                ),
-              ),
+              controller.checkGet
+                  ? Align(
+                      alignment: Alignment.topRight,
+                      child: InkWell(
+                        onTap: () => Get.to(ProfileCompany()),
+                        child: Text(
+                          "Update Profile",
+                          style: TextStyle(
+                            color: AppColor.greenPrimaryColor,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
+                          ),
+                        ),
+                      ),
+                    )
+                  : SizedBox.shrink(),
               const SizedBox(height: 10),
               Row(
                 children: [

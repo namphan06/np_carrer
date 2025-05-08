@@ -18,11 +18,12 @@ class ProfileCompanyFb {
     }
   }
 
-  Future<Map<String, dynamic>?> getProfileCompany() async {
-    final doc = await _firestore
-        .collection('profile_company')
-        .doc(_auth.currentUser!.uid)
-        .get();
+  Future<Map<String, dynamic>?> getProfileCompany(String? companyID) async {
+    final uid = (companyID == null || companyID.isEmpty)
+        ? _auth.currentUser!.uid
+        : companyID;
+
+    final doc = await _firestore.collection('profile_company').doc(uid).get();
 
     if (doc.exists) {
       return doc.data();

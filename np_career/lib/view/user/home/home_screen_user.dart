@@ -16,6 +16,7 @@ import 'package:np_career/view/user/home/navbar/navbar_controller.dart';
 import 'package:np_career/view/user/job_applied/job_applied.dart';
 import 'package:np_career/view/user/profile/profile_screen.dart';
 import 'package:np_career/view/user/search/search_job/search_job_screen.dart';
+import 'package:np_career/view/user/top_company/top_company.dart';
 
 class HomeScreenUser extends StatefulWidget {
   const HomeScreenUser({super.key});
@@ -233,7 +234,7 @@ class _HomeScreenUserState extends State<HomeScreenUser> {
                                         "assets/images/company-svgrepo-com.svg",
                                     lableContainer: "Top Company",
                                     selectedContainer: () {
-                                      Get.to(JobApplied());
+                                      Get.to(TopCompany());
                                     }),
                                 SizedBox(
                                   width: 30,

@@ -1017,6 +1017,7 @@ class _SearchJobScreenState extends State<SearchJobScreen> {
                                       jobPosts.add(job as Map<String, dynamic>);
                                     }
                                   } else if (widget.nameRole == null) {
+                                    // fixObx
                                     controller.appliedJobIdList
                                         .contains(job['id']);
                                     jobPosts.add(job as Map<String, dynamic>);

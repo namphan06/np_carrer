@@ -31,7 +31,7 @@ class SignupFb {
         _firestore.collection('users').doc(cred.user!.uid).set(
               user.toJson(),
             );
-        Get.to(Login());
+        Get.off(Login());
       }
     } catch (err) {
       Get.snackbar("Error", err.toString());

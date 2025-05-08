@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -13,6 +14,7 @@ class ProfileCompany extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.put(ProfileCompanyController());
     Size size = MediaQuery.of(context).size;
+    FirebaseAuth _auth = FirebaseAuth.instance;
 
     return Scaffold(
       appBar: AppBar(
@@ -61,7 +63,7 @@ class ProfileCompany extends StatelessWidget {
                     child: ElevatedButton(
                       onPressed: () {
                         controller.saveProfile();
-                        Get.back();
+                        controller.fetchProfileData(_auth.currentUser!.uid);
                         Get.back();
                         Get.back();
                       },
@@ -205,7 +207,6 @@ class ProfileCompany extends StatelessWidget {
               Obx(() {
                 return controller.mode.value == 'manual'
                     ? TextField(
-                        controller: controller.inputController,
                         maxLines: null,
                         minLines: 5,
                         decoration: InputDecoration(
@@ -222,6 +223,8 @@ class ProfileCompany extends StatelessWidget {
                           prefixIconConstraints:
                               const BoxConstraints(minWidth: 40, minHeight: 40),
                         ),
+                        onChanged: (value) =>
+                            controller.inputText.value = value,
                       )
                     : Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
