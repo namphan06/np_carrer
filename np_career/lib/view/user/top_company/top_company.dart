@@ -85,6 +85,8 @@ class _TopCompanyState extends State<TopCompany> {
                 //       .contains(controller.inputSearch.text.toLowerCase());
                 // }).toList();
 
+                // controller.fetchFollowedCompanyIds();
+
                 return Obx(() {
                   final filteredCompanies = companies.where((company) {
                     final companyName = company['username'] ?? '';
@@ -102,7 +104,7 @@ class _TopCompanyState extends State<TopCompany> {
                           crossAxisCount: 2,
                           mainAxisSpacing: 10,
                           crossAxisSpacing: 10,
-                          childAspectRatio: 0.8,
+                          childAspectRatio: 0.7,
                         ),
                         itemCount: filteredCompanies.length,
                         itemBuilder: (context, index) {
@@ -166,6 +168,110 @@ class _TopCompanyState extends State<TopCompany> {
                                           color: Colors.grey[600]),
                                       textAlign: TextAlign.center,
                                     ),
+                                    SizedBox(
+                                      height: 6,
+                                    ),
+                                    Obx(
+                                      () => Column(
+                                        children: [
+                                          Center(
+                                            child: Container(
+                                              child: !(controller
+                                                              .followedCompanyStatusMap[
+                                                          company['uid']] ??
+                                                      false)
+                                                  ? GestureDetector(
+                                                      onTap: () {
+                                                        controller
+                                                            .toggleFollowedCompanyStatus(
+                                                                company['uid']);
+                                                      },
+                                                      child: Container(
+                                                        padding: EdgeInsets
+                                                            .symmetric(
+                                                                horizontal: 10,
+                                                                vertical: 5),
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          border: Border.all(
+                                                            color: AppColor
+                                                                .greenPrimaryColor, // Màu viền
+                                                            width: 2,
+                                                          ),
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(8),
+                                                          color: Colors
+                                                              .transparent, // Màu nền cho Follow
+                                                        ),
+                                                        child: Row(
+                                                          mainAxisSize:
+                                                              MainAxisSize.min,
+                                                          children: [
+                                                            Icon(
+                                                              Icons.add,
+                                                              color: AppColor
+                                                                  .greenPrimaryColor,
+                                                              size: 20,
+                                                            ),
+                                                            SizedBox(width: 5),
+                                                            Text(
+                                                              'Follow',
+                                                              style: TextStyle(
+                                                                color: AppColor
+                                                                    .greenPrimaryColor, // Màu chữ
+                                                                fontSize: 16,
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    )
+                                                  : GestureDetector(
+                                                      onTap: () {
+                                                        controller
+                                                            .toggleFollowedCompanyStatus(
+                                                                company['uid']);
+                                                      },
+                                                      child: Container(
+                                                        padding: EdgeInsets
+                                                            .symmetric(
+                                                                horizontal: 10,
+                                                                vertical: 5),
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          border: Border.all(
+                                                            color: AppColor
+                                                                .greenPrimaryColor, // Màu viền
+                                                            width: 2,
+                                                          ),
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(8),
+                                                          color: AppColor
+                                                              .greenPrimaryColor, // Màu nền cho Followed
+                                                        ),
+                                                        child: Row(
+                                                          mainAxisSize:
+                                                              MainAxisSize.min,
+                                                          children: [
+                                                            Text(
+                                                              'Followed',
+                                                              style: TextStyle(
+                                                                color: Colors
+                                                                    .white, // Màu chữ khi Followed
+                                                                fontSize: 16,
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    )
                                   ],
                                 ),
                               ),

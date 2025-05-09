@@ -11,7 +11,7 @@ class ApplicationApplyFb {
   FirebaseAuth _auth = FirebaseAuth.instance;
 
   Stream<QuerySnapshot> getApplicationApply() {
-    return _firestore.collection("job_actions").snapshots();
+    return _firestore.collection("user_actions").snapshots();
   }
 
   Future<Map<String, dynamic>> getUserDetail(String userId) async {
@@ -48,7 +48,7 @@ class ApplicationApplyFb {
       String applicationId, String response, String userId) async {
     try {
       // Truyền vào jobId và userId để xác định chính xác ứng viên cần cập nhật
-      final jobActionRef = _firestore.collection('job_actions').doc(userId);
+      final jobActionRef = _firestore.collection('user_actions').doc(userId);
 
       // Lấy danh sách ứng viên đã ứng tuyển
       final jobActionSnapshot = await jobActionRef.get();

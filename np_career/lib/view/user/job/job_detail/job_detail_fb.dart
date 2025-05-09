@@ -14,7 +14,7 @@ class JobDetailFb {
     required String jobId,
   }) async {
     final docRef =
-        _firestore.collection('job_actions').doc(_auth.currentUser!.uid);
+        _firestore.collection('user_actions').doc(_auth.currentUser!.uid);
 
     final docSnap = await docRef.get();
     final List<dynamic> currentJobs = docSnap.data()?['saves'] ?? [];
@@ -35,7 +35,7 @@ class JobDetailFb {
     required String jobId,
   }) async {
     final docRef =
-        _firestore.collection('job_actions').doc(_auth.currentUser!.uid);
+        _firestore.collection('user_actions').doc(_auth.currentUser!.uid);
 
     final docSnap = await docRef.get();
     final List<dynamic> jobs = docSnap.data()?['saves'] ?? [];
@@ -45,7 +45,7 @@ class JobDetailFb {
 
   Future<List<bool>> getSavedJobsStatus() async {
     final savedDoc = await _firestore
-        .collection('job_actions')
+        .collection('user_actions')
         .doc(_auth.currentUser!.uid)
         .get();
 
@@ -87,7 +87,7 @@ class JobDetailFb {
       String cvId, String companyId, String jobId, String typeCv) async {
     try {
       await _firestore
-          .collection("job_actions")
+          .collection("user_actions")
           .doc(_auth.currentUser!.uid)
           .set({
         'applied_list': FieldValue.arrayUnion([

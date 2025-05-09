@@ -994,6 +994,7 @@ class _SearchJobScreenState extends State<SearchJobScreen> {
                               final List<Map<String, dynamic>> jobPosts = [];
                               // Gọi liên tục
                               controller.fetchSavedJobIds();
+                              controller.fetchAppliedJobIds();
 
                               for (var doc in docs) {
                                 final data = doc.data() as Map<String, dynamic>;

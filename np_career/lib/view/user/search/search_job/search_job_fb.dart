@@ -21,7 +21,7 @@ class SearchJobFb {
     required String jobId,
   }) async {
     final docRef =
-        _firestore.collection('job_actions').doc(_auth.currentUser!.uid);
+        _firestore.collection('user_actions').doc(_auth.currentUser!.uid);
 
     final docSnap = await docRef.get();
     final List<dynamic> currentJobs = docSnap.data()?['saves'] ?? [];
@@ -42,7 +42,7 @@ class SearchJobFb {
     required String jobId,
   }) async {
     final docRef =
-        _firestore.collection('job_actions').doc(_auth.currentUser!.uid);
+        _firestore.collection('user_actions').doc(_auth.currentUser!.uid);
 
     final docSnap = await docRef.get();
     final List<dynamic> jobs = docSnap.data()?['saves'] ?? [];
@@ -52,7 +52,7 @@ class SearchJobFb {
 
   Future<Map<String, List>> getSavedJobsStatusAndIds() async {
     final savedDoc = await _firestore
-        .collection('job_actions')
+        .collection('user_actions')
         .doc(_auth.currentUser!.uid)
         .get();
 
@@ -95,7 +95,7 @@ class SearchJobFb {
 
   Future<List<String>> getAppliedJobIds() async {
     final appliedDoc = await _firestore
-        .collection('job_actions')
+        .collection('user_actions')
         .doc(_auth.currentUser!.uid)
         .get();
 

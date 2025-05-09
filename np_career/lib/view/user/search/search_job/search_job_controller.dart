@@ -126,6 +126,6 @@ class SearchJobController extends GetxController {
   Future<void> fetchAppliedJobIds() async {
     final result = await _fb.getAppliedJobIds();
     appliedJobIdList.value = result as List<String>;
-    print(savedJobIdList);
+    // print(savedJobIdList);
   }
 }
