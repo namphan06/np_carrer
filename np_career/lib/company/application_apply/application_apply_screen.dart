@@ -357,8 +357,7 @@ class _ApplicationApplyScreenState extends State<ApplicationApplyScreen> {
                                                         onPressed: () {
                                                           controller.sendEmail(
                                                               user['email'],
-                                                              application[
-                                                                  'response'],
+                                                              'accept',
                                                               user['username']);
                                                         },
                                                         child: Text("Yes"),
@@ -373,7 +372,30 @@ class _ApplicationApplyScreenState extends State<ApplicationApplyScreen> {
                                             SizedBox(
                                               width: size.width * 0.3,
                                               child: ElevatedButton(
-                                                onPressed: () {},
+                                                onPressed: () {
+                                                  Get.dialog(AlertDialog(
+                                                    title: Text("Send Email?"),
+                                                    content: Text(
+                                                        "Do you want to send an email notification to the applicant?"),
+                                                    actions: <Widget>[
+                                                      TextButton(
+                                                        onPressed: () {
+                                                          Get.back();
+                                                        },
+                                                        child: Text("No"),
+                                                      ),
+                                                      TextButton(
+                                                        onPressed: () {
+                                                          controller.sendEmail(
+                                                              user['email'],
+                                                              'reject',
+                                                              user['username']);
+                                                        },
+                                                        child: Text("Yes"),
+                                                      ),
+                                                    ],
+                                                  ));
+                                                },
                                                 child: Text("Reject"),
                                               ),
                                             ),

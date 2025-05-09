@@ -200,7 +200,7 @@ class _EmailSettingState extends State<EmailSetting> {
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8)),
                 ),
-                child: Text("Lưu Cấu Hình", style: TextStyle(fontSize: 16)),
+                child: Text("Save Setting", style: TextStyle(fontSize: 16)),
               ),
             ],
           ),

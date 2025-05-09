@@ -74,7 +74,7 @@ class Cv1 extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                    width: 150,
+                    width: 135,
                     decoration: BoxDecoration(color: AppColor.greenPrimaryCv1),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -108,7 +108,8 @@ class Cv1 extends StatelessWidget {
                               ),
                               _buildSkills(),
                               SizedBox(
-                                height: 245,
+                                height: 90,
+                                // 245
                               ),
                             ],
                           ),
