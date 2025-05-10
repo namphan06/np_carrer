@@ -134,110 +134,130 @@ class _InterviewScheduleScreenState extends State<InterviewScheduleScreen> {
                     final listSchedule = snapshot.data!;
 
                     return ListView.builder(
-                      padding: const EdgeInsets.symmetric(horizontal: 12),
                       itemCount: listSchedule.length,
-                      itemBuilder: (context, index) {
-                        final item = listSchedule[index];
-                        final jobName =
-                            item['jobName'] ?? 'No job name available';
-                        final cvList = item['listCv'] ?? [];
+                      itemBuilder: (context, docIndex) {
+                        final docData = listSchedule[docIndex];
+                        final docId = docData['docId'];
+                        final schedules = docData['list_schedule'] as List;
 
-                        return Obx(() {
-                          final isExpanded =
-                              controller.expandedCards.contains(index);
-
-                          return Card(
-                            margin: const EdgeInsets.symmetric(vertical: 8),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            elevation: 4,
-                            child: Column(
-                              children: [
-                                ListTile(
-                                  title: Text(
-                                    jobName,
-                                    style: const TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.bold,
-                                        color: AppColor.greenPrimaryColor),
-                                  ),
-                                  trailing: Icon(isExpanded
-                                      ? Icons.keyboard_arrow_up
-                                      : Icons.keyboard_arrow_down),
-                                  onTap: () {
-                                    isExpanded
-                                        ? controller.expandedCards.remove(index)
-                                        : controller.expandedCards.add(index);
-                                  },
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            // Hiển thị docId
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(vertical: 8.0),
+                              child: Text(
+                                'Date Interview: $docId',
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                  color: Colors.grey,
                                 ),
-                                AnimatedCrossFade(
-                                  firstChild: const SizedBox.shrink(),
-                                  secondChild: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 16, vertical: 8),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: cvList.map<Widget>((cv) {
-                                        return InkWell(
-                                          onTap: () => controller.getCv(
-                                              cv['idCv'], cv['type']),
-                                          child: Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                vertical: 4.0),
-                                            child: Row(
-                                              children: [
-                                                const Icon(Icons.person,
-                                                    color: AppColor
-                                                        .greenPrimaryColor),
-                                                const SizedBox(width: 8),
-                                                Expanded(
-                                                  child: Text(
-                                                    '${cv['userName']} (${cv['type']})',
-                                                    style: const TextStyle(
-                                                        fontSize: 16),
-                                                  ),
-                                                ),
-                                                // IconButton(
-                                                //     onPressed: () {
-                                                //       controller.getCv(
-                                                //           cv['idCv'], cv['type']);
-                                                //       // Future.delayed(
-                                                //       //     Duration(seconds: 1),
-                                                //       //     () {
-                                                //       //   controller
-                                                //       //       .captureAndSave();
-                                                //       // });
-                                                //     },
-                                                //     icon: Icon(Icons.download))
-                                                // IconButton(
-                                                //     onPressed: () {
-                                                //       controller.getCv(
-                                                //           cv['idCv'], cv['type']);
-                                                //     },
-                                                //     icon: Icon(
-                                                //       Icons.remove_red_eye,
-                                                //       color: AppColor
-                                                //           .greenPrimaryColor,
-                                                //       size: 30.0,
-                                                //     ))
-                                              ],
+                              ),
+                            ),
+                            Obx(() {
+                              return Column(
+                                children: [
+                                  ...schedules.asMap().entries.map((entry) {
+                                    final index = entry.key;
+                                    final item = entry.value;
+                                    final jobName =
+                                        item['jobName'] ?? 'No job name';
+                                    final cvList = item['listCv'] ?? [];
+
+                                    final isExpanded = controller.expandedCards
+                                        .contains(docIndex);
+
+                                    return Card(
+                                      margin: const EdgeInsets.symmetric(
+                                          vertical: 8),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(12),
+                                      ),
+                                      elevation: 4,
+                                      child: Column(
+                                        children: [
+                                          ListTile(
+                                            title: Text(
+                                              jobName,
+                                              style: const TextStyle(
+                                                  fontSize: 18,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: AppColor
+                                                      .greenPrimaryColor),
                                             ),
+                                            trailing: Icon(isExpanded
+                                                ? Icons.keyboard_arrow_up
+                                                : Icons.keyboard_arrow_down),
+                                            onTap: () {
+                                              isExpanded
+                                                  ? controller.expandedCards
+                                                      .remove(docIndex)
+                                                  : controller.expandedCards
+                                                      .add(docIndex);
+                                            },
                                           ),
-                                        );
-                                      }).toList(),
-                                    ),
-                                  ),
-                                  crossFadeState: isExpanded
-                                      ? CrossFadeState.showSecond
-                                      : CrossFadeState.showFirst,
-                                  duration: const Duration(milliseconds: 300),
-                                ),
-                              ],
-                            ),
-                          );
-                        });
+                                          AnimatedCrossFade(
+                                            firstChild: const SizedBox.shrink(),
+                                            secondChild: Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 16,
+                                                      vertical: 8),
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children:
+                                                    cvList.map<Widget>((cv) {
+                                                  return InkWell(
+                                                    onTap: () =>
+                                                        controller.getCv(
+                                                            cv['idCv'],
+                                                            cv['type']),
+                                                    child: Padding(
+                                                      padding: const EdgeInsets
+                                                          .symmetric(
+                                                          vertical: 4.0),
+                                                      child: Row(
+                                                        children: [
+                                                          const Icon(
+                                                              Icons.person,
+                                                              color: AppColor
+                                                                  .greenPrimaryColor),
+                                                          const SizedBox(
+                                                              width: 8),
+                                                          Expanded(
+                                                            child: Text(
+                                                              '${cv['userName']} (${cv['type']})',
+                                                              style:
+                                                                  const TextStyle(
+                                                                      fontSize:
+                                                                          16),
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  );
+                                                }).toList(),
+                                              ),
+                                            ),
+                                            crossFadeState: isExpanded
+                                                ? CrossFadeState.showSecond
+                                                : CrossFadeState.showFirst,
+                                            duration: const Duration(
+                                                milliseconds: 300),
+                                          ),
+                                        ],
+                                      ),
+                                    );
+                                  }).toList()
+                                ],
+                              );
+                            })
+                          ],
+                        );
                       },
                     );
                   },

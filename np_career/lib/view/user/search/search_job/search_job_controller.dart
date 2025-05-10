@@ -106,6 +106,16 @@ class SearchJobController extends GetxController {
     }).toList();
   }
 
+  void clearSearch() {
+    selectCurrencyUnit.value = '';
+    selectExperience.value = '';
+    list_type_job_category.clear();
+    list_city.clear();
+    nameController.clear();
+    minSalary.clear();
+    maxSalary.clear();
+  }
+
   Future<void> toggleSavedJobStatus(int index, String jobId) async {
     await _fb.toggleSavedJob(jobId: jobId);
     savedJobStatusList[index] = !savedJobStatusList[index];

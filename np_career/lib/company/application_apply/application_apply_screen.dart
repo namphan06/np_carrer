@@ -373,6 +373,10 @@ class _ApplicationApplyScreenState extends State<ApplicationApplyScreen> {
                                               width: size.width * 0.3,
                                               child: ElevatedButton(
                                                 onPressed: () {
+                                                  _fb.updateResponseStatus(
+                                                      application['id'],
+                                                      "Reject",
+                                                      application['userId']);
                                                   Get.dialog(AlertDialog(
                                                     title: Text("Send Email?"),
                                                     content: Text(

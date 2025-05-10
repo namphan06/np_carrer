@@ -29,6 +29,7 @@ class _SearchJobScreenState extends State<SearchJobScreen> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     controller.fetchSavedJobStatus();
+    controller.clearSearch();
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(15),
@@ -1003,10 +1004,10 @@ class _SearchJobScreenState extends State<SearchJobScreen> {
                                 for (var job in jobs) {
                                   if (widget.nameRole == "Saved Job") {
                                     // print("jobID : ${job['id']}");
-
                                     if (controller.savedJobIdList
                                         .contains(job['id'])) {
                                       // print("jobPost : ${job}");
+
                                       jobPosts.add(job as Map<String, dynamic>);
                                     }
                                   } else if (widget.nameRole == "Applied Job") {
