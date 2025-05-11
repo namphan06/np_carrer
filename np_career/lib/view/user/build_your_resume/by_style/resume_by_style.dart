@@ -458,9 +458,18 @@ class ResumeByStyle extends StatelessWidget {
                                           Spacer(),
                                           IconButton(
                                             onPressed: () {
-                                              Get.to(CvInputNo1(
-                                                type: cvNo1.label.toLowerCase(),
-                                              ));
+                                              if (cvNo1.type_input == "no1") {
+                                                Get.to(
+                                                    CvInputNo1(
+                                                        // type: cvNo1.label
+                                                        //     .toLowerCase(),
+                                                        ),
+                                                    arguments: {
+                                                      'type': cvNo1.label
+                                                          .toLowerCase(),
+                                                      'option': 'save'
+                                                    });
+                                              }
                                             },
                                             icon:
                                                 Icon(Icons.edit_note_outlined),
@@ -681,9 +690,14 @@ class ResumeByStyle extends StatelessWidget {
                                   Spacer(),
                                   IconButton(
                                     onPressed: () {
-                                      Get.to(CvInputNo1(
-                                        type: cvNo1.label.toLowerCase(),
-                                      ));
+                                      Get.to(
+                                          CvInputNo1(
+                                              // type: cvNo1.label.toLowerCase(),
+                                              ),
+                                          arguments: {
+                                            'type': cvNo1.label.toLowerCase(),
+                                            'option': 'ssave'
+                                          });
                                     },
                                     icon: Icon(Icons.edit_note_outlined),
                                     iconSize: 40,

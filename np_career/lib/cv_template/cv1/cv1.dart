@@ -74,13 +74,13 @@ class Cv1 extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                    width: 135,
+                    width: 155,
                     decoration: BoxDecoration(color: AppColor.greenPrimaryCv1),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Container(
-                          width: 150,
+                          width: 155,
                           child: ClipRRect(
                               child: Image.asset(
                             "assets/images_cv/pro_1_v2.webp",

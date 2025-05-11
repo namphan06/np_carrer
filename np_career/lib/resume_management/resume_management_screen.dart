@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:np_career/core/app_color.dart';
+import 'package:np_career/cv_no1/cv_input_no1/cv_input_no1.dart';
+import 'package:np_career/model/cv_model.dart';
 import 'package:np_career/resume_management/resume_management_controller.dart';
 import 'package:np_career/resume_management/resume_management_fb.dart';
 import 'package:np_career/view/pdf_viewr.dart';
@@ -366,21 +368,34 @@ class _ResumeManagementScreenState extends State<ResumeManagementScreen> {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
-                                  Container(
-                                    decoration: BoxDecoration(
-                                        border: Border.all(
-                                            color: AppColor.greenPrimaryColor,
-                                            width: 3),
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(15)),
-                                        color: AppColor.greyColor),
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(10),
-                                      child: Text(
-                                        "Update",
-                                        style: TextStyle(
-                                            color: AppColor.greenPrimaryColor,
-                                            fontWeight: FontWeight.bold),
+                                  GestureDetector(
+                                    onTap: () async {
+                                      CvModel model = await controllerFb
+                                          .getCvModel(e['id'], e['type']);
+                                      if (e['typeInput'] == 'no1') {
+                                        Get.to(CvInputNo1(), arguments: {
+                                          'model': model,
+                                          'type': e['type'],
+                                          'option': 'update'
+                                        });
+                                      }
+                                    },
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                          border: Border.all(
+                                              color: AppColor.greenPrimaryColor,
+                                              width: 3),
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(15)),
+                                          color: AppColor.greyColor),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(10),
+                                        child: Text(
+                                          "Update",
+                                          style: TextStyle(
+                                              color: AppColor.greenPrimaryColor,
+                                              fontWeight: FontWeight.bold),
+                                        ),
                                       ),
                                     ),
                                   ),
@@ -686,6 +701,4 @@ class _ResumeManagementScreenState extends State<ResumeManagementScreen> {
       ),
     );
   }
-
- 
 }

@@ -5,11 +5,12 @@ import 'package:np_career/core/app_color.dart';
 import 'package:np_career/cv_no1/cv_input_no1/cv_input_no1_controller.dart';
 import 'package:np_career/cv_template/cv_setting/cv_setting_no1.dart';
 import 'package:np_career/enum/enum_sex.dart';
+import 'package:np_career/resume_management/resume_management_screen.dart';
 import 'package:np_career/view/user/build_your_resume/by_style/resume_by_style.dart';
 
 class CvInputNo1 extends StatefulWidget {
-  final String type;
-  const CvInputNo1({required this.type});
+  // final String type;
+  const CvInputNo1();
 
   @override
   State<CvInputNo1> createState() => _CvInputNo1State();
@@ -32,6 +33,12 @@ class _CvInputNo1State extends State<CvInputNo1> {
           icon: Icon(
             Icons.arrow_back_ios,
             color: AppColor.lightBackgroundColor,
+          ),
+        ),
+        title: Center(
+          child: Text(
+            controller.choiceType.value.toUpperCase(),
+            style: TextStyle(color: AppColor.greenPrimaryColor),
           ),
         ),
         actions: [
@@ -62,10 +69,27 @@ class _CvInputNo1State extends State<CvInputNo1> {
                   SizedBox(
                     width: 100,
                     child: ElevatedButton(
-                      onPressed: () {
-                        controller.addCv(widget.type);
-                        Get.back();
-                        Get.to(ResumeByStyle());
+                      onPressed: () async {
+                        print(
+                            "===> optionAction: '${controller.optionAction.value}'");
+
+                        if (controller.optionAction.value == 'save') {
+                          print("===> Save block");
+                          await controller.addCv(
+                              controller.choiceType.value, 'no1');
+                          Get.back();
+                          Get.off(ResumeByStyle());
+                        } else if (controller.optionAction.value == 'update') {
+                          print("===> Update block");
+                          await controller
+                              .updateCv(controller.choiceType.value);
+                          Get.back();
+                          Get.back();
+                          Get.off(ResumeManagementScreen());
+                        } else {
+                          print(
+                              "===> Unknown option: ${controller.optionAction.value}");
+                        }
                       },
                       child: Text(
                         "Submit",
@@ -442,8 +466,8 @@ class _CvInputNo1State extends State<CvInputNo1> {
                                     Align(
                                       alignment: Alignment.centerRight,
                                       child: GestureDetector(
-                                        onTap: () => controller
-                                            .removeRowCertificate(index),
+                                        onTap: () =>
+                                            controller.removeRowSkill(index),
                                         child: Container(
                                           margin: EdgeInsets.all(5),
                                           padding: EdgeInsets.all(12),
@@ -740,135 +764,150 @@ class _CvInputNo1State extends State<CvInputNo1> {
                   physics: NeverScrollableScrollPhysics(),
                   itemCount: controller.listKnowledge.length,
                   itemBuilder: (context, index) {
-                    return Container(
-                      padding: EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                          border: Border.all(
-                              color: AppColor.orangePrimaryColor, width: 3),
-                          borderRadius: BorderRadius.all(Radius.circular(15))),
-                      child: Column(
-                        children: [
-                          Align(
-                            alignment: Alignment.centerRight,
-                            child: GestureDetector(
-                              onTap: () => controller.removeRowKnowledge(index),
-                              child: Container(
-                                margin: EdgeInsets.all(8),
-                                padding: EdgeInsets.all(8),
-                                decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: AppColor.orangeRedColor),
-                                child: const Icon(
-                                  Icons.close,
-                                  size: 20,
-                                  color: AppColor.lightBackgroundColor,
-                                  weight: 5,
-                                ),
-                              ),
-                            ),
-                          ),
-                          Row(
+                    return Column(
+                      children: [
+                        Container(
+                          padding: EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                              border: Border.all(
+                                  color: AppColor.orangePrimaryColor, width: 3),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(15))),
+                          child: Column(
                             children: [
-                              SizedBox(
-                                width: size.width * 0.408,
-                                child: TextField(
-                                  controller: controller.listKnowledge[index]
-                                      ['school'] as TextEditingController,
-                                  style: TextStyle(
-                                    color: AppColor.greenPrimaryColor,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                  decoration:
-                                      InputDecoration(label: Text("School")),
-                                ),
-                              ),
-                              SizedBox(width: 15),
-                              SizedBox(
-                                width: size.width * 0.408,
-                                child: TextField(
-                                  controller: controller.listKnowledge[index]
-                                      ['date'] as TextEditingController,
-                                  keyboardType: TextInputType.number,
-                                  style: TextStyle(
-                                    color: AppColor.greenPrimaryColor,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                  decoration:
-                                      InputDecoration(label: Text("Date")),
-                                ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(height: 10),
-                          Obx(
-                            () => Column(
-                              children: [
-                                for (int i = 0;
-                                    i <
-                                        (controller.listKnowledge[index]['list']
-                                                as RxList<
-                                                    TextEditingController>)
-                                            .length;
-                                    i++)
-                                  Column(
-                                    children: [
-                                      TextField(
-                                        controller: controller
-                                            .listKnowledge[index]['list'][i],
-                                        decoration: InputDecoration(
-                                          labelText: "Detail ${i + 1}",
-                                          suffixIcon: GestureDetector(
-                                            onTap: () {
-                                              controller
-                                                  .removeDetailFromKnowledge(
-                                                      index, i);
-                                            },
-                                            child: Container(
-                                              margin: const EdgeInsets.all(8),
-                                              decoration: BoxDecoration(
-                                                shape: BoxShape.circle,
-                                                color: Colors.grey[300],
-                                              ),
-                                              child: const Icon(Icons.close,
-                                                  size: 20),
-                                            ),
-                                          ),
-                                        ),
-                                        onChanged: (val) =>
-                                            controller.updateDetailInListK(
-                                          index,
-                                          i,
-                                          val,
-                                        ),
-                                      ),
-                                      SizedBox(height: 10),
-                                    ],
-                                  ),
-                                const SizedBox(height: 5),
-                                Center(
-                                  child: SizedBox(
-                                    width: size.width * 0.5,
-                                    child: ElevatedButton(
-                                      onPressed: () =>
-                                          controller.addDetailToListK(index),
-                                      child: Text(
-                                        "ADD DETAIL",
-                                        style: TextStyle(
-                                          color: AppColor.lightBackgroundColor,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
+                              Align(
+                                alignment: Alignment.centerRight,
+                                child: GestureDetector(
+                                  onTap: () =>
+                                      controller.removeRowKnowledge(index),
+                                  child: Container(
+                                    margin: EdgeInsets.all(size.width * 0.02),
+                                    padding: EdgeInsets.all(size.width * 0.02),
+                                    decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: AppColor.orangeRedColor),
+                                    child: const Icon(
+                                      Icons.close,
+                                      size: 20,
+                                      color: AppColor.lightBackgroundColor,
+                                      weight: 5,
                                     ),
                                   ),
                                 ),
-                                SizedBox(
-                                  height: 10,
-                                )
-                              ],
-                            ),
-                          )
-                        ],
-                      ),
+                              ),
+                              Row(
+                                children: [
+                                  SizedBox(
+                                    width: size.width * 0.435,
+                                    child: TextField(
+                                      controller: controller
+                                              .listKnowledge[index]['school']
+                                          as TextEditingController,
+                                      style: TextStyle(
+                                        color: AppColor.greenPrimaryColor,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                      decoration: InputDecoration(
+                                          label: Text("School")),
+                                    ),
+                                  ),
+                                  SizedBox(width: size.width * 0.03),
+                                  SizedBox(
+                                    width: size.width * 0.435,
+                                    child: TextField(
+                                      controller:
+                                          controller.listKnowledge[index]
+                                              ['date'] as TextEditingController,
+                                      keyboardType: TextInputType.number,
+                                      style: TextStyle(
+                                        color: AppColor.greenPrimaryColor,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                      decoration:
+                                          InputDecoration(label: Text("Date")),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(height: 10),
+                              Obx(
+                                () => Column(
+                                  children: [
+                                    for (int i = 0;
+                                        i <
+                                            (controller.listKnowledge[index]
+                                                        ['list']
+                                                    as RxList<
+                                                        TextEditingController>)
+                                                .length;
+                                        i++)
+                                      Column(
+                                        children: [
+                                          TextField(
+                                            controller:
+                                                controller.listKnowledge[index]
+                                                    ['list'][i],
+                                            decoration: InputDecoration(
+                                              labelText: "Detail ${i + 1}",
+                                              suffixIcon: GestureDetector(
+                                                onTap: () {
+                                                  controller
+                                                      .removeDetailFromKnowledge(
+                                                          index, i);
+                                                },
+                                                child: Container(
+                                                  margin:
+                                                      const EdgeInsets.all(8),
+                                                  decoration: BoxDecoration(
+                                                    shape: BoxShape.circle,
+                                                    color: Colors.grey[300],
+                                                  ),
+                                                  child: const Icon(Icons.close,
+                                                      size: 20),
+                                                ),
+                                              ),
+                                            ),
+                                            onChanged: (val) =>
+                                                controller.updateDetailInListK(
+                                              index,
+                                              i,
+                                              val,
+                                            ),
+                                          ),
+                                          SizedBox(height: 10),
+                                        ],
+                                      ),
+                                    const SizedBox(height: 5),
+                                    Center(
+                                      child: SizedBox(
+                                        width: size.width * 0.5,
+                                        child: ElevatedButton(
+                                          onPressed: () => controller
+                                              .addDetailToListK(index),
+                                          child: Text(
+                                            "ADD DETAIL",
+                                            style: TextStyle(
+                                              color:
+                                                  AppColor.lightBackgroundColor,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 10,
+                                    )
+                                  ],
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        )
+                      ],
                     );
                   },
                 ),
@@ -916,146 +955,159 @@ class _CvInputNo1State extends State<CvInputNo1> {
                   physics: NeverScrollableScrollPhysics(),
                   itemCount: controller.listActivities.length,
                   itemBuilder: (context, index) {
-                    return Container(
-                      padding: EdgeInsets.all(size.width * 0.02),
-                      decoration: BoxDecoration(
-                          border: Border.all(
-                              color: AppColor.orangePrimaryColor, width: 3),
-                          borderRadius: BorderRadius.all(Radius.circular(15))),
-                      child: Column(
-                        children: [
-                          Align(
-                            alignment: Alignment.centerRight,
-                            child: GestureDetector(
-                              onTap: () =>
-                                  controller.removeRowActivities(index),
-                              child: Container(
-                                margin: EdgeInsets.all(size.width * 0.02),
-                                padding: EdgeInsets.all(size.width * 0.02),
-                                decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: AppColor.orangeRedColor),
-                                child: const Icon(
-                                  Icons.close,
-                                  size: 20,
-                                  color: AppColor.lightBackgroundColor,
-                                  weight: 5,
-                                ),
-                              ),
-                            ),
-                          ),
-                          Row(
+                    return Column(
+                      children: [
+                        Container(
+                          padding: EdgeInsets.all(size.width * 0.02),
+                          decoration: BoxDecoration(
+                              border: Border.all(
+                                  color: AppColor.orangePrimaryColor, width: 3),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(15))),
+                          child: Column(
                             children: [
-                              SizedBox(
-                                width: size.width * 0.435,
-                                child: TextField(
-                                  controller: controller.listActivities[index]
-                                      ['name'] as TextEditingController,
-                                  style: TextStyle(
-                                    color: AppColor.greenPrimaryColor,
-                                    fontWeight: FontWeight.bold,
+                              Align(
+                                alignment: Alignment.centerRight,
+                                child: GestureDetector(
+                                  onTap: () =>
+                                      controller.removeRowActivities(index),
+                                  child: Container(
+                                    margin: EdgeInsets.all(size.width * 0.02),
+                                    padding: EdgeInsets.all(size.width * 0.02),
+                                    decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: AppColor.orangeRedColor),
+                                    child: const Icon(
+                                      Icons.close,
+                                      size: 20,
+                                      color: AppColor.lightBackgroundColor,
+                                      weight: 5,
+                                    ),
                                   ),
-                                  decoration:
-                                      InputDecoration(label: Text("Name")),
                                 ),
                               ),
-                              SizedBox(width: size.width * 0.03),
-                              SizedBox(
-                                width: size.width * 0.435,
-                                child: TextField(
-                                  controller: controller.listActivities[index]
-                                      ['date'] as TextEditingController,
-                                  keyboardType: TextInputType.number,
-                                  style: TextStyle(
-                                    color: AppColor.greenPrimaryColor,
-                                    fontWeight: FontWeight.bold,
+                              Row(
+                                children: [
+                                  SizedBox(
+                                    width: size.width * 0.435,
+                                    child: TextField(
+                                      controller:
+                                          controller.listActivities[index]
+                                              ['name'] as TextEditingController,
+                                      style: TextStyle(
+                                        color: AppColor.greenPrimaryColor,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                      decoration:
+                                          InputDecoration(label: Text("Name")),
+                                    ),
                                   ),
-                                  decoration:
-                                      InputDecoration(label: Text("Date")),
+                                  SizedBox(width: size.width * 0.03),
+                                  SizedBox(
+                                    width: size.width * 0.435,
+                                    child: TextField(
+                                      controller:
+                                          controller.listActivities[index]
+                                              ['date'] as TextEditingController,
+                                      keyboardType: TextInputType.number,
+                                      style: TextStyle(
+                                        color: AppColor.greenPrimaryColor,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                      decoration:
+                                          InputDecoration(label: Text("Date")),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(height: 10),
+                              TextField(
+                                controller: controller.listActivities[index]
+                                    ['position'] as TextEditingController,
+                                style: TextStyle(
+                                  color: AppColor.greenPrimaryColor,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                decoration: InputDecoration(
+                                  label: Text("Position"),
+                                ),
+                              ),
+                              SizedBox(height: 10),
+                              Obx(
+                                () => Column(
+                                  children: [
+                                    for (int i = 0;
+                                        i <
+                                            (controller.listActivities[index]
+                                                        ['list']
+                                                    as RxList<
+                                                        TextEditingController>)
+                                                .length;
+                                        i++)
+                                      Column(
+                                        children: [
+                                          TextField(
+                                            controller:
+                                                controller.listActivities[index]
+                                                    ['list'][i],
+                                            decoration: InputDecoration(
+                                              labelText: "Detail ${i + 1}",
+                                              suffixIcon: GestureDetector(
+                                                onTap: () {
+                                                  controller
+                                                      .removeDetailFromActivities(
+                                                          index, i);
+                                                },
+                                                child: Container(
+                                                  margin:
+                                                      const EdgeInsets.all(8),
+                                                  decoration: BoxDecoration(
+                                                    shape: BoxShape.circle,
+                                                    color: Colors.grey[300],
+                                                  ),
+                                                  child: const Icon(Icons.close,
+                                                      size: 20),
+                                                ),
+                                              ),
+                                            ),
+                                            onChanged: (val) =>
+                                                controller.updateDetailInListA(
+                                              index,
+                                              i,
+                                              val,
+                                            ),
+                                          ),
+                                          SizedBox(height: 10),
+                                        ],
+                                      ),
+                                    const SizedBox(height: 5),
+                                    Center(
+                                      child: SizedBox(
+                                        width: size.width * 0.5,
+                                        child: ElevatedButton(
+                                          onPressed: () => controller
+                                              .addDetailToListA(index),
+                                          child: Text(
+                                            "ADD DETAIL",
+                                            style: TextStyle(
+                                              color:
+                                                  AppColor.lightBackgroundColor,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ],
                           ),
-                          SizedBox(height: 10),
-                          TextField(
-                            controller: controller.listActivities[index]
-                                ['position'] as TextEditingController,
-                            style: TextStyle(
-                              color: AppColor.greenPrimaryColor,
-                              fontWeight: FontWeight.bold,
-                            ),
-                            decoration: InputDecoration(
-                              label: Text("Position"),
-                            ),
-                          ),
-                          SizedBox(height: 10),
-                          Obx(
-                            () => Column(
-                              children: [
-                                for (int i = 0;
-                                    i <
-                                        (controller.listActivities[index]
-                                                    ['list']
-                                                as RxList<
-                                                    TextEditingController>)
-                                            .length;
-                                    i++)
-                                  Column(
-                                    children: [
-                                      TextField(
-                                        controller: controller
-                                            .listActivities[index]['list'][i],
-                                        decoration: InputDecoration(
-                                          labelText: "Detail ${i + 1}",
-                                          suffixIcon: GestureDetector(
-                                            onTap: () {
-                                              controller
-                                                  .removeDetailFromActivities(
-                                                      index, i);
-                                            },
-                                            child: Container(
-                                              margin: const EdgeInsets.all(8),
-                                              decoration: BoxDecoration(
-                                                shape: BoxShape.circle,
-                                                color: Colors.grey[300],
-                                              ),
-                                              child: const Icon(Icons.close,
-                                                  size: 20),
-                                            ),
-                                          ),
-                                        ),
-                                        onChanged: (val) =>
-                                            controller.updateDetailInListA(
-                                          index,
-                                          i,
-                                          val,
-                                        ),
-                                      ),
-                                      SizedBox(height: 10),
-                                    ],
-                                  ),
-                                const SizedBox(height: 5),
-                                Center(
-                                  child: SizedBox(
-                                    width: size.width * 0.5,
-                                    child: ElevatedButton(
-                                      onPressed: () =>
-                                          controller.addDetailToListA(index),
-                                      child: Text(
-                                        "ADD DETAIL",
-                                        style: TextStyle(
-                                          color: AppColor.lightBackgroundColor,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        )
+                      ],
                     );
                   },
                 ),

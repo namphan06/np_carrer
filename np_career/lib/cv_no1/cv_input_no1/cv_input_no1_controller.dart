@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:np_career/cv_no1/cv_input_no1/cv_input_no1_fb.dart';
 import 'package:np_career/model/activity.dart';
 import 'package:np_career/model/award.dart';
@@ -17,6 +18,10 @@ class CvInputNo1Controller extends GetxController {
   var choiceSex = false.obs;
   var selectSex = "".obs;
   final imageUrl = ''.obs;
+  final choiceType = ''.obs;
+  final optionAction = 'save'.obs;
+  String idCv = '';
+  RxString searchQuery = ''.obs;
 
   TextEditingController linkImgController = TextEditingController();
   TextEditingController fullNameController = TextEditingController();
@@ -28,6 +33,96 @@ class CvInputNo1Controller extends GetxController {
   TextEditingController occupationalGoalsController = TextEditingController();
   TextEditingController moreInformationController = TextEditingController();
   TextEditingController introducerController = TextEditingController();
+
+  String formatDate(Timestamp timestamp) {
+    DateTime date = timestamp.toDate();
+    return DateFormat('dd-MM-yyyy').format(date);
+  }
+
+  @override
+  void onInit() {
+    super.onInit();
+    choiceType.value = Get.arguments['type'] ?? '';
+
+    CvModel? model = Get.arguments['model'];
+    print(model);
+
+    if (model != null) {
+      selectDate.value = model.dateOfBirth.toDate();
+      imageUrl.value = model.linkImage ?? '';
+      linkImgController.text = model.linkImage ?? '';
+      fullNameController.text = model.fullName ?? '';
+      positionController.text = model.position ?? '';
+      phoneNumberController.text = model.phoneNumber ?? '';
+      emailController.text = model.email ?? '';
+      addressController.text = model.address ?? '';
+      websiteController.text = model.website ?? '';
+      occupationalGoalsController.text = model.occupationalGoals ?? '';
+      moreInformationController.text = model.moreInformation ?? '';
+      introducerController.text = model.introducer ?? '';
+      selectSex.value = model.sex;
+      idCv = model.uid;
+
+      listSkill.value = (model.skills ?? []).map((skill) {
+        return {
+          "name": TextEditingController(text: skill.name ?? ''),
+          "indicator":
+              TextEditingController(text: skill.indicator?.toString() ?? '0'),
+        };
+      }).toList();
+
+      listWorkExperience.value = (model.workExperience ?? []).map((work) {
+        return {
+          "company": TextEditingController(text: work.company ?? ''),
+          "date": TextEditingController(text: work.date ?? ''),
+          "position": TextEditingController(text: work.position ?? ''),
+          "list": (work.list ?? [])
+              .map((e) => TextEditingController(text: e ?? ''))
+              .toList()
+              .obs,
+        };
+      }).toList();
+
+      listActivities.value = (model.activities ?? []).map((activity) {
+        return {
+          "name": TextEditingController(text: activity.name ?? ''),
+          "date": TextEditingController(text: activity.date ?? ''),
+          "position": TextEditingController(text: activity.position ?? ''),
+          "list": (activity.list ?? [])
+              .map((e) => TextEditingController(text: e ?? ''))
+              .toList()
+              .obs,
+        };
+      }).toList();
+
+      listAward.value = (model.award ?? []).map((award) {
+        return {
+          "name": TextEditingController(text: award.name ?? ''),
+          "date": TextEditingController(text: award.date ?? ''),
+        };
+      }).toList();
+
+      listCertificate.value = (model.certificate ?? []).map((certificate) {
+        return {
+          "name": TextEditingController(text: certificate.name ?? ''),
+          "date": TextEditingController(text: certificate.date ?? ''),
+        };
+      }).toList();
+
+      listKnowledge.value = (model.knowledge ?? []).map((knowledge) {
+        return {
+          "school": TextEditingController(text: knowledge.school ?? ''),
+          "date": TextEditingController(text: knowledge.date ?? ''),
+          "list": (knowledge.list ?? [])
+              .map((e) => TextEditingController(text: e ?? ''))
+              .toList()
+              .obs,
+        };
+      }).toList();
+    }
+
+    optionAction.value = Get.arguments['option'] ?? '';
+  }
 
   RxList<Map<String, dynamic>> listSkill = <Map<String, dynamic>>[
     {"name": TextEditingController(), "indicator": TextEditingController()}
@@ -137,7 +232,7 @@ class CvInputNo1Controller extends GetxController {
     listSkill.add({
       "name": TextEditingController(),
       "indicator": TextEditingController()
-    });
+    }.obs);
   }
 
   void updateNameSkill(int index, String name) {
@@ -202,7 +297,7 @@ class CvInputNo1Controller extends GetxController {
       "school": TextEditingController(),
       "date": TextEditingController(),
       "list": <TextEditingController>[].obs
-    });
+    }.obs);
   }
 
   void updateSchoolKnowledge(int index, String school) {
@@ -249,7 +344,7 @@ class CvInputNo1Controller extends GetxController {
       "date": TextEditingController(),
       "position": TextEditingController(),
       "list": <TextEditingController>[].obs
-    });
+    }.obs);
   }
 
   void updateNameActivities(int index, String name) {
@@ -296,7 +391,7 @@ class CvInputNo1Controller extends GetxController {
   // Award
   void addRowAward() {
     listAward.add(
-        {"name": TextEditingController(), "date": TextEditingController()});
+        {"name": TextEditingController(), "date": TextEditingController()}.obs);
   }
 
   void updateNameAward(int index, String name) {
@@ -318,7 +413,7 @@ class CvInputNo1Controller extends GetxController {
   // Certificate
   void addRowCertificate() {
     listCertificate.add(
-        {"name": TextEditingController(), "date": TextEditingController()});
+        {"name": TextEditingController(), "date": TextEditingController()}.obs);
   }
 
   void updateNameCertificate(int index, String name) {
@@ -341,7 +436,7 @@ class CvInputNo1Controller extends GetxController {
     return Timestamp.fromDate(date);
   }
 
-  Future<void> addCv(String type) async {
+  Future<void> addCv(String type, String type_input) async {
     try {
       var uuid = Uuid();
       String randomId = uuid.v4();
@@ -367,9 +462,67 @@ class CvInputNo1Controller extends GetxController {
           introducer: introducerController.text,
           type: type);
 
-      cvInputNo1Fb.createCvNo1(cvModel, type);
+      cvInputNo1Fb.createCvNo1(cvModel, type, type_input);
     } catch (err) {
       Get.snackbar("Error", err.toString());
+    }
+  }
+
+  Future<void> updateCv(String type) async {
+    try {
+      print("===> Đã vào hàm updateCv với type: $type");
+
+      CvModel cvModel = CvModel(
+        uid: idCv,
+        linkImage: imageUrl.value,
+        fullName: fullNameController.text,
+        position: positionController.text,
+        dateOfBirth: convertToTimestamp(selectDate.value!),
+        sex: selectSex.value,
+        phoneNumber: phoneNumberController.text,
+        email: emailController.text,
+        address: addressController.text,
+        website: websiteController.text,
+        occupationalGoals: occupationalGoalsController.text,
+        skills: skillList,
+        workExperience: workExperienceList,
+        knowledge: knowledgeList,
+        activities: activityList,
+        award: awardList,
+        certificate: certificateList,
+        moreInformation: moreInformationController.text,
+        introducer: introducerController.text,
+        type: type,
+      );
+
+      // Print out each field of cvModel
+      print("===> cvModel details:");
+      print("uid: ${cvModel.uid}");
+      print("linkImage: ${cvModel.linkImage}");
+      print("fullName: ${cvModel.fullName}");
+      print("position: ${cvModel.position}");
+      print("dateOfBirth: ${cvModel.dateOfBirth}");
+      print("sex: ${cvModel.sex}");
+      print("phoneNumber: ${cvModel.phoneNumber}");
+      print("email: ${cvModel.email}");
+      print("address: ${cvModel.address}");
+      print("website: ${cvModel.website}");
+      print("occupationalGoals: ${cvModel.occupationalGoals}");
+      print("skills: ${cvModel.skills}");
+      print("workExperience: ${cvModel.workExperience}");
+      print("knowledge: ${cvModel.knowledge}");
+      print("activities: ${cvModel.activities}");
+      print("award: ${cvModel.award}");
+      print("certificate: ${cvModel.certificate}");
+      print("moreInformation: ${cvModel.moreInformation}");
+      print("introducer: ${cvModel.introducer}");
+      print("type: ${cvModel.type}");
+
+      print("===> cvInputNo1Fb: $cvInputNo1Fb");
+      await cvInputNo1Fb.updateCvNo1(cvModel, type);
+      print("success");
+    } catch (err) {
+      Get.snackbar("Error update", err.toString());
     }
   }
 }
