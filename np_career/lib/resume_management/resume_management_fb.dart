@@ -67,4 +67,30 @@ class ResumeManagementFb {
         await _firestore.collection("upload_cv").doc(uid).get();
     return doc.get('link') as String;
   }
+
+  Future<void> deleteCvNo1(String uid, String type) async {
+    try {
+      // Xóa CV khỏi collection theo type
+      await _firestore.collection(type).doc(uid).delete();
+
+      // Lấy document người dùng hiện tại
+      final userDoc =
+          _firestore.collection("cv_user").doc(_auth.currentUser!.uid);
+      final snapshot = await userDoc.get();
+
+      if (snapshot.exists && snapshot.data() != null) {
+        List<dynamic> existingCvs = snapshot.data()!['cvs'] ?? [];
+
+        // Lọc ra danh sách mới không chứa CV cần xóa
+        existingCvs.removeWhere((cv) => cv['id'] == uid);
+
+        // Cập nhật lại danh sách CV
+        await userDoc.update({'cvs': existingCvs});
+      }
+
+      Get.snackbar("Success", "CV deleted successfully");
+    } catch (err) {
+      Get.snackbar("Error", "Fail to delete CV");
+    }
+  }
 }

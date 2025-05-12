@@ -74,7 +74,13 @@ class _CreateJobPostState extends State<CreateJobPost> {
                     width: 100,
                     child: ElevatedButton(
                       onPressed: () {
-                        controller.createJobPost(widget.nameCompany);
+                        if (controller.optionAction == 'save') {
+                          controller.createJobPost(widget.nameCompany);
+                        } else if (controller.optionAction == 'update') {
+                          controller.updateJobPost(widget.nameCompany);
+                        } else {
+                          print("Don't have option action");
+                        }
                         Get.offAll(HomeCompany());
                       },
                       child: Text(

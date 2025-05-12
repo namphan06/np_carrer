@@ -400,22 +400,59 @@ class _ResumeManagementScreenState extends State<ResumeManagementScreen> {
                                     ),
                                   ),
                                   SizedBox(width: 5),
-                                  Container(
-                                    decoration: BoxDecoration(
-                                        border: Border.all(
-                                            color: AppColor.greenPrimaryColor,
-                                            width: 3),
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(15)),
-                                        color: Colors.redAccent),
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(10),
-                                      child: Text(
-                                        "Delete",
-                                        style: TextStyle(
-                                            color:
-                                                AppColor.lightBackgroundColor,
-                                            fontWeight: FontWeight.bold),
+                                  GestureDetector(
+                                    onTap: () => Get.defaultDialog(
+                                      title: "Delete Confirmation",
+                                      titleStyle: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 20),
+                                      middleText:
+                                          "Are you sure you want to delete this job post?",
+                                      middleTextStyle: TextStyle(fontSize: 16),
+                                      backgroundColor: Colors.white,
+                                      radius: 10,
+                                      textConfirm: "Yes, delete",
+                                      textCancel: "Cancel",
+                                      confirmTextColor: Colors.white,
+                                      buttonColor: Colors.redAccent,
+                                      cancelTextColor: Colors.grey[700],
+                                      onConfirm: () async {
+                                        Get.back();
+                                        await controllerFb.deleteCvNo1(
+                                            e['id'], e['type']);
+                                      },
+                                      onCancel: () {},
+                                      content: Column(
+                                        children: [
+                                          Icon(Icons.warning_amber_rounded,
+                                              color: Colors.red, size: 48),
+                                          const SizedBox(height: 10),
+                                          Text(
+                                            "This action cannot be undone.",
+                                            style: TextStyle(
+                                                color: Colors.redAccent),
+                                            textAlign: TextAlign.center,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                          border: Border.all(
+                                              color: AppColor.greenPrimaryColor,
+                                              width: 3),
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(15)),
+                                          color: Colors.redAccent),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(10),
+                                        child: Text(
+                                          "Delete",
+                                          style: TextStyle(
+                                              color:
+                                                  AppColor.lightBackgroundColor,
+                                              fontWeight: FontWeight.bold),
+                                        ),
                                       ),
                                     ),
                                   ),

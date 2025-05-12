@@ -81,7 +81,7 @@ class _ManagementJobPostState extends State<ManagementJobPost> {
                     final minSalary = job['minSalary'];
                     final maxSalary = job['maxSalary'];
                     final currency = job['currencyUnit'] ?? '';
-
+                    final jobId = job['id'];
                     String salary;
                     final List<RxBool> isExpandedList =
                         controller.createExpandedList(jobPosts.length);
@@ -219,7 +219,51 @@ class _ManagementJobPostState extends State<ManagementJobPost> {
                                               visualDensity:
                                                   VisualDensity.compact,
                                               onPressed: () {
-                                                // delete logic
+                                                Get.defaultDialog(
+                                                  title: "Delete Confirmation",
+                                                  titleStyle: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      fontSize: 20),
+                                                  middleText:
+                                                      "Are you sure you want to delete this job post?",
+                                                  middleTextStyle:
+                                                      TextStyle(fontSize: 16),
+                                                  backgroundColor: Colors.white,
+                                                  radius: 10,
+                                                  textConfirm: "Yes, delete",
+                                                  textCancel: "Cancel",
+                                                  confirmTextColor:
+                                                      Colors.white,
+                                                  buttonColor: Colors.redAccent,
+                                                  cancelTextColor:
+                                                      Colors.grey[700],
+                                                  onConfirm: () async {
+                                                    Get.back();
+                                                    await _fb
+                                                        .deleteJobPost(jobId);
+                                                  },
+                                                  onCancel: () {},
+                                                  content: Column(
+                                                    children: [
+                                                      Icon(
+                                                          Icons
+                                                              .warning_amber_rounded,
+                                                          color: Colors.red,
+                                                          size: 48),
+                                                      const SizedBox(
+                                                          height: 10),
+                                                      Text(
+                                                        "This action cannot be undone.",
+                                                        style: TextStyle(
+                                                            color: Colors
+                                                                .redAccent),
+                                                        textAlign:
+                                                            TextAlign.center,
+                                                      ),
+                                                    ],
+                                                  ),
+                                                );
                                               },
                                             ),
                                           ),
@@ -232,7 +276,14 @@ class _ManagementJobPostState extends State<ManagementJobPost> {
                                               visualDensity:
                                                   VisualDensity.compact,
                                               onPressed: () {
-                                                // edit logic
+                                                Get.to(
+                                                    CreateJobPost(
+                                                        nameCompany:
+                                                            companyName),
+                                                    arguments: {
+                                                      'type': 'update',
+                                                      'jobId': jobId,
+                                                    });
                                               },
                                             ),
                                           ),
@@ -302,8 +353,9 @@ class _ManagementJobPostState extends State<ManagementJobPost> {
             bottom: 10,
             right: 25,
             child: GestureDetector(
-              onTap: () =>
-                  Get.to(CreateJobPost(nameCompany: widget.nameCompany)),
+              onTap: () => Get.to(
+                  CreateJobPost(nameCompany: widget.nameCompany),
+                  arguments: {'type': 'save'}),
               child: Container(
                 padding: EdgeInsets.all(10),
                 decoration: BoxDecoration(

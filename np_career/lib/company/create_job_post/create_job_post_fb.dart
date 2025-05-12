@@ -45,4 +45,51 @@ class CreateJobPostFb {
       Get.snackbar("Error", "Fail create job post");
     }
   }
+
+  Future<void> updateJobPost(
+      String jobId, JobPostModel updatedModel, String nameCompany) async {
+    try {
+      final jobDoc = _firestore.collection("jobs").doc(jobId);
+      final userDoc =
+          _firestore.collection("job_company").doc(_auth.currentUser!.uid);
+
+      // Cập nhật thông tin chi tiết job
+      await jobDoc.update({
+        ...updatedModel.toJson(),
+      });
+
+      // Cập nhật thông tin trong job_company
+      final snapshot = await userDoc.get();
+      if (snapshot.exists && snapshot.data() != null) {
+        List<dynamic> jps = snapshot.data()!['jps'] ?? [];
+
+        for (int i = 0; i < jps.length; i++) {
+          if (jps[i]['id'] == jobId) {
+            jps[i] = {
+              'id': jobId,
+              'name': updatedModel.name,
+              'city': updatedModel.city,
+              'minSalary': updatedModel.minSalary,
+              'maxSalary': updatedModel.maxSalary,
+              'nameCompany': nameCompany,
+              'currencyUnit': updatedModel.currencyUnit,
+              'experience': updatedModel.experience,
+              'jobInterests': updatedModel.jobInterests,
+              'companyId': _auth.currentUser!.uid
+            };
+            break;
+          }
+        }
+
+        await userDoc.update({'jps': jps});
+      }
+    } catch (err) {
+      Get.snackbar("Error", "Fail update job post");
+    }
+  }
+
+  Future<JobPostModel> getDataJob(String jobId) async {
+    DocumentSnapshot doc = await _firestore.collection("jobs").doc(jobId).get();
+    return JobPostModel.fromSnap(doc);
+  }
 }
