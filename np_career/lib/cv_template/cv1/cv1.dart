@@ -108,7 +108,7 @@ class Cv1 extends StatelessWidget {
                               ),
                               _buildSkills(),
                               SizedBox(
-                                height: 90,
+                                height: 245,
                                 // 245
                               ),
                             ],
@@ -128,12 +128,14 @@ class Cv1 extends StatelessWidget {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
-                                Text(
-                                  "KINH NGHIỆM LÀM VIỆC",
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 15,
-                                    color: AppColor.greenPrimaryCv1,
+                                Expanded(
+                                  child: Text(
+                                    "KINH NGHIỆM LÀM VIỆC",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 15,
+                                      color: AppColor.greenPrimaryCv1,
+                                    ),
                                   ),
                                 ),
                               ],

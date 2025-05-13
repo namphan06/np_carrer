@@ -767,7 +767,7 @@ class _CvInputNo1State extends State<CvInputNo1> {
                     return Column(
                       children: [
                         Container(
-                          padding: EdgeInsets.all(10),
+                          padding: EdgeInsets.all(size.width * 0.02),
                           decoration: BoxDecoration(
                               border: Border.all(
                                   color: AppColor.orangePrimaryColor, width: 3),

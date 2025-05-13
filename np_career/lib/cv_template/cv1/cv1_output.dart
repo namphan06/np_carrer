@@ -83,7 +83,7 @@ class _Cv1OutputState extends State<Cv1Output> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Container(
-                            width: 150,
+                            width: 155,
                             child: ClipRRect(
                                 child: Image.network(
                               controller.getImageUrl(widget.cvModel.linkImage),
@@ -117,7 +117,8 @@ class _Cv1OutputState extends State<Cv1Output> {
                                 ),
                                 _buildSkills(widget.cvModel.skills),
                                 SizedBox(
-                                  height: 245,
+                                  height: 100,
+                                  //245
                                 ),
                               ],
                             ),

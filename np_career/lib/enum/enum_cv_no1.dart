@@ -1,6 +1,7 @@
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:get/utils.dart';
 import 'package:np_career/cv_template/cv1/cv1.dart';
+import 'package:np_career/cv_template/cv1/cv2.dart';
 import 'package:np_career/view/screen/home.dart';
 import 'package:np_career/view/user/job_applied/job_applied.dart';
 
@@ -8,7 +9,7 @@ enum EnumCvNo1 {
   cv1_no1(
       "CV1", ["Experience", "Two Pages", "Viet Nam"], "style", "no1", _cv1_no1),
   // Test data
-  cv2_no1("CV1", ["Basic 1", "Two Pages", "Viet Nam", "ENG"], "position", "no1",
+  cv2_no1("CV2", ["ATS", "Formal", "Viet Nam", "Viet Nam"], "style", "no2",
       _cv2_no1),
   cv3_no1("CV1", ["Basic 2", "Two Pages", "Viet Nam", "DOC"], "position", "no1",
       _cv2_no1),
@@ -36,5 +37,5 @@ void _cv1_no1() {
 }
 
 void _cv2_no1() {
-  Get.to(JobApplied());
+  Get.to(Cv2());
 }
