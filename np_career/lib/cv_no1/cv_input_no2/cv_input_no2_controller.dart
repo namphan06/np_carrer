@@ -28,6 +28,7 @@ class CvInputNo2Controller extends GetxController {
 
   TextEditingController linkImgController = TextEditingController();
   TextEditingController fullNameController = TextEditingController();
+  TextEditingController tasteController = TextEditingController();
   TextEditingController positionController = TextEditingController();
   TextEditingController phoneNumberController = TextEditingController();
   TextEditingController emailController = TextEditingController();
@@ -60,6 +61,7 @@ class CvInputNo2Controller extends GetxController {
       addressController.text = model.address ?? '';
       websiteController.text = model.website ?? '';
       occupationalGoalsController.text = model.occupationalGoals ?? '';
+      tasteController.text = model.taste ?? "";
       moreInformationController.text = model.moreInformation ?? '';
       introducerController.text = model.introducer ?? '';
       idCv = model.uid;
@@ -114,6 +116,7 @@ class CvInputNo2Controller extends GetxController {
 
       listKnowledge.value = (model.knowledge ?? []).map((knowledge) {
         return {
+          "name": TextEditingController(text: knowledge.school ?? ''),
           "school": TextEditingController(text: knowledge.school ?? ''),
           "date": TextEditingController(text: knowledge.date ?? ''),
           "list": (knowledge.list ?? [])
@@ -162,6 +165,7 @@ class CvInputNo2Controller extends GetxController {
 
   RxList<Map<String, dynamic>> listKnowledge = <Map<String, dynamic>>[
     {
+      "name": TextEditingController(),
       "school": TextEditingController(),
       "date": TextEditingController(),
       "list": <TextEditingController>[].obs
@@ -170,6 +174,7 @@ class CvInputNo2Controller extends GetxController {
 
   List<Knowledge> get knowledgeList => listKnowledge.map((e) {
         return Knowledge.fromMap({
+          'name': e['name']!.text,
           'school': e['school']!.text,
           'date': e['date']!.text,
           'list': (e['list'] as RxList<TextEditingController>)
@@ -314,10 +319,16 @@ class CvInputNo2Controller extends GetxController {
   // Knowledge
   void addRowKnowledge() {
     listKnowledge.add({
+      "name": TextEditingController(),
       "school": TextEditingController(),
       "date": TextEditingController(),
       "list": <TextEditingController>[].obs
     }.obs);
+  }
+
+  void updateNameKnowledge(int index, String name) {
+    listKnowledge[index]['name'] = name;
+    refresh();
   }
 
   void updateSchoolKnowledge(int index, String school) {
@@ -470,6 +481,7 @@ class CvInputNo2Controller extends GetxController {
           address: addressController.text,
           website: websiteController.text,
           occupationalGoals: occupationalGoalsController.text,
+          taste: tasteController.text,
           skills: skillList,
           workExperience: workExperienceList,
           knowledge: knowledgeList,
@@ -500,6 +512,7 @@ class CvInputNo2Controller extends GetxController {
         address: addressController.text,
         website: websiteController.text,
         occupationalGoals: occupationalGoalsController.text,
+        taste: tasteController.text,
         skills: skillList,
         workExperience: workExperienceList,
         knowledge: knowledgeList,

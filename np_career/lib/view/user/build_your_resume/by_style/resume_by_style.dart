@@ -474,7 +474,8 @@ class ResumeByStyle extends StatelessWidget {
                                               EnumCvInput.cv_input.run(
                                                   cvNo1.type_input,
                                                   cvNo1.label.toLowerCase(),
-                                                  'save');
+                                                  'save',
+                                                  null);
                                             },
                                             icon:
                                                 Icon(Icons.edit_note_outlined),
@@ -712,7 +713,8 @@ class ResumeByStyle extends StatelessWidget {
                                         EnumCvInput.cv_input.run(
                                             cvNo1.type_input,
                                             cvNo1.label.toLowerCase(),
-                                            'save');
+                                            'save',
+                                            null);
                                       },
                                       icon: Icon(Icons.edit_note_outlined),
                                       iconSize: 40,

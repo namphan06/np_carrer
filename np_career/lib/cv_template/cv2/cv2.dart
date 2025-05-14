@@ -371,9 +371,10 @@ class _Cv2State extends State<Cv2> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.all(8),
+        padding: EdgeInsets.all(size.width * 0.01),
         child: SingleChildScrollView(
           child: Column(
             children: [
@@ -381,16 +382,16 @@ class _Cv2State extends State<Cv2> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                    padding: const EdgeInsets.all(10),
-                    width: 155,
+                    padding: EdgeInsets.all(size.width * 0.01),
+                    width: size.width * 0.36,
                     decoration: const BoxDecoration(color: Color(0xFF353A3D)),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Image.asset(
                           'assets/images/default.webp',
-                          width: 160,
-                          height: 160,
+                          width: size.width * 0.35,
+                          height: size.width * 0.35,
                           fit: BoxFit.cover,
                         ),
                         const SizedBox(height: 10),

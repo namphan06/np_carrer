@@ -276,6 +276,16 @@ class _CvInputNo2State extends State<CvInputNo2> {
                 const SizedBox(
                   height: 10,
                 ),
+                TextField(
+                  controller: controller.tasteController,
+                  style: TextStyle(
+                      color: AppColor.greenPrimaryColor,
+                      fontWeight: FontWeight.bold),
+                  decoration: InputDecoration(
+                    labelText: "Taste",
+                  ),
+                ),
+                const SizedBox(height: 10),
                 Container(
                   padding: EdgeInsets.all(size.width * 0.02),
                   decoration: BoxDecoration(
@@ -720,6 +730,19 @@ class _CvInputNo2State extends State<CvInputNo2> {
                                   ),
                                 ),
                               ),
+                              SizedBox(
+                                child: TextField(
+                                  controller: controller.listKnowledge[index]
+                                      ['name'] as TextEditingController,
+                                  style: TextStyle(
+                                    color: AppColor.greenPrimaryColor,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                  decoration:
+                                      InputDecoration(label: Text("Name")),
+                                ),
+                              ),
+                              SizedBox(height: 10),
                               Row(
                                 children: [
                                   SizedBox(

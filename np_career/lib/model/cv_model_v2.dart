@@ -17,6 +17,7 @@ class CvModelV2 {
   final String address;
   final String website;
   final String occupationalGoals;
+  final String taste;
   final List<SkillV2> skills;
   final List<WorkExperience> workExperience;
   final List<Knowledge> knowledge;
@@ -37,6 +38,7 @@ class CvModelV2 {
     required this.address,
     required this.website,
     required this.occupationalGoals,
+    required this.taste,
     required this.skills,
     required this.workExperience,
     required this.knowledge,
@@ -61,6 +63,7 @@ class CvModelV2 {
       address: data['address'] ?? '',
       website: data['website'] ?? '',
       occupationalGoals: data['occupationalGoals'] ?? '',
+      taste: data['taste'] ?? '',
       skills: List<Map<String, dynamic>>.from(data['skills'] ?? [])
           .map((e) => SkillV2.fromMap(e))
           .toList(),
@@ -96,6 +99,7 @@ class CvModelV2 {
       'address': address,
       'website': website,
       'occupationalGoals': occupationalGoals,
+      'taste': taste,
       'skills': skills.map((e) => e.toMap()).toList(),
       'workExperience': workExperience.map((e) => e.toMap()).toList(),
       'knowledge': knowledge.map((e) => e.toMap()).toList(),
