@@ -1,7 +1,7 @@
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:get/utils.dart';
 import 'package:np_career/cv_template/cv1/cv1.dart';
-import 'package:np_career/cv_template/cv1/cv2.dart';
+import 'package:np_career/cv_template/cv2/cv2.dart';
 import 'package:np_career/view/screen/home.dart';
 import 'package:np_career/view/user/job_applied/job_applied.dart';
 
