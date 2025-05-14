@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:get/utils.dart';
 import 'package:np_career/model/cv_model.dart';
+import 'package:np_career/model/cv_model_v2.dart';
 import 'package:uuid/uuid.dart';
 
 class ResumeManagementFb {
@@ -16,13 +17,19 @@ class ResumeManagementFb {
         .snapshots();
   }
 
-  Future<CvModel> getCvModel(String uid, String type) async {
+  Future<dynamic> getCvModel(String uid, String type) async {
     try {
       DocumentSnapshot snapshot =
           await _firestore.collection(type).doc(uid).get();
 
       if (snapshot.exists) {
-        return CvModel.fromSnap(snapshot);
+        if (type == 'cv1') {
+          return CvModel.fromSnap(snapshot);
+        } else if (type == 'cv2') {
+          return CvModelV2.fromSnap(snapshot);
+        } else {
+          throw Exception("Unknown CV type: $type");
+        }
       } else {
         throw Exception("CV not found");
       }

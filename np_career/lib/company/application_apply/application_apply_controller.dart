@@ -16,7 +16,7 @@ class ApplicationApplyController extends GetxController {
   Future<void> getCv(String uid, String type) async {
     try {
       CvModel model = await _fb.getCvModel(uid, type);
-      EnumCvNo1Output.cv1_no1.run(type, model);
+      EnumCvOutput.cv1_no1.run(type, model);
     } catch (err) {
       Get.snackbar("Error", err.toString());
     }

@@ -2,6 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:np_career/enum/enum_cv_no1_output.dart';
 import 'package:np_career/model/cv_model.dart';
+import 'package:np_career/model/cv_model_v2.dart';
 import 'package:np_career/resume_management/resume_management_fb.dart';
 
 class ResumeManagementController extends GetxController {
@@ -15,8 +16,15 @@ class ResumeManagementController extends GetxController {
 
   Future<void> getCv(String uid, String type) async {
     try {
-      CvModel model = await _fb.getCvModel(uid, type);
-      EnumCvNo1Output.cv1_no1.run(type, model);
+      dynamic model = await _fb.getCvModel(uid, type);
+
+      if (type == 'cv1' && model is CvModel) {
+        EnumCvOutput.cv1_no1.run(type, model);
+      } else if (type == 'cv2' && model is CvModelV2) {
+        EnumCvOutput.cv2_no2.run(type, model);
+      } else {
+        throw Exception("Invalid model type for: $type");
+      }
     } catch (err) {
       Get.snackbar("Error", err.toString());
     }

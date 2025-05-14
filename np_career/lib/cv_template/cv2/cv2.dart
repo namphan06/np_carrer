@@ -484,10 +484,10 @@ class _Cv2State extends State<Cv2> {
                           buildSectionTitle('DANH HIỆU VÀ GIẢI THƯỞNG'),
                           const SizedBox(height: 10),
                           buildAward(),
-                          buildSectionTitle('DANH HIỆU VÀ GIẢI THƯỞNG'),
+                          buildSectionTitle('CHỨNG CHỈ'),
                           const SizedBox(height: 10),
                           buildCertificate(),
-                          buildSectionTitle('DANH HIỆU VÀ GIẢI THƯỞNG'),
+                          buildSectionTitle('HOẠT ĐỘNG'),
                           const SizedBox(height: 10),
                           buildActivities()
                         ],

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:np_career/core/app_color.dart';
 import 'package:np_career/cv_no1/cv_input_no1/cv_input_no1.dart';
+import 'package:np_career/enum/enum_cv_input.dart';
 import 'package:np_career/enum/enum_cv_no1.dart';
 import 'package:np_career/enum/enum_language.dart';
 import 'package:np_career/enum/enum_style_cv.dart';
@@ -458,18 +459,22 @@ class ResumeByStyle extends StatelessWidget {
                                           Spacer(),
                                           IconButton(
                                             onPressed: () {
-                                              if (cvNo1.type_input == "no1") {
-                                                Get.to(
-                                                    CvInputNo1(
-                                                        // type: cvNo1.label
-                                                        //     .toLowerCase(),
-                                                        ),
-                                                    arguments: {
-                                                      'type': cvNo1.label
-                                                          .toLowerCase(),
-                                                      'option': 'save'
-                                                    });
-                                              }
+                                              // if (cvNo1.type_input == "no1") {
+                                              //   Get.to(
+                                              //       CvInputNo1(
+                                              //           // type: cvNo1.label
+                                              //           //     .toLowerCase(),
+                                              //           ),
+                                              //       arguments: {
+                                              //         'type': cvNo1.label
+                                              //             .toLowerCase(),
+                                              //         'option': 'save'
+                                              //       });
+                                              // }
+                                              EnumCvInput.cv_input.run(
+                                                  cvNo1.type_input,
+                                                  cvNo1.label.toLowerCase(),
+                                                  'save');
                                             },
                                             icon:
                                                 Icon(Icons.edit_note_outlined),
@@ -693,14 +698,21 @@ class ResumeByStyle extends StatelessWidget {
                                     Spacer(),
                                     IconButton(
                                       onPressed: () {
-                                        Get.to(
-                                            CvInputNo1(
-                                                // type: cvNo1.label.toLowerCase(),
-                                                ),
-                                            arguments: {
-                                              'type': cvNo1.label.toLowerCase(),
-                                              'option': 'ssave'
-                                            });
+                                        // Get.to(
+                                        //     CvInputNo1(
+                                        //         // type: cvNo1.label.toLowerCase(),
+                                        //         ),
+                                        //     arguments: {
+                                        //       'type': cvNo1.label.toLowerCase(),
+                                        //       'option': 'save'
+                                        //     });
+
+                                        print(
+                                            '${cvNo1.type_input}/${cvNo1.label.toLowerCase()}');
+                                        EnumCvInput.cv_input.run(
+                                            cvNo1.type_input,
+                                            cvNo1.label.toLowerCase(),
+                                            'save');
                                       },
                                       icon: Icon(Icons.edit_note_outlined),
                                       iconSize: 40,
