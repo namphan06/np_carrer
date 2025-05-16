@@ -468,6 +468,32 @@ class CvInputNo1Controller extends GetxController {
     }
   }
 
+  Future<CvModel> getCvModel(String type) async {
+    CvModel cvModel = CvModel(
+      uid: idCv,
+      linkImage: imageUrl.value,
+      fullName: fullNameController.text,
+      position: positionController.text,
+      dateOfBirth: convertToTimestamp(selectDate.value!),
+      sex: selectSex.value,
+      phoneNumber: phoneNumberController.text,
+      email: emailController.text,
+      address: addressController.text,
+      website: websiteController.text,
+      occupationalGoals: occupationalGoalsController.text,
+      skills: skillList,
+      workExperience: workExperienceList,
+      knowledge: knowledgeList,
+      activities: activityList,
+      award: awardList,
+      certificate: certificateList,
+      moreInformation: moreInformationController.text,
+      introducer: introducerController.text,
+      type: type,
+    );
+    return cvModel;
+  }
+
   Future<void> updateCv(String type) async {
     try {
       print("===> Đã vào hàm updateCv với type: $type");

@@ -3,8 +3,10 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:np_career/core/app_color.dart';
 import 'package:np_career/cv_no1/cv_input_no1/cv_input_no1_controller.dart';
+import 'package:np_career/cv_template/cv1/cv1_output.dart';
 import 'package:np_career/cv_template/cv_setting/cv_setting_no1.dart';
 import 'package:np_career/enum/enum_sex.dart';
+import 'package:np_career/model/cv_model.dart';
 import 'package:np_career/resume_management/resume_management_screen.dart';
 import 'package:np_career/view/user/build_your_resume/by_style/resume_by_style.dart';
 
@@ -1384,6 +1386,22 @@ class _CvInputNo1State extends State<CvInputNo1> {
                   ),
                   maxLines: 5,
                 ),
+                const SizedBox(
+                  height: 10,
+                ),
+                ElevatedButton(
+                    onPressed: () async {
+                      CvModel cv = await controller
+                          .getCvModel(controller.choiceType.value);
+                      Get.to(Cv1Output(cvModel: cv));
+                    },
+                    child: Text(
+                      "Preview Cv",
+                      style: TextStyle(
+                          color: AppColor.lightBackgroundColor,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20),
+                    )),
                 const SizedBox(
                   height: 10,
                 ),
