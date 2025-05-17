@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:intl/intl.dart';
 import 'package:np_career/model/cv_model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ApplicationApplyFb {
   FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -142,6 +143,39 @@ class ApplicationApplyFb {
       });
 
       print("Job updated on $formattedDate");
+    }
+  }
+
+  Future<void> addNotificationToUser(
+      {required String userId,
+      required String nameJob,
+      required String type,
+      required String option}) async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      final userDoc = _firestore.collection('notification').doc(userId);
+      String? savedNotification;
+      if (type == 'accept') {
+        savedNotification = prefs.getString('notificationAccept');
+      } else if (type == 'reject') {
+        savedNotification = prefs.getString('notificationReject');
+      }
+      String text = "$nameJob\n${savedNotification ?? ''}";
+
+      final newNotification = {
+        'text': text,
+        'option': option,
+        'status': false,
+        'timestamp': Timestamp.now(),
+      };
+
+      await userDoc.set({
+        'notifications': FieldValue.arrayUnion([newNotification]),
+      }, SetOptions(merge: true));
+
+      print('Notification added to user $userId');
+    } catch (e) {
+      print('Error: $e');
     }
   }
 }

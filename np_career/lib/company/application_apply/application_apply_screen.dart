@@ -4,8 +4,10 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:np_career/company/application_apply/application_apply_controller.dart';
 import 'package:np_career/company/application_apply/application_apply_fb.dart';
 import 'package:np_career/company/application_apply/email_setting/email_setting.dart';
+import 'package:np_career/company/application_apply/notification_setting/notification_setting.dart';
 import 'package:np_career/core/app_color.dart';
 import 'package:np_career/model/cv_model.dart';
+import 'package:np_career/view/user/profile/setting_notification/notification_setting.dart';
 
 class ApplicationApplyScreen extends StatefulWidget {
   final String jobId;
@@ -64,9 +66,9 @@ class _ApplicationApplyScreenState extends State<ApplicationApplyScreen> {
                           onTap: () => Get.to(EmailSetting()),
                         ),
                         ListTile(
-                          leading: Icon(Icons.color_lens),
-                          title: Text('Theme'),
-                          onTap: () => Get.back(),
+                          leading: Icon(Icons.notifications),
+                          title: Text('Notification Setting'),
+                          onTap: () => Get.to(NotificationSettingApply()),
                         ),
                         ListTile(
                           leading: Icon(Icons.logout),
@@ -342,6 +344,12 @@ class _ApplicationApplyScreenState extends State<ApplicationApplyScreen> {
                                                       application['id'],
                                                       "Accept",
                                                       application['userId']);
+                                                  _fb.addNotificationToUser(
+                                                      userId:
+                                                          application['userId'],
+                                                      nameJob: widget.jobName,
+                                                      type: 'accept',
+                                                      option: 'application');
                                                   Get.dialog(AlertDialog(
                                                     title: Text("Send Email?"),
                                                     content: Text(
@@ -377,6 +385,12 @@ class _ApplicationApplyScreenState extends State<ApplicationApplyScreen> {
                                                       application['id'],
                                                       "Reject",
                                                       application['userId']);
+                                                  _fb.addNotificationToUser(
+                                                      userId:
+                                                          application['userId'],
+                                                      nameJob: widget.jobName,
+                                                      type: 'reject',
+                                                      option: 'application');
                                                   Get.dialog(AlertDialog(
                                                     title: Text("Send Email?"),
                                                     content: Text(

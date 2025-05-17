@@ -14,6 +14,7 @@ import 'package:np_career/view/user/home/home_user_controller.dart';
 import 'package:np_career/view/user/home/navbar/customer_bottom_navbar.dart';
 import 'package:np_career/view/user/home/navbar/navbar_controller.dart';
 import 'package:np_career/view/user/job_applied/job_applied.dart';
+import 'package:np_career/view/user/notification_user/notification_user.dart';
 import 'package:np_career/view/user/profile/profile_screen.dart';
 import 'package:np_career/view/user/search/search_job/search_job_screen.dart';
 import 'package:np_career/view/user/top_company/top_company.dart';
@@ -28,6 +29,7 @@ class HomeScreenUser extends StatefulWidget {
 class _HomeScreenUserState extends State<HomeScreenUser> {
   final HomeUserController controller = Get.put(HomeUserController());
   final NavbarController navbarController = Get.put(NavbarController());
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -74,28 +76,32 @@ class _HomeScreenUserState extends State<HomeScreenUser> {
                 child: Stack(
                   alignment: Alignment.topRight,
                   children: [
-                    SvgPicture.asset(
-                      "assets/images/notifications_active.svg",
-                      width: 35,
-                      height: 35,
-                      color: AppColor.greenPrimaryColor,
+                    InkWell(
+                      onTap: () => Get.to(NotificationUser()),
+                      child: SvgPicture.asset(
+                        "assets/images/notifications_active.svg",
+                        width: 35,
+                        height: 35,
+                        color: AppColor.greenPrimaryColor,
+                      ),
                     ),
                     Positioned(
                         top: -5,
                         right: 0,
                         child: Container(
-                          padding: EdgeInsets.all(4),
-                          decoration: BoxDecoration(
-                              color: AppColor.orangeRedColor,
-                              shape: BoxShape.circle),
-                          child: Text(
-                            "1",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ))
+                            padding: EdgeInsets.all(4),
+                            decoration: BoxDecoration(
+                                color: AppColor.orangeRedColor,
+                                shape: BoxShape.circle),
+                            child: Obx(
+                              () => Text(
+                                "${controller.unreadCount}",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            )))
                   ],
                 ),
               )
