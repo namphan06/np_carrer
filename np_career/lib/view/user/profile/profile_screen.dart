@@ -9,6 +9,7 @@ import 'package:np_career/view/login/login_fb.dart';
 import 'package:np_career/view/user/profile/change_password/change_password_screen.dart';
 import 'package:np_career/view/user/profile/my_profile/my_profile_screen.dart';
 import 'package:np_career/view/user/profile/profile_controller.dart';
+import 'package:np_career/view/user/profile/setting_notification/notification_setting.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -88,7 +89,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 "assets/images/notifications_active.svg",
                 "assets/images/keyboard_arrow_right_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.svg",
                 "Notification setting",
-                () => Get.snackbar("Action", "GestureDetector")),
+                () => Get.to(NotificationSetting())),
             SizedBox(
               height: 15,
             ),
