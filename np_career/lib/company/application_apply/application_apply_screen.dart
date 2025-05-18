@@ -89,59 +89,14 @@ class _ApplicationApplyScreenState extends State<ApplicationApplyScreen> {
       body: Obx(
         () => Column(
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+            Wrap(
+              spacing: 12,
+              runSpacing: 8,
               children: [
-                Text("Filter by Status:"),
-                Row(
-                  children: [
-                    // All filter
-                    Row(
-                      children: [
-                        Radio<String>(
-                          value: 'All',
-                          groupValue: controller.filter.value,
-                          onChanged: (String? value) {
-                            setState(() {
-                              controller.filter.value = value!;
-                            });
-                          },
-                        ),
-                        Text('All'),
-                      ],
-                    ),
-                    // Accepted filter
-                    Row(
-                      children: [
-                        Radio<String>(
-                          value: 'accept',
-                          groupValue: controller.filter.value,
-                          onChanged: (String? value) {
-                            setState(() {
-                              controller.filter.value = value!;
-                            });
-                          },
-                        ),
-                        Text('Accepted'),
-                      ],
-                    ),
-                    // Rejected filter
-                    Row(
-                      children: [
-                        Radio<String>(
-                          value: 'reject',
-                          groupValue: controller.filter.value,
-                          onChanged: (String? value) {
-                            setState(() {
-                              controller.filter.value = value!;
-                            });
-                          },
-                        ),
-                        Text('Rejected'),
-                      ],
-                    ),
-                  ],
-                ),
+                _buildChoiceChip('All', 'All'),
+                _buildChoiceChip('Accepted', 'accept'),
+                _buildChoiceChip('Rejected', 'reject'),
+                _buildChoiceChip('Pending', 'pending'),
               ],
             ),
             SizedBox(height: 10),
@@ -176,7 +131,9 @@ class _ApplicationApplyScreenState extends State<ApplicationApplyScreen> {
                             (controller.filter.value == 'accept' &&
                                 application['response'] == "accept") ||
                             (controller.filter.value == 'reject' &&
-                                application['response'] == "reject")) {
+                                application['response'] == "reject") ||
+                            (controller.filter.value == 'pending' &&
+                                application['response'] == null)) {
                           applicationList
                               .add(application as Map<String, dynamic>);
                         }
@@ -301,17 +258,17 @@ class _ApplicationApplyScreenState extends State<ApplicationApplyScreen> {
                                               ),
                                             ],
                                           ),
-                                          Container(
-                                            padding: EdgeInsets.all(5),
-                                            decoration: BoxDecoration(
-                                                shape: BoxShape.circle,
-                                                color: AppColor.orangeRedColor),
-                                            child: Icon(
-                                              Icons.close,
-                                              color:
-                                                  AppColor.lightBackgroundColor,
-                                            ),
-                                          )
+                                          // Container(
+                                          //   padding: EdgeInsets.all(5),
+                                          //   decoration: BoxDecoration(
+                                          //       shape: BoxShape.circle,
+                                          //       color: AppColor.orangeRedColor),
+                                          //   child: Icon(
+                                          //     Icons.close,
+                                          //     color:
+                                          //         AppColor.lightBackgroundColor,
+                                          //   ),
+                                          // )
                                         ]),
                                     Divider(color: Colors.grey),
                                     Row(
@@ -434,6 +391,35 @@ class _ApplicationApplyScreenState extends State<ApplicationApplyScreen> {
               ),
             )
           ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildChoiceChip(String label, String value) {
+    final isSelected = controller.filter.value == value;
+
+    return ChoiceChip(
+      label: Text(label),
+      selected: isSelected,
+      onSelected: (_) {
+        setState(() {
+          controller.filter.value = value;
+        });
+      },
+      selectedColor: AppColor.greenPrimaryColor.withOpacity(0.1),
+      backgroundColor: Colors.grey.shade200,
+      labelStyle: TextStyle(
+        color: isSelected
+            ? AppColor.greenPrimaryColor.withOpacity(0.8)
+            : Colors.black,
+        fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+      ),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(8),
+        side: BorderSide(
+          color: isSelected ? AppColor.greenPrimaryColor : Colors.transparent,
+          width: 1.5,
         ),
       ),
     );

@@ -9,6 +9,7 @@ import 'package:np_career/enum/enum_currency_unit.dart';
 import 'package:np_career/enum/enum_experience.dart';
 import 'package:np_career/enum/enum_type_job_category.dart';
 import 'package:np_career/model/job_post_model.dart';
+import 'package:np_career/view/not_found/job_not_found.dart';
 import 'package:np_career/view/user/job/job_detail/job_detail_screen.dart';
 import 'package:np_career/view/user/search/search_job/search_job_controller.dart';
 import 'package:np_career/view/user/search/search_job/search_job_fb.dart';
@@ -1085,12 +1086,18 @@ class _SearchJobScreenState extends State<SearchJobScreen> {
                                       //   Get.snackbar('Error', 'Information null');
                                       // }
                                       await controller.loadJobDetail(job['id']);
-                                      Get.to(() => JobDetailScreen(
-                                            job: controller.job!,
-                                            isSave: controller
-                                                .savedJobStatusList[index],
-                                            companyId: job['companyId'],
-                                          ));
+                                      await controller.loadJobDetail(job['id']);
+
+                                      if (controller.job == null) {
+                                        Get.to(() => const JobNotFoundScreen());
+                                      } else {
+                                        Get.to(() => JobDetailScreen(
+                                              job: controller.job!,
+                                              isSave: controller
+                                                  .savedJobStatusList[index],
+                                              companyId: job['companyId'],
+                                            ));
+                                      }
                                     },
                                     child: AnimatedContainer(
                                       duration: Duration(milliseconds: 300),

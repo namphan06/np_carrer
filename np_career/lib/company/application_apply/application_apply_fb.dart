@@ -125,6 +125,7 @@ class ApplicationApplyFb {
       // Nếu chưa có thì thêm job mới
       if (!found) {
         listSchedule.add({
+          'idCompany': _auth.currentUser!.uid,
           'idJob': idJob,
           'jobName': jobName,
           'listCv': [

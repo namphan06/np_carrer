@@ -54,6 +54,7 @@ dependencies:
   font_awesome_flutter: ^10.8.0
   syncfusion_flutter_pdfviewer: ^29.1.39
   url_launcher: ^6.3.1
+  lottie: ^2.3.0
   # image_gallery_saver: ^2.0.3
 
 dev_dependencies:
@@ -100,6 +101,7 @@ flutter:
     - assets/icon/
     - assets/images/
     - assets/images_cv/
+    - assets/animations/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
