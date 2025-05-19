@@ -83,8 +83,8 @@ class JobDetailFb {
         .snapshots();
   }
 
-  Future<void> applyCv(
-      String cvId, String companyId, String jobId, String typeCv) async {
+  Future<void> applyCv(String cvId, String companyId, String jobId,
+      String typeCv, List<String> listInterestApply) async {
     try {
       await _firestore
           .collection("user_actions")
@@ -101,6 +101,15 @@ class JobDetailFb {
           }
         ]),
       }, SetOptions(merge: true)); // merge để giữ dữ liệu cũ, chỉ thêm mới
+
+      await _firestore
+          .collection("notification")
+          .doc(_auth.currentUser!.uid)
+          .set({
+        'listInterestApply': listInterestApply,
+      }, SetOptions(merge: true));
+
+      print("CV applied and listInterestApply saved.");
     } catch (err) {
       Get.snackbar("Error", err.toString());
     }

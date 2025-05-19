@@ -1323,7 +1323,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                               onPressed: () {
                                 controller.createMyProfile();
                                 Get.back();
-                                Get.back();
+                                // Get.back();
                               },
                               child: Text(
                                 "Create",

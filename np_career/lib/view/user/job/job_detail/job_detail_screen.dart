@@ -573,7 +573,8 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
                             controller.cvId.value,
                             controller.companyId.value,
                             widget.job.id,
-                            controller.typeCv.value);
+                            controller.typeCv.value,
+                            widget.job.jobInterests);
                         Get.back();
                       },
                       child: Row(

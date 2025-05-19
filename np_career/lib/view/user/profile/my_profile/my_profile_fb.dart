@@ -15,6 +15,13 @@ class MyProfileFb {
           .collection('my_profile')
           .doc(_auth.currentUser!.uid)
           .set({'id': _auth.currentUser!.uid, ...model.toJson()});
+
+      await _firestore
+          .collection("notification")
+          .doc(_auth.currentUser!.uid)
+          .set({
+        'listInterestProfile': model.jobInterests,
+      }, SetOptions(merge: true));
     } catch (err) {
       Get.snackbar("Error", err.toString());
     }

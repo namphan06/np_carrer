@@ -41,10 +41,24 @@ class TopCompanyFb {
       await docRef.update({
         'follows': FieldValue.arrayRemove([companyID])
       });
+
+      await _firestore
+          .collection('notification')
+          .doc(_auth.currentUser!.uid)
+          .set({
+        'followsCompany': FieldValue.arrayRemove([companyID])
+      }, SetOptions(merge: true));
     } else {
       // Nếu chưa có thì thêm
       await docRef.set({
         'follows': FieldValue.arrayUnion([companyID])
+      }, SetOptions(merge: true));
+
+      await _firestore
+          .collection('notification')
+          .doc(_auth.currentUser!.uid)
+          .set({
+        'followsCompany': FieldValue.arrayUnion([companyID])
       }, SetOptions(merge: true));
     }
   }
