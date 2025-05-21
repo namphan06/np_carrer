@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:get/utils.dart';
 import 'package:np_career/model/cv_model.dart';
 import 'package:np_career/model/cv_model_v2.dart';
+import 'package:np_career/model/cv_model_v3.dart';
 import 'package:uuid/uuid.dart';
 
 class ResumeManagementFb {
@@ -27,6 +28,8 @@ class ResumeManagementFb {
           return CvModel.fromSnap(snapshot);
         } else if (type == 'cv2') {
           return CvModelV2.fromSnap(snapshot);
+        } else if (type == 'cv3') {
+          return CvModelV3.fromSnap(snapshot);
         } else {
           throw Exception("Unknown CV type: $type");
         }

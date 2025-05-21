@@ -1,13 +1,16 @@
 import 'package:get/get.dart';
 import 'package:np_career/cv_template/cv1/cv1_output.dart';
 import 'package:np_career/cv_template/cv2/cv2_output.dart';
+import 'package:np_career/cv_template/cv3_position/cv3_output.dart';
 import 'package:np_career/model/cv_model.dart';
 import 'package:np_career/model/cv_model_v2.dart';
+import 'package:np_career/model/cv_model_v3.dart';
 import 'package:np_career/view/user/job_applied/job_applied.dart';
 
 enum EnumCvOutput {
   cv1_no1(_cv1_no1),
-  cv2_no2(_cv2_no2);
+  cv2_no2(_cv2_no2),
+  cv3_no3(_cv3_no3);
 
   final void Function(String type, dynamic model) action;
 
@@ -37,6 +40,20 @@ void _cv2_no2(String type, dynamic model) {
     switch (type.toLowerCase()) {
       case 'cv2':
         Get.to(() => Cv2Output(model: model));
+        break;
+      default:
+        Get.snackbar("Error", "Unknown CV type for CvModelV2: $type");
+    }
+  } else {
+    Get.snackbar("Error", "Invalid model type for cv2_no2");
+  }
+}
+
+void _cv3_no3(String type, dynamic model) {
+  if (model is CvModelV3) {
+    switch (type.toLowerCase()) {
+      case 'cv3':
+        Get.to(() => Cv3Output(model: model));
         break;
       default:
         Get.snackbar("Error", "Unknown CV type for CvModelV2: $type");

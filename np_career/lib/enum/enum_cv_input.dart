@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:np_career/cv_no1/cv_input_no1/cv_input_no1.dart';
 import 'package:np_career/cv_no1/cv_input_no2/cv_input_no2.dart';
+import 'package:np_career/cv_no1/cv_input_no3/cv_input_no3.dart';
 
 enum EnumCvInput {
   cv_input(_cv_input);
@@ -24,6 +25,10 @@ void _cv_input(String inputType, String typeCv, String option, dynamic model) {
       break;
     case 'no2':
       Get.to(() => CvInputNo2(),
+          arguments: {'type': typeCv, 'option': option, 'model': model});
+      break;
+    case 'no3':
+      Get.to(() => CvInputNo3(),
           arguments: {'type': typeCv, 'option': option, 'model': model});
       break;
     default:

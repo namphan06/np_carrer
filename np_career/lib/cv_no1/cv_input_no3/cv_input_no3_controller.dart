@@ -4,19 +4,22 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:np_career/cv_no1/cv_input_no1/cv_input_no1_fb.dart';
 import 'package:np_career/cv_no1/cv_input_no2/cv_input_no2_fb.dart';
+import 'package:np_career/cv_no1/cv_input_no3/cv_input_no3_fb.dart';
 import 'package:np_career/model/activity.dart';
 import 'package:np_career/model/award.dart';
 import 'package:np_career/model/certificate.dart';
 import 'package:np_career/model/cv_model.dart';
 import 'package:np_career/model/cv_model_v2.dart';
+import 'package:np_career/model/cv_model_v3.dart';
 import 'package:np_career/model/knowledge.dart';
+import 'package:np_career/model/project.dart';
 import 'package:np_career/model/skill.dart';
 import 'package:np_career/model/skill_v2.dart';
 import 'package:np_career/model/work_experience.dart';
 import 'package:uuid/uuid.dart';
 
-class CvInputNo2Controller extends GetxController {
-  final CvInputNo2Fb cvInputNo2Fb = Get.put(CvInputNo2Fb());
+class CvInputNo3Controller extends GetxController {
+  final CvInputNo3Fb cvInputNo3Fb = Get.put(CvInputNo3Fb());
   var selectDate = Rxn<DateTime>();
   var choiceSex = false.obs;
   var selectSex = "".obs;
@@ -38,6 +41,9 @@ class CvInputNo2Controller extends GetxController {
   TextEditingController moreInformationController = TextEditingController();
   TextEditingController introducerController = TextEditingController();
 
+  final RxList<TextEditingController> skillControllers =
+      <TextEditingController>[].obs;
+
   String formatDate(Timestamp timestamp) {
     DateTime date = timestamp.toDate();
     return DateFormat('dd-MM-yyyy').format(date);
@@ -48,10 +54,11 @@ class CvInputNo2Controller extends GetxController {
     super.onInit();
     choiceType.value = Get.arguments['type'] ?? '';
 
-    CvModelV2? model = Get.arguments['model'];
+    CvModelV3? model = Get.arguments['model'];
     print(model);
 
     if (model != null) {
+      selectDate.value = model.dateOfBirth.toDate();
       imageUrl.value = model.linkImage ?? '';
       linkImgController.text = model.linkImage ?? '';
       fullNameController.text = model.fullName ?? '';
@@ -64,17 +71,12 @@ class CvInputNo2Controller extends GetxController {
       tasteController.text = model.taste ?? "";
       moreInformationController.text = model.moreInformation ?? '';
       introducerController.text = model.introducer ?? '';
+      selectSex.value = model.sex;
       idCv = model.uid;
 
-      listSkill.value = (model.skills ?? []).map((skill) {
-        return {
-          "name": TextEditingController(text: skill.name ?? ''),
-          "list": (skill.list ?? [])
-              .map((e) => TextEditingController(text: e ?? ''))
-              .toList()
-              .obs,
-        };
-      }).toList();
+      skillControllers.value = (model.skills ?? [])
+          .map((skill) => TextEditingController(text: skill.toString()))
+          .toList();
 
       listWorkExperience.value = (model.workExperience ?? []).map((work) {
         return {
@@ -130,14 +132,27 @@ class CvInputNo2Controller extends GetxController {
     optionAction.value = Get.arguments['option'] ?? '';
   }
 
-  RxList<Map<String, dynamic>> listSkill = <Map<String, dynamic>>[
-    {"name": TextEditingController(), "list": <TextEditingController>[].obs}
+  RxList<Map<String, dynamic>> listProject = <Map<String, dynamic>>[
+    {
+      "name": TextEditingController(),
+      "customer": TextEditingController(),
+      "quality": TextEditingController(),
+      "position": TextEditingController(),
+      "describe": TextEditingController(),
+      "technology": TextEditingController(),
+      "role": <TextEditingController>[].obs
+    }
   ].obs;
 
-  List<SkillV2> get skillList => listSkill.map((e) {
-        return SkillV2.fromMap({
+  List<Project> get projectList => listProject.map((e) {
+        return Project.fromMap({
           'name': e['name']!.text,
-          'list': (e['list'] as RxList<TextEditingController>)
+          'customer': e['customer']!.text,
+          'quality': e['quality']!.text,
+          'position': e['position']!.text,
+          'describe': e['describe']!.text,
+          'technology': e['technology']!.text,
+          'role': (e['role'] as RxList<TextEditingController>)
               .map((controller) => controller.text)
               .toList(),
         });
@@ -238,40 +253,54 @@ class CvInputNo2Controller extends GetxController {
   }
 
   // Skill
+
   void addRowSkill() {
-    listSkill.add({
+    skillControllers.add(TextEditingController());
+  }
+
+  void removeRowSkill(int index) {
+    skillControllers[index].dispose();
+    skillControllers.removeAt(index);
+  }
+
+  // Project
+
+  void addRowProject() {
+    listProject.add({
       "name": TextEditingController(),
-      "list": <TextEditingController>[].obs
+      "customer": TextEditingController(),
+      "describe": TextEditingController(),
+      "quality": TextEditingController(),
+      "position": TextEditingController(),
+      "technology": TextEditingController(),
+      "role": <TextEditingController>[].obs
     }.obs);
   }
 
-  void updateNameSkill(int index, String name) {
-    listSkill[index]['name'] = name;
-    refresh();
-  }
-
-  void addDetailToListS(int index) {
-    (listSkill[index]['list'] as RxList<TextEditingController>)
+  void addDetailToListP(int index) {
+    (listProject[index]['role'] as RxList<TextEditingController>)
         .add(TextEditingController());
     refresh();
   }
 
-  void updateDetailInListS(int parentIndex, int detailIndex, String text) {
-    (listSkill[parentIndex]['list']
+  void updateDetailInListP(int parentIndex, int detailIndex, String text) {
+    (listProject[parentIndex]['role']
             as RxList<TextEditingController>)[detailIndex]
         .text = text;
     refresh();
   }
 
-  void removeRowSkill(int index) {
-    if (index >= 0 && index < listSkill.length) {
-      listSkill.removeAt(index);
+  void removeRowProject(int index) {
+    if (index >= 0 && index < listProject.length) {
+      listProject.removeAt(index);
+      refresh();
     }
+    print(listProject);
   }
 
-  void removeDetailFromSkill(int parentIndex, int detailIndex) {
-    if (parentIndex < listWorkExperience.length) {
-      (listSkill[parentIndex]['list'] as RxList<TextEditingController>)
+  void removeDetailFromProject(int parentIndex, int detailIndex) {
+    if (parentIndex < listProject.length) {
+      (listProject[parentIndex]['role'] as RxList<TextEditingController>)
           .removeAt(detailIndex);
       refresh();
     }
@@ -471,10 +500,12 @@ class CvInputNo2Controller extends GetxController {
     try {
       var uuid = Uuid();
       String randomId = uuid.v4();
-      CvModelV2 cvModel = CvModelV2(
+      CvModelV3 cvModel = CvModelV3(
           uid: randomId,
           linkImage: imageUrl.value,
           fullName: fullNameController.text,
+          dateOfBirth: convertToTimestamp(selectDate.value!),
+          sex: selectSex.value,
           position: positionController.text,
           phoneNumber: phoneNumberController.text,
           email: emailController.text,
@@ -482,55 +513,30 @@ class CvInputNo2Controller extends GetxController {
           website: websiteController.text,
           occupationalGoals: occupationalGoalsController.text,
           taste: tasteController.text,
-          skills: skillList,
+          skills: skillControllers.map((e) => e.text).toList(),
           workExperience: workExperienceList,
           knowledge: knowledgeList,
           activities: activityList,
           award: awardList,
           certificate: certificateList,
+          project: projectList,
           moreInformation: moreInformationController.text,
           introducer: introducerController.text,
           type: type);
 
-      cvInputNo2Fb.createCvNo2(cvModel, type, type_input);
+      cvInputNo3Fb.createCvNo3(cvModel, type, type_input);
     } catch (err) {
       Get.snackbar("Error", err.toString());
     }
   }
 
-  Future<CvModelV2> getCvModel(String type) async {
-    CvModelV2 cvModel = CvModelV2(
-      uid: idCv,
-      linkImage: imageUrl.value,
-      fullName: fullNameController.text,
-      position: positionController.text,
-      phoneNumber: phoneNumberController.text,
-      email: emailController.text,
-      address: addressController.text,
-      website: websiteController.text,
-      occupationalGoals: occupationalGoalsController.text,
-      taste: tasteController.text,
-      skills: skillList,
-      workExperience: workExperienceList,
-      knowledge: knowledgeList,
-      activities: activityList,
-      award: awardList,
-      certificate: certificateList,
-      moreInformation: moreInformationController.text,
-      introducer: introducerController.text,
-      type: type,
-    );
-    return cvModel;
-  }
-
-  Future<void> updateCv(String type) async {
-    try {
-      print("===> Đã vào hàm updateCv với type: $type");
-
-      CvModelV2 cvModel = CvModelV2(
+  Future<CvModelV3> getCvModel(String type) async {
+    CvModelV3 cvModel = CvModelV3(
         uid: idCv,
         linkImage: imageUrl.value,
         fullName: fullNameController.text,
+        dateOfBirth: convertToTimestamp(selectDate.value!),
+        sex: selectSex.value,
         position: positionController.text,
         phoneNumber: phoneNumberController.text,
         email: emailController.text,
@@ -538,16 +544,46 @@ class CvInputNo2Controller extends GetxController {
         website: websiteController.text,
         occupationalGoals: occupationalGoalsController.text,
         taste: tasteController.text,
-        skills: skillList,
+        skills: skillControllers.map((e) => e.text).toList(),
         workExperience: workExperienceList,
         knowledge: knowledgeList,
         activities: activityList,
         award: awardList,
         certificate: certificateList,
+        project: projectList,
         moreInformation: moreInformationController.text,
         introducer: introducerController.text,
-        type: type,
-      );
+        type: type);
+    return cvModel;
+  }
+
+  Future<void> updateCv(String type) async {
+    try {
+      print("===> Đã vào hàm updateCv với type: $type");
+
+      CvModelV3 cvModel = CvModelV3(
+          uid: idCv,
+          linkImage: imageUrl.value,
+          fullName: fullNameController.text,
+          dateOfBirth: convertToTimestamp(selectDate.value!),
+          sex: selectSex.value,
+          position: positionController.text,
+          phoneNumber: phoneNumberController.text,
+          email: emailController.text,
+          address: addressController.text,
+          website: websiteController.text,
+          occupationalGoals: occupationalGoalsController.text,
+          taste: tasteController.text,
+          skills: skillControllers.map((e) => e.text).toList(),
+          workExperience: workExperienceList,
+          knowledge: knowledgeList,
+          activities: activityList,
+          award: awardList,
+          certificate: certificateList,
+          project: projectList,
+          moreInformation: moreInformationController.text,
+          introducer: introducerController.text,
+          type: type);
 
       // Print out each field of cvModel
       print("===> cvModel details:");
@@ -570,8 +606,8 @@ class CvInputNo2Controller extends GetxController {
       print("introducer: ${cvModel.introducer}");
       print("type: ${cvModel.type}");
 
-      print("===> cvInputNo1Fb: $cvInputNo2Fb");
-      await cvInputNo2Fb.updateCvNo2(cvModel, type);
+      print("===> cvInputNo1Fb: $cvInputNo3Fb");
+      await cvInputNo3Fb.updateCvNo3(cvModel, type);
       print("success");
     } catch (err) {
       Get.snackbar("Error update", err.toString());

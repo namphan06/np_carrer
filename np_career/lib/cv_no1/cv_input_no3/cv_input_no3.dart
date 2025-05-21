@@ -1,24 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:np_career/core/app_color.dart';
-import 'package:np_career/cv_no1/cv_input_no2/cv_input_no2_controller.dart';
-import 'package:np_career/cv_template/cv2/cv2_output.dart';
+import 'package:np_career/cv_no1/cv_input_no1/cv_input_no1_controller.dart';
+import 'package:np_career/cv_no1/cv_input_no3/cv_input_no3_controller.dart';
+import 'package:np_career/cv_template/cv1/cv1_output.dart';
+import 'package:np_career/cv_template/cv3_position/cv3_output.dart';
 import 'package:np_career/cv_template/cv_setting/cv_setting_no1.dart';
-import 'package:np_career/model/cv_model_v2.dart';
+import 'package:np_career/enum/enum_sex.dart';
+import 'package:np_career/model/cv_model.dart';
+import 'package:np_career/model/cv_model_v3.dart';
 import 'package:np_career/resume_management/resume_management_screen.dart';
 import 'package:np_career/view/user/build_your_resume/by_style/resume_by_style.dart';
 
-class CvInputNo2 extends StatefulWidget {
-  const CvInputNo2({super.key});
+class CvInputNo3 extends StatefulWidget {
+  // final String type;
+  const CvInputNo3();
 
   @override
-  State<CvInputNo2> createState() => _CvInputNo2State();
+  State<CvInputNo3> createState() => _CvInputNo1State();
 }
 
-class _CvInputNo2State extends State<CvInputNo2> {
-  final CvInputNo2Controller controller = Get.put(CvInputNo2Controller());
+class _CvInputNo1State extends State<CvInputNo3> {
+  final CvInputNo3Controller controller = Get.put(CvInputNo3Controller());
   final CvSettingNo1 cvSettingNo1 = Get.put(CvSettingNo1());
 
   @override
@@ -77,7 +81,7 @@ class _CvInputNo2State extends State<CvInputNo2> {
                         if (controller.optionAction.value == 'save') {
                           print("===> Save block");
                           await controller.addCv(
-                              controller.choiceType.value, 'no2');
+                              controller.choiceType.value, 'no3');
                           Get.back();
                           Get.off(ResumeByStyle());
                         } else if (controller.optionAction.value == 'update') {
@@ -223,6 +227,122 @@ class _CvInputNo2State extends State<CvInputNo2> {
                   decoration: InputDecoration(labelText: "Position"),
                 ),
                 const SizedBox(height: 10),
+                InkWell(
+                  onTap: () {
+                    controller.pickDate(context);
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 12, vertical: 16),
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: AppColor.greenPrimaryColor,
+                        width: 2,
+                      ),
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    child: Row(
+                      children: [
+                        Text(
+                          controller.selectDate.value != null
+                              ? controller.selectDate.value!
+                                  .toLocal()
+                                  .toString()
+                                  .split(' ')[0]
+                              : "Date Of Birth",
+                          style: TextStyle(
+                            color: AppColor.greenPrimaryColor,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const Spacer(),
+                        const Icon(
+                          Icons.arrow_drop_down_outlined,
+                          color: AppColor.greenPrimaryColor,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 10),
+                Column(
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        controller.choiceSex.value =
+                            !controller.choiceSex.value;
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 12, vertical: 16),
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: AppColor.greenPrimaryColor,
+                            width: 2,
+                          ),
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        child: Row(
+                          children: [
+                            Text(
+                              controller.selectSex.value.isEmpty
+                                  ? "Sex"
+                                  : controller.selectSex.value,
+                              style: TextStyle(
+                                color: AppColor.greenPrimaryColor,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            const Spacer(),
+                            Icon(
+                              controller.choiceSex.value
+                                  ? Icons.arrow_drop_up_outlined
+                                  : Icons.arrow_drop_down_outlined,
+                              color: AppColor.greenPrimaryColor,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    controller.choiceSex.value
+                        ? Padding(
+                            padding: const EdgeInsets.only(right: 10),
+                            child: Column(
+                              children: EnumSex.values.map((EnumSex sex) {
+                                return GestureDetector(
+                                  onTap: () {
+                                    controller.selectSex.value = sex.name;
+                                    controller.choiceSex.value =
+                                        !controller.choiceSex.value;
+                                  },
+                                  child: Container(
+                                    width: double.infinity,
+                                    padding: EdgeInsets.symmetric(
+                                        vertical: 10, horizontal: 25),
+                                    decoration: BoxDecoration(
+                                      border: Border(
+                                        bottom: BorderSide(
+                                            color: AppColor.greyColor),
+                                      ),
+                                    ),
+                                    child: Text(
+                                      sex.name,
+                                      style: TextStyle(fontSize: 16),
+                                    ),
+                                  ),
+                                );
+                              }).toList(),
+                            ),
+                          )
+                        : SizedBox.shrink(),
+                  ],
+                ),
+                const SizedBox(height: 10),
                 TextField(
                   controller: controller.phoneNumberController,
                   style: TextStyle(
@@ -278,16 +398,112 @@ class _CvInputNo2State extends State<CvInputNo2> {
                 const SizedBox(
                   height: 10,
                 ),
-                TextField(
-                  controller: controller.tasteController,
-                  style: TextStyle(
-                      color: AppColor.greenPrimaryColor,
-                      fontWeight: FontWeight.bold),
-                  decoration: InputDecoration(
-                    labelText: "Taste",
+                Container(
+                  padding: EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                        color: AppColor.orangePrimaryColor, width: 3),
+                    borderRadius: BorderRadius.all(Radius.circular(15)),
+                  ),
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Text(
+                            "SKILLS",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 15,
+                              color: AppColor.orangePrimaryColor,
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 10),
+                      Obx(() => ListView.builder(
+                            shrinkWrap: true,
+                            physics: NeverScrollableScrollPhysics(),
+                            itemCount: controller.skillControllers.length,
+                            itemBuilder: (context, index) {
+                              return Column(
+                                children: [
+                                  Container(
+                                    padding: EdgeInsets.all(size.width * 0.02),
+                                    decoration: BoxDecoration(
+                                      border: Border.all(
+                                          color: AppColor.greenPrimaryColor,
+                                          width: 3),
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(15)),
+                                    ),
+                                    child: Row(
+                                      children: [
+                                        Expanded(
+                                          child: TextField(
+                                            controller: controller
+                                                .skillControllers[index],
+                                            style: TextStyle(
+                                              color: AppColor.greenPrimaryColor,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                            decoration: InputDecoration(
+                                                label: Text("Skill")),
+                                          ),
+                                        ),
+                                        GestureDetector(
+                                          onTap: () =>
+                                              controller.removeRowSkill(index),
+                                          child: Container(
+                                            margin: EdgeInsets.all(5),
+                                            padding: EdgeInsets.all(12),
+                                            decoration: BoxDecoration(
+                                              shape: BoxShape.rectangle,
+                                              color: AppColor.orangeRedColor,
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(15)),
+                                            ),
+                                            child: const Icon(
+                                              Icons.close,
+                                              size: 20,
+                                              color:
+                                                  AppColor.lightBackgroundColor,
+                                              weight: 5,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  SizedBox(height: 10),
+                                ],
+                              );
+                            },
+                          )),
+                      SizedBox(height: 10),
+                      Center(
+                        child: SizedBox(
+                          width: size.width * 0.5,
+                          child: ElevatedButton(
+                            onPressed: controller.addRowSkill,
+                            child: Text(
+                              "ADD ROW",
+                              style: TextStyle(
+                                color: AppColor.lightBackgroundColor,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-                const SizedBox(height: 10),
+
+                SizedBox(
+                  height: 20,
+                ),
+
                 Container(
                   padding: EdgeInsets.all(size.width * 0.02),
                   decoration: BoxDecoration(
@@ -298,7 +514,7 @@ class _CvInputNo2State extends State<CvInputNo2> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Text(
-                        "SKILL",
+                        "PROJECT",
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 15,
@@ -310,7 +526,7 @@ class _CvInputNo2State extends State<CvInputNo2> {
                           width: size.width * 0.4,
                           child: ElevatedButton(
                               onPressed: () {
-                                controller.addRowSkill();
+                                controller.addRowProject();
                               },
                               child: Text(
                                 "ADD ROW",
@@ -327,7 +543,7 @@ class _CvInputNo2State extends State<CvInputNo2> {
                 ListView.builder(
                     shrinkWrap: true,
                     physics: NeverScrollableScrollPhysics(),
-                    itemCount: controller.listSkill.length,
+                    itemCount: controller.listProject.length,
                     itemBuilder: (context, index) {
                       return Column(
                         children: [
@@ -345,7 +561,7 @@ class _CvInputNo2State extends State<CvInputNo2> {
                                   alignment: Alignment.centerRight,
                                   child: GestureDetector(
                                     onTap: () =>
-                                        controller.removeRowSkill(index),
+                                        controller.removeRowProject(index),
                                     child: Container(
                                       margin: EdgeInsets.all(size.width * 0.02),
                                       padding:
@@ -364,7 +580,7 @@ class _CvInputNo2State extends State<CvInputNo2> {
                                 ),
                                 SizedBox(
                                   child: TextField(
-                                    controller: controller.listSkill[index]
+                                    controller: controller.listProject[index]
                                         ['name'] as TextEditingController,
                                     style: TextStyle(
                                       color: AppColor.greenPrimaryColor,
@@ -377,26 +593,104 @@ class _CvInputNo2State extends State<CvInputNo2> {
                                 SizedBox(
                                   height: 10,
                                 ),
+                                SizedBox(
+                                  child: TextField(
+                                    controller: controller.listProject[index]
+                                        ['customer'] as TextEditingController,
+                                    style: TextStyle(
+                                      color: AppColor.greenPrimaryColor,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                    decoration: InputDecoration(
+                                        label: Text("Customer")),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                SizedBox(
+                                  child: TextField(
+                                    controller: controller.listProject[index]
+                                        ['describe'] as TextEditingController,
+                                    minLines: 3,
+                                    maxLines: 3,
+                                    style: TextStyle(
+                                      color: AppColor.greenPrimaryColor,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                    decoration: InputDecoration(
+                                        label: Text("Describe")),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                SizedBox(
+                                  child: TextField(
+                                    controller: controller.listProject[index]
+                                        ['quality'] as TextEditingController,
+                                    style: TextStyle(
+                                      color: AppColor.greenPrimaryColor,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                    decoration:
+                                        InputDecoration(label: Text("Quality")),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                SizedBox(
+                                  child: TextField(
+                                    controller: controller.listProject[index]
+                                        ['technology'] as TextEditingController,
+                                    style: TextStyle(
+                                      color: AppColor.greenPrimaryColor,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                    decoration: InputDecoration(
+                                        label: Text("Technology")),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                SizedBox(
+                                  child: TextField(
+                                    controller: controller.listProject[index]
+                                        ['position'] as TextEditingController,
+                                    style: TextStyle(
+                                      color: AppColor.greenPrimaryColor,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                    decoration: InputDecoration(
+                                        label: Text("Position")),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 10,
+                                ),
                                 Obx(
                                   () => Column(
                                     children: [
                                       for (int i = 0;
                                           i <
-                                              (controller.listSkill[index]
-                                                      ['list'] as RxList)
+                                              (controller.listProject[index]
+                                                      ['role'] as RxList)
                                                   .length;
                                           i++)
                                         Column(
                                           children: [
                                             TextField(
-                                              controller: controller
-                                                  .listSkill[index]['list'][i],
+                                              controller:
+                                                  controller.listProject[index]
+                                                      ['role'][i],
                                               decoration: InputDecoration(
                                                 labelText: "Detail ${i + 1}",
                                                 suffixIcon: GestureDetector(
                                                   onTap: () {
                                                     controller
-                                                        .removeDetailFromSkill(
+                                                        .removeDetailFromProject(
                                                             index, i);
                                                   },
                                                   child: Container(
@@ -413,7 +707,7 @@ class _CvInputNo2State extends State<CvInputNo2> {
                                                 ),
                                               ),
                                               onChanged: (val) => controller
-                                                  .updateDetailInListS(
+                                                  .updateDetailInListP(
                                                       index, i, val),
                                             ),
                                             const SizedBox(height: 10),
@@ -426,10 +720,10 @@ class _CvInputNo2State extends State<CvInputNo2> {
                                           child: ElevatedButton(
                                             onPressed: () {
                                               controller
-                                                  .addDetailToListS(index);
+                                                  .addDetailToListP(index);
                                             },
                                             child: const Text(
-                                              "ADD DETAIL",
+                                              "ADD ROLE",
                                               style: TextStyle(
                                                 color: AppColor
                                                     .lightBackgroundColor,
@@ -452,7 +746,7 @@ class _CvInputNo2State extends State<CvInputNo2> {
                       );
                     }),
                 SizedBox(
-                  height: 10,
+                  height: 20,
                 ),
                 Container(
                   padding: EdgeInsets.all(size.width * 0.02),
@@ -732,19 +1026,6 @@ class _CvInputNo2State extends State<CvInputNo2> {
                                   ),
                                 ),
                               ),
-                              SizedBox(
-                                child: TextField(
-                                  controller: controller.listKnowledge[index]
-                                      ['name'] as TextEditingController,
-                                  style: TextStyle(
-                                    color: AppColor.greenPrimaryColor,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                  decoration:
-                                      InputDecoration(label: Text("Name")),
-                                ),
-                              ),
-                              SizedBox(height: 10),
                               Row(
                                 children: [
                                   SizedBox(
@@ -1311,19 +1592,19 @@ class _CvInputNo2State extends State<CvInputNo2> {
                 SizedBox(
                   height: 20,
                 ),
-                TextField(
-                  controller: controller.moreInformationController,
-                  style: TextStyle(
-                      color: AppColor.greenPrimaryColor,
-                      fontWeight: FontWeight.bold),
-                  decoration: InputDecoration(
-                    labelText: "More Information",
-                  ),
-                  maxLines: 5,
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
+                // TextField(
+                //   controller: controller.moreInformationController,
+                //   style: TextStyle(
+                //       color: AppColor.greenPrimaryColor,
+                //       fontWeight: FontWeight.bold),
+                //   decoration: InputDecoration(
+                //     labelText: "More Information",
+                //   ),
+                //   maxLines: 5,
+                // ),
+                // const SizedBox(
+                //   height: 10,
+                // ),
                 TextField(
                   controller: controller.introducerController,
                   style: TextStyle(
@@ -1339,9 +1620,9 @@ class _CvInputNo2State extends State<CvInputNo2> {
                 ),
                 ElevatedButton(
                     onPressed: () async {
-                      CvModelV2 cv = await controller
+                      CvModelV3 cv = await controller
                           .getCvModel(controller.choiceType.value);
-                      Get.to(Cv2Output(model: cv));
+                      Get.to(Cv3Output(model: cv));
                     },
                     child: Text(
                       "Preview Cv",

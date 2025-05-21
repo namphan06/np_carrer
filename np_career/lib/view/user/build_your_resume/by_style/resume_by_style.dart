@@ -389,7 +389,7 @@ class ResumeByStyle extends StatelessWidget {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        cvNo1.label,
+                                        cvNo1.name,
                                         style: TextStyle(
                                             color: AppColor.greenPrimaryColor,
                                             fontWeight: FontWeight.bold,
@@ -641,7 +641,7 @@ class ResumeByStyle extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  cvNo1.label,
+                                  cvNo1.name,
                                   style: TextStyle(
                                       color: AppColor.greenPrimaryColor,
                                       fontWeight: FontWeight.bold,
