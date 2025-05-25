@@ -116,7 +116,7 @@ class ButtonTrigger extends StatelessWidget {
             );
 
             // Gọi enum để điều hướng
-            EnumCvOutput.cv1_no1.run(cvModel.type, cvModel);
+            // EnumCvOutput.cv1_no1.run(cvModel.type, cvModel);
           },
           child: const Text('Truyền dữ liệu đến Cv1Output'),
         ),

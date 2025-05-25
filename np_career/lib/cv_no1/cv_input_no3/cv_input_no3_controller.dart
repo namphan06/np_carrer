@@ -72,6 +72,7 @@ class CvInputNo3Controller extends GetxController {
       moreInformationController.text = model.moreInformation ?? '';
       introducerController.text = model.introducer ?? '';
       selectSex.value = model.sex;
+
       idCv = model.uid;
 
       skillControllers.value = (model.skills ?? [])
@@ -118,10 +119,25 @@ class CvInputNo3Controller extends GetxController {
 
       listKnowledge.value = (model.knowledge ?? []).map((knowledge) {
         return {
-          "name": TextEditingController(text: knowledge.school ?? ''),
+          "name": TextEditingController(text: knowledge.name ?? ''),
           "school": TextEditingController(text: knowledge.school ?? ''),
           "date": TextEditingController(text: knowledge.date ?? ''),
           "list": (knowledge.list ?? [])
+              .map((e) => TextEditingController(text: e ?? ''))
+              .toList()
+              .obs,
+        };
+      }).toList();
+
+      listProject.value = (model.project ?? []).map((project) {
+        return {
+          "name": TextEditingController(text: project.name ?? ''),
+          "customer": TextEditingController(text: project.customer ?? ''),
+          "describe": TextEditingController(text: project.describe ?? ''),
+          "position": TextEditingController(text: project.position ?? ''),
+          "quality": TextEditingController(text: project.quality ?? ''),
+          "technology": TextEditingController(text: project.technology ?? ''),
+          "role": (project.role ?? [])
               .map((e) => TextEditingController(text: e ?? ''))
               .toList()
               .obs,

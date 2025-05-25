@@ -18,16 +18,7 @@ class ResumeManagementController extends GetxController {
   Future<void> getCv(String uid, String type) async {
     try {
       dynamic model = await _fb.getCvModel(uid, type);
-
-      if (type == 'cv1' && model is CvModel) {
-        EnumCvOutput.cv1_no1.run(type, model);
-      } else if (type == 'cv2' && model is CvModelV2) {
-        EnumCvOutput.cv2_no2.run(type, model);
-      } else if (type == 'cv3' && model is CvModelV3) {
-        EnumCvOutput.cv3_no3.run(type, model);
-      } else {
-        throw Exception("Invalid model type for: $type");
-      }
+      CvOutputRouter.run(type, model);
     } catch (err) {
       Get.snackbar("Error", err.toString());
     }

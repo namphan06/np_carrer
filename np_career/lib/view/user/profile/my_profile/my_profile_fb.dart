@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:get/utils.dart';
+import 'package:np_career/enum/enum_cv_type_model.dart';
 import 'package:np_career/model/cv_model.dart';
 import 'package:np_career/model/my_profile_model.dart';
 
@@ -50,13 +51,13 @@ class MyProfileFb {
     return null;
   }
 
-  Future<CvModel> getCvModel(String uid, String type) async {
+  Future<dynamic> getCvModel(String uid, String type) async {
     try {
       DocumentSnapshot snapshot =
           await _firestore.collection(type).doc(uid).get();
 
       if (snapshot.exists) {
-        return CvModel.fromSnap(snapshot);
+        return CvTypeModel.fromString(type).fromSnap(snapshot);
       } else {
         throw Exception("CV not found");
       }

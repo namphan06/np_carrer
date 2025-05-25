@@ -39,8 +39,8 @@ class InterviewScheduleController extends GetxController {
 
   Future<void> getCv(String uid, String type) async {
     try {
-      CvModel model = await _fb.getCvModel(uid, type);
-      EnumCvOutput.cv1_no1.run(type, model);
+      dynamic model = await _fb.getCvModel(uid, type);
+      CvOutputRouter.run(type, model);
     } catch (err) {
       Get.snackbar("Error", err.toString());
     }

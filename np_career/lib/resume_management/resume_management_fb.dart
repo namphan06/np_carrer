@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:get/utils.dart';
+import 'package:np_career/enum/enum_cv_type_model.dart';
 import 'package:np_career/model/cv_model.dart';
 import 'package:np_career/model/cv_model_v2.dart';
 import 'package:np_career/model/cv_model_v3.dart';
@@ -24,15 +25,7 @@ class ResumeManagementFb {
           await _firestore.collection(type).doc(uid).get();
 
       if (snapshot.exists) {
-        if (type == 'cv1') {
-          return CvModel.fromSnap(snapshot);
-        } else if (type == 'cv2') {
-          return CvModelV2.fromSnap(snapshot);
-        } else if (type == 'cv3') {
-          return CvModelV3.fromSnap(snapshot);
-        } else {
-          throw Exception("Unknown CV type: $type");
-        }
+        return CvTypeModel.fromString(type).fromSnap(snapshot);
       } else {
         throw Exception("CV not found");
       }

@@ -1605,6 +1605,19 @@ class _CvInputNo1State extends State<CvInputNo3> {
                 // const SizedBox(
                 //   height: 10,
                 // ),
+
+                TextField(
+                  controller: controller.tasteController,
+                  style: TextStyle(
+                      color: AppColor.greenPrimaryColor,
+                      fontWeight: FontWeight.bold),
+                  decoration: InputDecoration(
+                    labelText: "Taste",
+                  ),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
                 TextField(
                   controller: controller.introducerController,
                   style: TextStyle(
