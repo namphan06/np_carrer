@@ -8,6 +8,7 @@ import 'package:get/instance_manager.dart';
 import 'package:np_career/core/app_color.dart';
 import 'package:np_career/resume_management/resume_management_screen.dart';
 import 'package:np_career/test/cv1_output_no1_test.dart';
+import 'package:np_career/tool/mi/mi.dart';
 import 'package:np_career/view/screen/home.dart';
 import 'package:np_career/view/user/build_your_resume/by_style/resume_by_style.dart';
 import 'package:np_career/view/user/home/home_user_controller.dart';
@@ -350,7 +351,7 @@ class _HomeScreenUserState extends State<HomeScreenUser> {
                                         "assets/images/test-svgrepo-com (1).svg",
                                     lableContainer: "MI Test",
                                     selectedContainer: () {
-                                      Get.to(JobApplied());
+                                      Get.to(Mi());
                                     }),
                                 SizedBox(
                                   width: 30,
