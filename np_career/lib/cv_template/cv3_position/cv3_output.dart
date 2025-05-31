@@ -565,8 +565,8 @@ class _Cv3OutputState extends State<Cv3Output> {
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 10),
-                    child: Image.asset(
-                      'assets/images/default.webp',
+                    child: Image.network(
+                      widget.model.img.url,
                       width: size.width * 0.35,
                       height: size.width * 0.35,
                       fit: BoxFit.cover,

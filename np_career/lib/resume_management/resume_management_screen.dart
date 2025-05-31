@@ -7,6 +7,7 @@ import 'package:np_career/enum/enum_cv_input.dart';
 import 'package:np_career/model/cv_model.dart';
 import 'package:np_career/resume_management/resume_management_controller.dart';
 import 'package:np_career/resume_management/resume_management_fb.dart';
+import 'package:np_career/utils/image_uploader.dart';
 import 'package:np_career/view/pdf_viewr.dart';
 
 class ResumeManagementScreen extends StatefulWidget {
@@ -20,6 +21,18 @@ class _ResumeManagementScreenState extends State<ResumeManagementScreen> {
   final ResumeManagementController controller =
       Get.put(ResumeManagementController());
   final ResumeManagementFb controllerFb = Get.put(ResumeManagementFb());
+
+  final handler = GoogleDriveHandler();
+
+  void onUploadButtonPressed(BuildContext context) async {
+    final imageLink = await handler.pickImageFromGoogleDrive(context);
+    if (imageLink != null && imageLink.isNotEmpty) {
+      print('Đường dẫn ảnh đã chọn: $imageLink');
+      // Xử lý tiếp với đường dẫn ảnh ở đây
+    } else {
+      print('Người dùng chưa chọn ảnh hoặc hủy.');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {

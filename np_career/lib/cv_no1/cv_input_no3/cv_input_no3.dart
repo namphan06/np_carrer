@@ -1,3 +1,4 @@
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -124,54 +125,16 @@ class _CvInputNo1State extends State<CvInputNo3> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 GestureDetector(
-                  onTap: () => Get.dialog(AlertDialog(
-                    backgroundColor: AppColor.lightBackgroundColor,
-                    title: Text(
-                      "Enter image link",
-                      style: TextStyle(
-                          color: AppColor.orangePrimaryColor,
-                          fontWeight: FontWeight.bold),
-                    ),
-                    content: TextField(
-                      controller: controller.linkImgController,
-                      style: TextStyle(
-                          color: AppColor.greenPrimaryColor,
-                          fontWeight: FontWeight.bold),
-                      decoration: InputDecoration(label: Text("Link")),
-                    ),
-                    actions: [
-                      SizedBox(
-                        width: 100,
-                        child: ElevatedButton(
-                          onPressed: () {
-                            Get.back();
-                          },
-                          child: Text(
-                            "Cancel",
-                            style: TextStyle(
-                                color: AppColor.lightBackgroundColor,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        width: 100,
-                        child: ElevatedButton(
-                          onPressed: () {
-                            controller.imageUrl.value =
-                                controller.linkImgController.text;
-                            Get.back();
-                          },
-                          child: Text(
-                            "Submit",
-                            style: TextStyle(
-                                color: AppColor.lightBackgroundColor,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                      ),
-                    ],
-                  )),
+                  onTap: () async {
+                    FilePickerResult? result =
+                        await FilePicker.platform.pickFiles();
+
+                    if (result != null) {
+                      await controller.uploadFile(result);
+                    } else {
+                      print("No file selected.");
+                    }
+                  },
                   child: Container(
                     width: double.infinity,
                     decoration: BoxDecoration(

@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:np_career/model/activity.dart';
 import 'package:np_career/model/award.dart';
 import 'package:np_career/model/certificate.dart';
+import 'package:np_career/model/img_cloudinary.dart';
 import 'package:np_career/model/knowledge.dart';
 import 'package:np_career/model/project.dart';
 import 'package:np_career/model/skill.dart';
@@ -10,7 +11,7 @@ import 'package:np_career/model/work_experience.dart';
 
 class CvModelV3 {
   final String uid;
-  final String linkImage;
+  final ImgCloudinary img;
   final String fullName;
   final String position;
   final Timestamp dateOfBirth;
@@ -34,7 +35,7 @@ class CvModelV3 {
 
   const CvModelV3({
     required this.uid,
-    required this.linkImage,
+    required this.img,
     required this.fullName,
     required this.position,
     required this.dateOfBirth,
@@ -62,7 +63,16 @@ class CvModelV3 {
 
     return CvModelV3(
       uid: snap.id,
-      linkImage: data['linkImage'] ?? '',
+      img: data['img'] != null
+          ? ImgCloudinary.fromMap(data['img'])
+          : const ImgCloudinary(
+              name: '',
+              id: '',
+              extension: '',
+              size: 0,
+              url: '',
+              createdAt: '',
+            ),
       fullName: data['fullName'] ?? '',
       position: data['position'] ?? '',
       dateOfBirth: data['dateOfBirth'] ?? '',
@@ -101,7 +111,7 @@ class CvModelV3 {
 
   Map<String, dynamic> toJson() {
     return {
-      'linkImage': linkImage,
+      'img': img.toJson(),
       'fullName': fullName,
       'position': position,
       'dateOfBirth': dateOfBirth,

@@ -254,7 +254,7 @@ class _Cv2OutputState extends State<Cv2Output> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Image.network(
-                          widget.model.linkImage,
+                          widget.model.img.url,
                           width: size.width * 0.35,
                           height: size.width * 0.35,
                           fit: BoxFit.cover,

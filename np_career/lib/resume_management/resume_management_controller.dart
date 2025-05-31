@@ -11,6 +11,7 @@ class ResumeManagementController extends GetxController {
   var selectChoice = "np".obs;
   var searchQuery = "".obs;
   var selectedPosition = "".obs;
+  var linkImage = "".obs;
 
   TextEditingController linkController = TextEditingController();
   TextEditingController positionController = TextEditingController();

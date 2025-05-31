@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:np_career/cloudinary_service.dart';
 import 'package:np_career/cv_no1/cv_input_no1/cv_input_no1_fb.dart';
 import 'package:np_career/cv_no1/cv_input_no2/cv_input_no2_fb.dart';
 import 'package:np_career/model/activity.dart';
@@ -9,6 +11,7 @@ import 'package:np_career/model/award.dart';
 import 'package:np_career/model/certificate.dart';
 import 'package:np_career/model/cv_model.dart';
 import 'package:np_career/model/cv_model_v2.dart';
+import 'package:np_career/model/img_cloudinary.dart';
 import 'package:np_career/model/knowledge.dart';
 import 'package:np_career/model/skill.dart';
 import 'package:np_career/model/skill_v2.dart';
@@ -23,6 +26,7 @@ class CvInputNo2Controller extends GetxController {
   final imageUrl = ''.obs;
   final choiceType = ''.obs;
   final optionAction = 'save'.obs;
+  late ImgCloudinary? img;
   String idCv = '';
   RxString searchQuery = ''.obs;
 
@@ -43,6 +47,17 @@ class CvInputNo2Controller extends GetxController {
     return DateFormat('dd-MM-yyyy').format(date);
   }
 
+  Future<ImgCloudinary?> uploadFile(FilePickerResult result) async {
+    try {
+      img = await uploadToCloudinary(result);
+      imageUrl.value = img!.url;
+      return img;
+    } catch (e) {
+      print("Upload error: $e");
+      return null;
+    }
+  }
+
   @override
   void onInit() {
     super.onInit();
@@ -52,8 +67,8 @@ class CvInputNo2Controller extends GetxController {
     print(model);
 
     if (model != null) {
-      imageUrl.value = model.linkImage ?? '';
-      linkImgController.text = model.linkImage ?? '';
+      imageUrl.value = model.img.url ?? '';
+      // linkImgController.text = model.linkImage ?? '';
       fullNameController.text = model.fullName ?? '';
       positionController.text = model.position ?? '';
       phoneNumberController.text = model.phoneNumber ?? '';
@@ -473,7 +488,7 @@ class CvInputNo2Controller extends GetxController {
       String randomId = uuid.v4();
       CvModelV2 cvModel = CvModelV2(
           uid: randomId,
-          linkImage: imageUrl.value,
+          img: img!,
           fullName: fullNameController.text,
           position: positionController.text,
           phoneNumber: phoneNumberController.text,
@@ -493,6 +508,29 @@ class CvInputNo2Controller extends GetxController {
           type: type);
 
       cvInputNo2Fb.createCvNo2(cvModel, type, type_input);
+      print("===> cvModel details:");
+      print("uid: ${cvModel.uid}");
+      print("linkImage: ${cvModel.img}");
+      print("fullName: ${cvModel.fullName}");
+      print("position: ${cvModel.position}");
+      print("phoneNumber: ${cvModel.phoneNumber}");
+      print("email: ${cvModel.email}");
+      print("address: ${cvModel.address}");
+      print("website: ${cvModel.website}");
+      print("occupationalGoals: ${cvModel.occupationalGoals}");
+      print("skills: ${cvModel.skills}");
+      print("workExperience: ${cvModel.workExperience}");
+      print("knowledge: ${cvModel.knowledge}");
+      print("activities: ${cvModel.activities}");
+      print("award: ${cvModel.award}");
+      print("certificate: ${cvModel.certificate}");
+      print("moreInformation: ${cvModel.moreInformation}");
+      print("introducer: ${cvModel.introducer}");
+      print("type: ${cvModel.type}");
+
+      print("===> cvInputNo1Fb: $cvInputNo2Fb");
+      await cvInputNo2Fb.updateCvNo2(cvModel, type);
+      print("success");
     } catch (err) {
       Get.snackbar("Error", err.toString());
     }
@@ -501,7 +539,7 @@ class CvInputNo2Controller extends GetxController {
   Future<CvModelV2> getCvModel(String type) async {
     CvModelV2 cvModel = CvModelV2(
       uid: idCv,
-      linkImage: imageUrl.value,
+      img: img!,
       fullName: fullNameController.text,
       position: positionController.text,
       phoneNumber: phoneNumberController.text,
@@ -529,7 +567,7 @@ class CvInputNo2Controller extends GetxController {
 
       CvModelV2 cvModel = CvModelV2(
         uid: idCv,
-        linkImage: imageUrl.value,
+        img: img!,
         fullName: fullNameController.text,
         position: positionController.text,
         phoneNumber: phoneNumberController.text,
@@ -552,7 +590,7 @@ class CvInputNo2Controller extends GetxController {
       // Print out each field of cvModel
       print("===> cvModel details:");
       print("uid: ${cvModel.uid}");
-      print("linkImage: ${cvModel.linkImage}");
+      print("linkImage: ${cvModel.img}");
       print("fullName: ${cvModel.fullName}");
       print("position: ${cvModel.position}");
       print("phoneNumber: ${cvModel.phoneNumber}");

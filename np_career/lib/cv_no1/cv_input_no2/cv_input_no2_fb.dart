@@ -36,6 +36,7 @@ class CvInputNo2Fb {
 
       await userDoc.set({'cvs': existingCvs});
     } catch (err) {
+      print(err.toString());
       Get.snackbar("Error", "Fail create cv");
     }
   }
