@@ -7,6 +7,7 @@ import 'package:np_career/core/app_theme.dart';
 import 'package:np_career/firebase_options.dart';
 import 'package:np_career/services/call_api.dart';
 import 'package:np_career/tool/courses/providers/CategoryProvider.dart';
+import 'package:np_career/tool/courses/providers/CourseProvider.dart';
 import 'package:np_career/view/login/login.dart';
 import 'package:np_career/view/signup/signup.dart';
 import 'package:np_career/view/user/home/home_screen_user.dart';
@@ -53,6 +54,9 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (_) => CategoryProvider(apiService: AppService()),
         ),
+        // ChangeNotifierProvider(
+        //   create: (_) => CourseProvider(apiService: AppService()),
+        // ),
       ],
       child: GetMaterialApp(
         title: 'Flutter Demo',

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:np_career/core/app_color.dart';
+import 'package:np_career/tool/courses/course_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:np_career/model/category.dart';
 import 'package:np_career/tool/courses/providers/CategoryProvider.dart';
@@ -13,9 +16,10 @@ class CategoryScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Course Categories"),
+        title: Text('Courses'),
         centerTitle: true,
         backgroundColor: AppColor.orangePrimaryColor,
+        foregroundColor: Colors.white,
       ),
       body: provider.isLoading
           ? const Center(child: CircularProgressIndicator())
@@ -31,7 +35,11 @@ class CategoryScreen extends StatelessWidget {
                 ),
                 itemBuilder: (context, index) {
                   final category = provider.categories[index];
-                  return CategoryCard(category: category);
+                  return GestureDetector(
+                      onTap: () => Get.to(CourseListScreen(
+                          categoryId: category.id,
+                          categoryName: category.name)),
+                      child: CategoryCard(category: category));
                 },
               ),
             ),

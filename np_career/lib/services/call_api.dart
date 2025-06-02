@@ -4,14 +4,16 @@ import 'package:http/http.dart' as http;
 
 import 'package:http/http.dart';
 import 'package:np_career/model/category.dart';
+import 'package:np_career/model/course.dart';
+import 'package:np_career/model/enrollment.dart';
 
 class AppService {
-  final String baseUrl = 'http://192.168.0.104:8000/api/';
+  final String baseUrl = 'http://192.168.0.104:8000/api';
 
   Future<List<MyCategory>> fetchCategories() async {
     try {
       http.Response response = await http.get(
-        Uri.parse(baseUrl + 'categories'),
+        Uri.parse(baseUrl + '/categories'),
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
@@ -58,6 +60,111 @@ class AppService {
     } catch (e) {
       // Handle exceptions during the HTTP request
       print('Error during HTTP request: $e');
+      return [];
+    }
+  }
+
+  Future<List<Course>> fetchCoursesByCategoryId(int categoryId) async {
+    try {
+      final response = await http.get(
+        Uri.parse('$baseUrl/categories/show/$categoryId'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> data = jsonDecode(response.body);
+
+        if (data.containsKey('courses')) {
+          List<dynamic> coursesJson = data['courses'];
+
+          List<Course> courses = coursesJson
+              .map((courseJson) => Course.fromMap(courseJson))
+              .toList();
+
+          return courses;
+        } else {
+          print('Response JSON does not contain "courses" key.');
+          return [];
+        }
+      } else {
+        print('Failed to fetch courses. Status code: ${response.statusCode}');
+        return [];
+      }
+    } catch (e) {
+      print('Error during HTTP request: $e');
+      return [];
+    }
+  }
+
+  Future<bool> enrollCourse({
+    required String userId,
+    required int courseId,
+    String? note,
+    String status = 'inactive',
+  }) async {
+    try {
+      final response = await http.post(
+        Uri.parse('$baseUrl/enrollments'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+        body: jsonEncode({
+          'user_id': userId,
+          'course_id': courseId,
+          'note': note,
+          'status': status,
+        }),
+      );
+
+      if (response.statusCode == 201) {
+        // Đăng ký thành công
+        return true;
+      } else {
+        print('Failed to enroll course. Status: ${response.statusCode}');
+        print('Response body: ${response.body}');
+        return false;
+      }
+    } catch (e) {
+      print('Error enrolling course: $e');
+      return false;
+    }
+  }
+
+  Future<List<Enrollment>> fetchEnrollmentsByCourseId(int courseId) async {
+    try {
+      final response = await http.get(
+        Uri.parse('$baseUrl/courses/$courseId/enrollments'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> data = jsonDecode(response.body);
+
+        if (data.containsKey('enrollments')) {
+          List<dynamic> enrollmentsJson = data['enrollments'];
+
+          List<Enrollment> enrollments =
+              enrollmentsJson.map((e) => Enrollment.fromMap(e)).toList();
+
+          return enrollments;
+        } else {
+          print('Response JSON không có khóa "enrollments"');
+          return [];
+        }
+      } else {
+        print(
+            'Failed to fetch enrollments. Status code: ${response.statusCode}');
+        return [];
+      }
+    } catch (e) {
+      print('Error fetching enrollments: $e');
       return [];
     }
   }
