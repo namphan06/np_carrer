@@ -22,17 +22,17 @@ class _ResumeManagementScreenState extends State<ResumeManagementScreen> {
       Get.put(ResumeManagementController());
   final ResumeManagementFb controllerFb = Get.put(ResumeManagementFb());
 
-  final handler = GoogleDriveHandler();
+  // final handler = GoogleDriveHandler();
 
-  void onUploadButtonPressed(BuildContext context) async {
-    final imageLink = await handler.pickImageFromGoogleDrive(context);
-    if (imageLink != null && imageLink.isNotEmpty) {
-      print('Đường dẫn ảnh đã chọn: $imageLink');
-      // Xử lý tiếp với đường dẫn ảnh ở đây
-    } else {
-      print('Người dùng chưa chọn ảnh hoặc hủy.');
-    }
-  }
+  // void onUploadButtonPressed(BuildContext context) async {
+  //   final imageLink = await handler.pickImageFromGoogleDrive(context);
+  //   if (imageLink != null && imageLink.isNotEmpty) {
+  //     print('Đường dẫn ảnh đã chọn: $imageLink');
+  //     // Xử lý tiếp với đường dẫn ảnh ở đây
+  //   } else {
+  //     print('Người dùng chưa chọn ảnh hoặc hủy.');
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {

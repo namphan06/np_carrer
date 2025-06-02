@@ -5,11 +5,14 @@ import 'package:get/get.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:np_career/core/app_theme.dart';
 import 'package:np_career/firebase_options.dart';
+import 'package:np_career/services/call_api.dart';
+import 'package:np_career/tool/courses/providers/CategoryProvider.dart';
 import 'package:np_career/view/login/login.dart';
 import 'package:np_career/view/signup/signup.dart';
 import 'package:np_career/view/user/home/home_screen_user.dart';
 import 'package:np_career/view/user/profile/profile_bilding.dart';
 import 'package:np_career/view/user/profile/profile_screen.dart';
+import 'package:provider/provider.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -43,21 +46,28 @@ Future<void> main() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
-      title: 'Flutter Demo',
-      theme: AppTheme.lightAppTheme,
-      home: Login(),
-      getPages: [
-        GetPage(name: '/home_user', page: () => HomeScreenUser()),
-        GetPage(
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (_) => CategoryProvider(apiService: AppService()),
+        ),
+      ],
+      child: GetMaterialApp(
+        title: 'Flutter Demo',
+        theme: AppTheme.lightAppTheme,
+        home: Login(),
+        getPages: [
+          GetPage(name: '/home_user', page: () => HomeScreenUser()),
+          GetPage(
             name: '/profile',
             page: () => ProfileScreen(),
-            binding: ProfileBinding())
-      ],
-      debugShowCheckedModeBanner: false,
+            binding: ProfileBinding(),
+          ),
+        ],
+        debugShowCheckedModeBanner: false,
+      ),
     );
   }
 }
