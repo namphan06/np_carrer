@@ -14,6 +14,9 @@ class SearchJobController extends GetxController {
   RxString searchQuery = ''.obs;
   RxString searchQueryC = ''.obs;
 
+  final RxInt currentPage = 0.obs;
+  final int itemsPerPage = 5;
+
   TextEditingController nameController = TextEditingController();
   TextEditingController minSalary = TextEditingController();
   TextEditingController maxSalary = TextEditingController();
@@ -130,7 +133,7 @@ class SearchJobController extends GetxController {
   Future<void> fetchSavedJobIds() async {
     final result = await _fb.getSavedJobsStatusAndIds();
     savedJobIdList.value = result['ids'] as List<String>;
-    print(savedJobIdList);
+    // print(savedJobIdList);
   }
 
   Future<void> fetchAppliedJobIds() async {

@@ -127,12 +127,12 @@ class _HomeCompanyState extends State<HomeCompany> {
                     Text(
                       controller.nameController.toString(),
                       style: TextStyle(
-                          color: AppColor.greenPrimaryColor, fontSize: 15),
+                          color: AppColor.greenPrimaryColor, fontSize: 20),
                     ),
                     Text(
                       controller.emailController.toString(),
                       style: TextStyle(
-                          color: AppColor.greenPrimaryColor, fontSize: 15),
+                          color: AppColor.greenPrimaryColor, fontSize: 20),
                     )
                   ],
                 )

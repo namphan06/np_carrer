@@ -987,14 +987,10 @@ class _SearchJobScreenState extends State<SearchJobScreen> {
                               return Center(child: Text("No job posts found."));
                             }
 
-                            // Lấy tất cả documents
-
                             return Obx(() {
                               final docs = snapshot.data!.docs;
-
-                              // Tổng hợp tất cả job từ các document
                               final List<Map<String, dynamic>> jobPosts = [];
-                              // Gọi liên tục
+
                               controller.fetchSavedJobIds();
                               controller.fetchAppliedJobIds();
 
@@ -1003,26 +999,15 @@ class _SearchJobScreenState extends State<SearchJobScreen> {
                                 final jobs =
                                     data['jps'] as List<dynamic>? ?? [];
                                 for (var job in jobs) {
-                                  if (widget.nameRole == "Saved Job") {
-                                    // print("jobID : ${job['id']}");
-                                    if (controller.savedJobIdList
-                                        .contains(job['id'])) {
-                                      // print("jobPost : ${job}");
-
-                                      jobPosts.add(job as Map<String, dynamic>);
-                                    }
-                                  } else if (widget.nameRole == "Applied Job") {
-                                    // print("jobID : ${job['id']}");
-
-                                    if (controller.appliedJobIdList
-                                        .contains(job['id'])) {
-                                      // print("jobPost : ${job}");
-                                      jobPosts.add(job as Map<String, dynamic>);
-                                    }
+                                  if (widget.nameRole == "Saved Job" &&
+                                      controller.savedJobIdList
+                                          .contains(job['id'])) {
+                                    jobPosts.add(job as Map<String, dynamic>);
+                                  } else if (widget.nameRole == "Applied Job" &&
+                                      controller.appliedJobIdList
+                                          .contains(job['id'])) {
+                                    jobPosts.add(job as Map<String, dynamic>);
                                   } else if (widget.nameRole == null) {
-                                    // fixObx
-                                    controller.appliedJobIdList
-                                        .contains(job['id']);
                                     jobPosts.add(job as Map<String, dynamic>);
                                   }
                                 }
@@ -1036,237 +1021,264 @@ class _SearchJobScreenState extends State<SearchJobScreen> {
                               final filterJobPosts =
                                   controller.filterJobs(jobPosts);
 
-                              return ListView.builder(
-                                shrinkWrap: true,
-                                physics: NeverScrollableScrollPhysics(),
-                                itemCount: filterJobPosts.length,
-                                itemBuilder: (context, index) {
-                                  final job = filterJobPosts[index];
-                                  final name = job['name'] ?? 'No name';
-                                  final companyName =
-                                      job['nameCompany'] ?? 'No company';
-                                  final minSalary = job['minSalary'];
-                                  final maxSalary = job['maxSalary'];
-                                  final currency = job['currencyUnit'] ?? '';
+                              // PHÂN TRANG
+                              final startIndex = controller.currentPage.value *
+                                  controller.itemsPerPage;
+                              final endIndex =
+                                  (startIndex + controller.itemsPerPage)
+                                      .clamp(0, filterJobPosts.length);
+                              final paginatedJobs =
+                                  filterJobPosts.sublist(startIndex, endIndex);
 
-                                  String salary;
-                                  if (minSalary == null && maxSalary == null) {
-                                    salary = "Negotiable";
-                                  } else if (minSalary != null &&
-                                      maxSalary != null) {
-                                    salary =
-                                        "$minSalary - $maxSalary $currency";
-                                  } else if (minSalary != null) {
-                                    salary = "$minSalary $currency";
-                                  } else {
-                                    salary = "$maxSalary $currency";
-                                  }
+                              return Column(
+                                children: [
+                                  ListView.builder(
+                                    shrinkWrap: true,
+                                    physics: NeverScrollableScrollPhysics(),
+                                    itemCount: paginatedJobs.length,
+                                    itemBuilder: (context, index) {
+                                      final job = paginatedJobs[index];
+                                      final name = job['name'] ?? 'No name';
+                                      final companyName =
+                                          job['nameCompany'] ?? 'No company';
+                                      final minSalary = job['minSalary'];
+                                      final maxSalary = job['maxSalary'];
+                                      final currency =
+                                          job['currencyUnit'] ?? '';
+                                      final city =
+                                          job['city'] as List<dynamic>? ?? [];
 
-                                  final city =
-                                      job['city'] as List<dynamic>? ?? [];
-                                  String cityText = '';
-                                  if (city.isNotEmpty) {
-                                    if (city.length > 1) {
-                                      cityText =
-                                          '${city[0]} +${city.length - 1}';
-                                    } else {
-                                      cityText = city.join(', ');
-                                    }
-                                  }
-
-                                  return GestureDetector(
-                                    onTap: () async {
-                                      // if (controller.job != null) {
-                                      //   Get.to(() => JobDetailScreen(
-                                      //         job: JobPostModel.fromMap(job),
-                                      //         isSave: controller
-                                      //             .savedJobStatusList[index],
-                                      //       ));
-                                      // } else {
-                                      //   Get.snackbar('Error', 'Information null');
-                                      // }
-                                      await controller.loadJobDetail(job['id']);
-                                      await controller.loadJobDetail(job['id']);
-
-                                      if (controller.job == null) {
-                                        Get.to(() => const JobNotFoundScreen());
+                                      String salary;
+                                      if (minSalary == null &&
+                                          maxSalary == null) {
+                                        salary = "Negotiable";
+                                      } else if (minSalary != null &&
+                                          maxSalary != null) {
+                                        salary =
+                                            "$minSalary - $maxSalary $currency";
+                                      } else if (minSalary != null) {
+                                        salary = "$minSalary $currency";
                                       } else {
-                                        Get.to(() => JobDetailScreen(
-                                              job: controller.job!,
-                                              isSave: controller
-                                                  .savedJobStatusList[index],
-                                              companyId: job['companyId'],
-                                            ));
+                                        salary = "$maxSalary $currency";
                                       }
-                                    },
-                                    child: AnimatedContainer(
-                                      duration: Duration(milliseconds: 300),
-                                      curve: Curves.easeInOut,
-                                      margin: EdgeInsets.symmetric(
-                                          vertical: 8, horizontal: 16),
-                                      padding: EdgeInsets.all(12),
-                                      decoration: BoxDecoration(
-                                        color: AppColor.orangePrimaryColor
-                                            .withOpacity(0.66),
-                                        borderRadius: BorderRadius.circular(15),
-                                        border: Border.all(
-                                            color: controller.appliedJobIdList
-                                                    .contains(job['id'])
-                                                ? AppColor.greenPrimaryColor
-                                                : AppColor.greyColor,
-                                            width: 2),
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color:
-                                                Colors.black.withOpacity(0.2),
-                                            offset: Offset(0, 4),
-                                            blurRadius: 10,
+
+                                      String cityText = '';
+                                      if (city.isNotEmpty) {
+                                        cityText = city.length > 1
+                                            ? '${city[0]} +${city.length - 1}'
+                                            : city.join(', ');
+                                      }
+
+                                      return GestureDetector(
+                                        onTap: () async {
+                                          await controller
+                                              .loadJobDetail(job['id']);
+
+                                          if (controller.job == null) {
+                                            Get.to(() =>
+                                                const JobNotFoundScreen());
+                                          } else {
+                                            Get.to(() => JobDetailScreen(
+                                                  job: controller.job!,
+                                                  isSave: controller
+                                                          .savedJobStatusList[
+                                                      index],
+                                                  companyId: job['companyId'],
+                                                ));
+                                          }
+                                        },
+                                        child: Container(
+                                          margin: EdgeInsets.symmetric(
+                                              vertical: 8, horizontal: 16),
+                                          padding: EdgeInsets.all(12),
+                                          decoration: BoxDecoration(
+                                            color: AppColor.orangePrimaryColor
+                                                .withOpacity(0.6),
+                                            borderRadius:
+                                                BorderRadius.circular(15),
+                                            border: Border.all(
+                                              color: controller.appliedJobIdList
+                                                      .contains(job['id'])
+                                                  ? AppColor.greenPrimaryColor
+                                                  : AppColor.greyColor,
+                                            ),
+                                            boxShadow: [
+                                              BoxShadow(
+                                                color: Colors.black
+                                                    .withOpacity(0.2),
+                                                offset: Offset(0, 4),
+                                                blurRadius: 10,
+                                              )
+                                            ],
                                           ),
-                                        ],
-                                      ),
-                                      child: Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Expanded(
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  name,
-                                                  style: TextStyle(
-                                                    fontSize: 30,
-                                                    fontWeight: FontWeight.bold,
-                                                    color: AppColor
-                                                        .greenPrimaryColor,
-                                                  ),
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                ),
-                                                SizedBox(height: 5),
-                                                Text(
-                                                  "Company: $companyName",
-                                                  style: TextStyle(
-                                                    fontSize: 16,
-                                                    color: Colors.grey[600],
-                                                  ),
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                ),
-                                                SizedBox(height: 10),
-                                                Row(
+                                          child: Row(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Expanded(
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
                                                   children: [
-                                                    Container(
-                                                      padding:
-                                                          EdgeInsets.all(5),
-                                                      decoration: BoxDecoration(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(15),
-                                                        color: AppColor
-                                                            .greyColor
-                                                            .withOpacity(0.8),
-                                                      ),
-                                                      child: Text(
-                                                        salary,
+                                                    Text(name,
                                                         style: TextStyle(
+                                                          fontSize: 30,
                                                           fontWeight:
                                                               FontWeight.bold,
                                                           color: AppColor
-                                                              .greenPrimaryColor
-                                                              .withOpacity(0.9),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    SizedBox(width: 5),
-                                                    Container(
-                                                      padding:
-                                                          EdgeInsets.all(5),
-                                                      decoration: BoxDecoration(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(15),
-                                                        color: AppColor
-                                                            .greyColor
-                                                            .withOpacity(0.8),
-                                                      ),
-                                                      child: Text(
-                                                        cityText,
+                                                              .greenPrimaryColor,
+                                                        )),
+                                                    SizedBox(height: 5),
+                                                    Text(
+                                                        "Company: $companyName",
                                                         style: TextStyle(
-                                                            fontWeight:
-                                                                FontWeight.bold,
+                                                          fontSize: 16,
+                                                          color:
+                                                              Colors.grey[600],
+                                                        )),
+                                                    SizedBox(height: 10),
+                                                    Row(
+                                                      children: [
+                                                        Container(
+                                                          padding:
+                                                              EdgeInsets.all(5),
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        15),
                                                             color: AppColor
-                                                                .greenPrimaryColor
+                                                                .greyColor
                                                                 .withOpacity(
-                                                                    0.9),
-                                                            overflow:
-                                                                TextOverflow
-                                                                    .ellipsis),
-                                                      ),
+                                                                    0.8),
+                                                          ),
+                                                          child: Text(salary,
+                                                              style: TextStyle(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                                color: AppColor
+                                                                    .greenPrimaryColor
+                                                                    .withOpacity(
+                                                                        0.9),
+                                                              )),
+                                                        ),
+                                                        SizedBox(width: 5),
+                                                        Container(
+                                                          padding:
+                                                              EdgeInsets.all(5),
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        15),
+                                                            color: AppColor
+                                                                .greyColor
+                                                                .withOpacity(
+                                                                    0.8),
+                                                          ),
+                                                          child: Text(cityText,
+                                                              style: TextStyle(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                                color: AppColor
+                                                                    .greenPrimaryColor
+                                                                    .withOpacity(
+                                                                        0.9),
+                                                              )),
+                                                        ),
+                                                      ],
                                                     ),
                                                   ],
                                                 ),
-                                              ],
-                                            ),
-                                          ),
-                                          Obx(
-                                            () => Column(
-                                              children: [
-                                                Container(
-                                                  decoration: BoxDecoration(
+                                              ),
+                                              Obx(() => Container(
+                                                    decoration: BoxDecoration(
                                                       shape: BoxShape.circle,
                                                       color: AppColor.greyColor
-                                                          .withOpacity(0.5)),
-                                                  child: controller
-                                                                  .savedJobStatusList
-                                                                  .length >
-                                                              index &&
-                                                          controller.savedJobStatusList[
-                                                                  index] ==
-                                                              false
-                                                      ? IconButton(
-                                                          onPressed: () {
-                                                            controller
-                                                                .toggleSavedJobStatus(
-                                                                    index,
-                                                                    job['id']);
-                                                          },
-                                                          icon: Icon(
-                                                            Icons
-                                                                .bookmark_border_outlined,
-                                                            size: 30,
-                                                            color: AppColor
-                                                                .greenPrimaryColor,
-                                                          ))
-                                                      : IconButton(
-                                                          onPressed: () {
-                                                            controller
-                                                                .toggleSavedJobStatus(
-                                                                    index,
-                                                                    job['id']);
-                                                            if (widget
-                                                                    .nameRole ==
-                                                                "Job Applied") {
-                                                              jobPosts
-                                                                  .remove(job);
-                                                            }
-                                                          },
-                                                          icon: Icon(
-                                                            Icons.bookmark,
-                                                            size: 30,
-                                                            color: AppColor
-                                                                .greenPrimaryColor,
-                                                          )),
-                                                ),
-                                              ],
-                                            ),
+                                                          .withOpacity(0.5),
+                                                    ),
+                                                    child: controller
+                                                                    .savedJobStatusList
+                                                                    .length >
+                                                                index &&
+                                                            controller.savedJobStatusList[
+                                                                    index] ==
+                                                                false
+                                                        ? IconButton(
+                                                            onPressed: () {
+                                                              controller
+                                                                  .toggleSavedJobStatus(
+                                                                      index,
+                                                                      job['id']);
+                                                            },
+                                                            icon: Icon(
+                                                              Icons
+                                                                  .bookmark_border_outlined,
+                                                              size: 30,
+                                                              color: AppColor
+                                                                  .greenPrimaryColor,
+                                                            ))
+                                                        : IconButton(
+                                                            onPressed: () {
+                                                              controller
+                                                                  .toggleSavedJobStatus(
+                                                                      index,
+                                                                      job['id']);
+                                                              if (widget
+                                                                      .nameRole ==
+                                                                  "Job Applied") {
+                                                                jobPosts.remove(
+                                                                    job);
+                                                              }
+                                                            },
+                                                            icon: Icon(
+                                                              Icons.bookmark,
+                                                              size: 30,
+                                                              color: AppColor
+                                                                  .greenPrimaryColor,
+                                                            )),
+                                                  )),
+                                            ],
                                           ),
-                                        ],
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                  SizedBox(height: 10),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      IconButton(
+                                        onPressed:
+                                            controller.currentPage.value > 0
+                                                ? () => controller
+                                                    .currentPage.value--
+                                                : null,
+                                        icon: Icon(Icons.arrow_back),
                                       ),
-                                    ),
-                                  );
-                                },
+                                      Text(
+                                        "Page ${controller.currentPage.value + 1} of ${(filterJobPosts.length / controller.itemsPerPage).ceil()}",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      IconButton(
+                                        onPressed: (controller
+                                                            .currentPage.value +
+                                                        1) *
+                                                    controller.itemsPerPage <
+                                                filterJobPosts.length
+                                            ? () =>
+                                                controller.currentPage.value++
+                                            : null,
+                                        icon: Icon(Icons.arrow_forward),
+                                      ),
+                                    ],
+                                  ),
+                                ],
                               );
                             });
                           },
