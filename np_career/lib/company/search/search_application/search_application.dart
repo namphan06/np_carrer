@@ -13,7 +13,8 @@ import 'package:np_career/enum/enum_type_job_category.dart';
 import 'package:np_career/view/user/profile/my_profile/my_profile_data.dart';
 
 class SearchApplication extends StatefulWidget {
-  const SearchApplication({super.key});
+  final String nameType;
+  const SearchApplication({super.key, required this.nameType});
 
   @override
   State<SearchApplication> createState() => _SearchApplicationState();
@@ -818,12 +819,35 @@ class _SearchApplicationState extends State<SearchApplication> {
                             final filterApplicationApplys =
                                 controller.filterApplications(applicationApply);
 
+                            final filteredList = filterApplicationApplys
+                                .asMap()
+                                .entries
+                                .where((entry) {
+                                  final index = entry.key;
+                                  final job = entry.value;
+                                  return controller.savedApplicationStatusList
+                                              .length >
+                                          index &&
+                                      controller.savedApplicationStatusList[
+                                              index] ==
+                                          true;
+                                })
+                                .map((entry) => entry.value)
+                                .toList();
+
                             return ListView.builder(
                               shrinkWrap: true,
                               physics: NeverScrollableScrollPhysics(),
-                              itemCount: filterApplicationApplys.length,
+                              // Lọc danh sách theo điều kiện
+                              itemCount: widget.nameType == 'follow'
+                                  ? filteredList.length
+                                  : filterApplicationApplys.length,
                               itemBuilder: (context, index) {
-                                final job = filterApplicationApplys[index];
+                                // Lấy danh sách đã lọc nếu là 'follow', còn bình thường lấy nguyên list
+                                final job = widget.nameType == 'follow'
+                                    ? filteredList[index]
+                                    : filterApplicationApplys[index];
+
                                 final name = job['fullName'] ?? 'No name';
                                 final educationLevel = job['educationLevel'] ??
                                     'No educationLevel';
@@ -841,13 +865,6 @@ class _SearchApplicationState extends State<SearchApplication> {
 
                                 return GestureDetector(
                                   onTap: () {
-                                    // await controller.loadJobDetail(job['id']);
-                                    // Get.to(() => JobDetailScreen(
-                                    //       job: controller.job!,
-                                    //       isSave: controller
-                                    //           .savedJobStatusList[index],
-                                    //       companyId: job['companyId'],
-                                    //     ));
                                     Get.to(MyProfileData(
                                       userID: job['id'],
                                     ));
@@ -901,27 +918,6 @@ class _SearchApplicationState extends State<SearchApplication> {
                                               SizedBox(height: 10),
                                               Row(
                                                 children: [
-                                                  // Container(
-                                                  //   padding: EdgeInsets.all(5),
-                                                  //   decoration: BoxDecoration(
-                                                  //     borderRadius:
-                                                  //         BorderRadius.circular(
-                                                  //             15),
-                                                  //     color: AppColor.greyColor
-                                                  //         .withOpacity(0.8),
-                                                  //   ),
-                                                  //   child: Text(
-                                                  //     salary,
-                                                  //     style: TextStyle(
-                                                  //       fontWeight:
-                                                  //           FontWeight.bold,
-                                                  //       color: AppColor
-                                                  //           .greenPrimaryColor
-                                                  //           .withOpacity(0.9),
-                                                  //     ),
-                                                  //   ),
-                                                  // ),
-                                                  // SizedBox(width: 5),
                                                   Container(
                                                     padding: EdgeInsets.all(5),
                                                     decoration: BoxDecoration(
@@ -934,13 +930,14 @@ class _SearchApplicationState extends State<SearchApplication> {
                                                     child: Text(
                                                       cityText,
                                                       style: TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          color: AppColor
-                                                              .greenPrimaryColor
-                                                              .withOpacity(0.9),
-                                                          overflow: TextOverflow
-                                                              .ellipsis),
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        color: AppColor
+                                                            .greenPrimaryColor
+                                                            .withOpacity(0.9),
+                                                      ),
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
                                                     ),
                                                   ),
                                                 ],

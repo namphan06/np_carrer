@@ -7,6 +7,8 @@ import 'package:np_career/model/category.dart';
 import 'package:np_career/model/course.dart';
 import 'package:np_career/model/enrollment.dart';
 
+import '../model/mi.dart';
+
 class AppService {
   final String baseUrl = 'http://192.168.0.104:8000/api';
 
@@ -165,6 +167,45 @@ class AppService {
       }
     } catch (e) {
       print('Error fetching enrollments: $e');
+      return [];
+    }
+  }
+
+  Future<List<Mi>> fetchMis() async {
+    try {
+      http.Response response = await http.get(
+        Uri.parse(baseUrl + '/mis'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        String? responseBody = response.body;
+
+        if (responseBody.isNotEmpty) {
+          List<dynamic> jsonResponse = jsonDecode(responseBody);
+
+          if (jsonResponse is List) {
+            List<Mi> misList =
+                jsonResponse.map((item) => Mi.fromMap(item)).toList();
+            return misList;
+          } else {
+            print('Unexpected JSON format. Expected a list.');
+            return [];
+          }
+        } else {
+          print('Empty or null response body.');
+          return [];
+        }
+      } else {
+        print('Failed to fetch mis. Status code: ${response.statusCode}');
+        print(response.body);
+        return [];
+      }
+    } catch (e) {
+      print('Error during HTTP request: $e');
       return [];
     }
   }

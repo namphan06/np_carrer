@@ -29,7 +29,9 @@ class _HomeCompanyState extends State<HomeCompany> {
           case 0:
             return _buildHomeScree();
           case 1:
-            return SearchApplication();
+            return SearchApplication(
+              nameType: 'search',
+            );
           case 2:
             return ProfileScreen();
           default:
