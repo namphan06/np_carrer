@@ -1095,7 +1095,7 @@ class _SearchJobScreenState extends State<SearchJobScreen> {
                                             color: AppColor.orangePrimaryColor
                                                 .withOpacity(0.6),
                                             borderRadius:
-                                                BorderRadius.circular(15),
+                                                BorderRadius.circular(8),
                                             border: Border.all(
                                               color: controller.appliedJobIdList
                                                       .contains(job['id'])

@@ -218,26 +218,26 @@ class _HomeScreenUserState extends State<HomeScreenUser> {
                                   SizedBox(
                                     width: 30,
                                   ),
-                                  CustomerContainer(
-                                      svgPicture:
-                                          "assets/images/recommended-svgrepo-com.svg",
-                                      lableContainer: "Relevant Jobs",
-                                      selectedContainer: () {
-                                        Get.to(JobApplied());
-                                      }),
-                                  SizedBox(
-                                    width: 30,
-                                  ),
-                                  CustomerContainer(
-                                      svgPicture:
-                                          "assets/images/industry-svgrepo-com.svg",
-                                      lableContainer: "Jobs by Specialty",
-                                      selectedContainer: () {
-                                        Get.to(JobApplied());
-                                      }),
-                                  SizedBox(
-                                    width: 30,
-                                  ),
+                                  // CustomerContainer(
+                                  //     svgPicture:
+                                  //         "assets/images/recommended-svgrepo-com.svg",
+                                  //     lableContainer: "Relevant Jobs",
+                                  //     selectedContainer: () {
+                                  //       Get.to(JobApplied());
+                                  //     }),
+                                  // SizedBox(
+                                  //   width: 30,
+                                  // ),
+                                  // CustomerContainer(
+                                  //     svgPicture:
+                                  //         "assets/images/industry-svgrepo-com.svg",
+                                  //     lableContainer: "Jobs by Specialty",
+                                  //     selectedContainer: () {
+                                  //       Get.to(JobApplied());
+                                  //     }),
+                                  // SizedBox(
+                                  //   width: 30,
+                                  // ),
                                   CustomerContainer(
                                       svgPicture:
                                           "assets/images/company-svgrepo-com.svg",
@@ -288,16 +288,16 @@ class _HomeScreenUserState extends State<HomeScreenUser> {
                                   SizedBox(
                                     width: 30,
                                   ),
-                                  CustomerContainer(
-                                      svgPicture:
-                                          "assets/images/profile-image-round-1326-svgrepo-com.svg",
-                                      lableContainer: "CV Profile",
-                                      selectedContainer: () {
-                                        Get.to(JobApplied());
-                                      }),
-                                  SizedBox(
-                                    width: 30,
-                                  ),
+                                  // CustomerContainer(
+                                  //     svgPicture:
+                                  //         "assets/images/profile-image-round-1326-svgrepo-com.svg",
+                                  //     lableContainer: "CV Profile",
+                                  //     selectedContainer: () {
+                                  //       Get.to(JobApplied());
+                                  //     }),
+                                  // SizedBox(
+                                  //   width: 30,
+                                  // ),
                                   CustomerContainer(
                                       svgPicture:
                                           "assets/images/brain-svgrepo-com.svg",
@@ -308,16 +308,16 @@ class _HomeScreenUserState extends State<HomeScreenUser> {
                                   SizedBox(
                                     width: 30,
                                   ),
-                                  CustomerContainer(
-                                      svgPicture:
-                                          "assets/images/bug_report_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.svg",
-                                      lableContainer: "Testing",
-                                      selectedContainer: () {
-                                        Get.to(ButtonTrigger());
-                                      }),
-                                  SizedBox(
-                                    width: 30,
-                                  ),
+                                  // CustomerContainer(
+                                  //     svgPicture:
+                                  //         "assets/images/bug_report_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.svg",
+                                  //     lableContainer: "Testing",
+                                  //     selectedContainer: () {
+                                  //       Get.to(ButtonTrigger());
+                                  //     }),
+                                  // SizedBox(
+                                  //   width: 30,
+                                  // ),
                                 ],
                               ),
                             ),

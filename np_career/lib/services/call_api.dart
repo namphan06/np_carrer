@@ -10,7 +10,8 @@ import 'package:np_career/model/enrollment.dart';
 import '../model/mi.dart';
 
 class AppService {
-  final String baseUrl = 'http://192.168.0.104:8000/api';
+  final String baseUrl = 'http://10.6.136.251:8000/api';
+// 'http://192.168.0.104:8000/api';
 
   Future<List<MyCategory>> fetchCategories() async {
     try {
