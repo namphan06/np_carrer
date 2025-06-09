@@ -6,6 +6,8 @@ import 'package:np_career/company/create_job_post/create_job_post.dart';
 import 'package:np_career/company/management_fob_post/management_job_post_controller.dart';
 import 'package:np_career/company/management_fob_post/management_job_post_fb.dart';
 import 'package:np_career/core/app_color.dart';
+import 'package:np_career/view/not_found/enroll.dart';
+import 'package:np_career/view/not_found/not_found.dart';
 
 class ManagementJobPost extends StatefulWidget {
   final String nameCompany;
@@ -102,11 +104,11 @@ class _ManagementJobPostState extends State<ManagementJobPost> {
                       }
 
                       if (snapshot.hasError) {
-                        return Center(child: Text("Error: ${snapshot.error}"));
+                        return Center(child: Enroll());
                       }
 
                       if (!snapshot.hasData || !snapshot.data!.exists) {
-                        return Center(child: Text("No job posts found."));
+                        return Center(child: NoFoundWidget());
                       }
 
                       final data =
@@ -115,7 +117,7 @@ class _ManagementJobPostState extends State<ManagementJobPost> {
                       final jobPosts = data['jps'] as List<dynamic>? ?? [];
 
                       if (jobPosts.isEmpty) {
-                        return Center(child: Text("No job posts available."));
+                        return Center(child: NoFoundWidget());
                       }
 
                       return Obx(() {

@@ -10,6 +10,7 @@ import 'package:np_career/enum/enum_experience.dart';
 import 'package:np_career/enum/enum_type_job_category.dart';
 import 'package:np_career/model/job_post_model.dart';
 import 'package:np_career/view/not_found/job_not_found.dart';
+import 'package:np_career/view/not_found/not_found.dart';
 import 'package:np_career/view/user/job/job_detail/job_detail_screen.dart';
 import 'package:np_career/view/user/search/search_job/search_job_controller.dart';
 import 'package:np_career/view/user/search/search_job/search_job_fb.dart';
@@ -984,7 +985,7 @@ class _SearchJobScreenState extends State<SearchJobScreen> {
 
                             if (!snapshot.hasData ||
                                 snapshot.data!.docs.isEmpty) {
-                              return Center(child: Text("No job posts found."));
+                              return Center(child: NoFoundWidget(),);
                             }
 
                             return Obx(() {

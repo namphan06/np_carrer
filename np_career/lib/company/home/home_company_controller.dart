@@ -3,6 +3,7 @@ import 'package:np_career/company/analytics/analytics.dart';
 import 'package:np_career/company/application_apply/interview_schedule/interview_schedule_screen.dart';
 import 'package:np_career/company/create_job_post/create_job_post.dart';
 import 'package:np_career/company/management_fob_post/management_job_post.dart';
+import 'package:np_career/company/search/recommend.dart';
 import 'package:np_career/company/search/search_application/search_application.dart';
 import 'package:np_career/model/user_model.dart';
 import 'package:np_career/view/login/login_fb.dart';
@@ -43,7 +44,7 @@ class HomeCompanyController extends GetxController {
           'img':
               'assets/images/recommend_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.svg',
           'text': 'Recommended CV',
-          'onTap': () => Get.to(Home())
+          'onTap': () => Get.to(Recommend())
         },
         {
           'img':

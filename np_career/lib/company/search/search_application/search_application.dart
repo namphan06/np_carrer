@@ -10,6 +10,8 @@ import 'package:np_career/core/app_color.dart';
 import 'package:np_career/enum/enum_city.dart';
 import 'package:np_career/enum/enum_experience.dart';
 import 'package:np_career/enum/enum_type_job_category.dart';
+import 'package:np_career/view/not_found/enroll.dart';
+import 'package:np_career/view/not_found/not_found.dart';
 import 'package:np_career/view/user/profile/my_profile/my_profile_data.dart';
 
 class SearchApplication extends StatefulWidget {
@@ -790,13 +792,12 @@ class _SearchApplicationState extends State<SearchApplication> {
                             }
 
                             if (snapshot.hasError) {
-                              return Center(
-                                  child: Text("Error: ${snapshot.error}"));
+                              return Center(child: Enroll());
                             }
 
                             if (!snapshot.hasData ||
                                 snapshot.data!.docs.isEmpty) {
-                              return Center(child: Text("No job posts found."));
+                              return Center(child: NoFoundWidget());
                             }
 
                             // Lấy tất cả documents

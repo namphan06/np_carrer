@@ -6,6 +6,8 @@ import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:np_career/company/profile_company/profile_company.dart';
 import 'package:np_career/company/profile_company/profile_company_data.dart';
 import 'package:np_career/core/app_color.dart';
+import 'package:np_career/view/not_found/enroll.dart';
+import 'package:np_career/view/not_found/not_found.dart';
 import 'package:np_career/view/user/top_company/top_company_controller.dart';
 import 'package:np_career/view/user/top_company/top_company_fb.dart';
 
@@ -70,10 +72,12 @@ class _TopCompanyState extends State<TopCompany> {
                   return Center(child: CircularProgressIndicator());
                 }
                 if (snapshot.hasError) {
-                  return Center(child: Text('Error: ${snapshot.error}'));
+                  return Center(child: Enroll());
                 }
                 if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                  return Center(child: Text('No companies found.'));
+                  return Center(
+                    child: NoFoundWidget(),
+                  );
                 }
 
                 final companies = snapshot.data!;

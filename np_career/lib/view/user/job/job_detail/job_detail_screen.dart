@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:np_career/core/app_color.dart';
 import 'package:np_career/model/job_post_model.dart';
+import 'package:np_career/view/not_found/not_found.dart';
 import 'package:np_career/view/user/job/job_detail/job_detail_controller.dart';
 import 'package:np_career/view/user/job/job_detail/job_detail_fb.dart';
 import 'package:np_career/view/user/search/search_job/search_job_controller.dart';
@@ -476,14 +477,18 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
                     }
 
                     if (!snapshot.hasData || !snapshot.data!.exists) {
-                      return Center(child: Text("No CVs found"));
+                      return Center(
+                        child: NoFoundWidget(),
+                      );
                     }
 
                     var data = snapshot.data!.data() as Map<String, dynamic>;
                     var cvs = data["cvs"];
 
                     if (cvs == null || !(cvs is List)) {
-                      return Center(child: Text("No CVs available"));
+                      return Center(
+                        child: NoFoundWidget(),
+                      );
                     }
 
                     return Obx(() {

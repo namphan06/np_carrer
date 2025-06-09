@@ -13,6 +13,7 @@ import 'package:np_career/enum/enum_type_job_category.dart';
 import 'package:np_career/main.dart';
 import 'package:np_career/resume_management/resume_management_controller.dart';
 import 'package:np_career/resume_management/resume_management_fb.dart';
+import 'package:np_career/view/not_found/not_found.dart';
 import 'package:np_career/view/user/profile/my_profile/my_profile_controller.dart';
 import 'package:np_career/view/user/profile/profile_screen.dart';
 
@@ -1116,7 +1117,9 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
 
                                     if (!snapshot.hasData ||
                                         !snapshot.data!.exists) {
-                                      return Text("No CVs found");
+                                      return Center(
+                                        child: NoFoundWidget(),
+                                      );
                                     }
 
                                     var data = snapshot.data!.data()
@@ -1124,7 +1127,9 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                                     var cvs = data["cvs"];
 
                                     if (cvs == null || !(cvs is List)) {
-                                      return Text("No CVs available");
+                                      return Center(
+                                        child: NoFoundWidget(),
+                                      );
                                     }
 
                                     return Obx(() {

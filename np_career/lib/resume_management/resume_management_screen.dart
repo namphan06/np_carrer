@@ -8,6 +8,7 @@ import 'package:np_career/model/cv_model.dart';
 import 'package:np_career/resume_management/resume_management_controller.dart';
 import 'package:np_career/resume_management/resume_management_fb.dart';
 import 'package:np_career/utils/image_uploader.dart';
+import 'package:np_career/view/not_found/not_found.dart';
 import 'package:np_career/view/pdf_viewr.dart';
 
 class ResumeManagementScreen extends StatefulWidget {
@@ -106,7 +107,9 @@ class _ResumeManagementScreenState extends State<ResumeManagementScreen> {
 
                                 if (!snapshot.hasData ||
                                     !snapshot.data!.exists) {
-                                  return Text("No CVs found");
+                                  return Center(
+                                    child: NoFoundWidget(),
+                                  );
                                 }
 
                                 var data = snapshot.data!.data()
@@ -114,7 +117,9 @@ class _ResumeManagementScreenState extends State<ResumeManagementScreen> {
                                 var cvs = data["cvs"];
 
                                 if (cvs == null || !(cvs is List)) {
-                                  return Text("No CVs available");
+                                  return Center(
+                                    child: NoFoundWidget(),
+                                  );
                                 }
 
                                 return Obx(() {
