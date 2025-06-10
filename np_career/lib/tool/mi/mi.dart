@@ -50,7 +50,12 @@ class _MiState extends State<Mi> {
     }
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Question MI')),
+      appBar: AppBar(
+        title: Text('Question MI'),
+        centerTitle: true,
+        backgroundColor: AppColor.orangePrimaryColor,
+        foregroundColor: Colors.white,
+      ),
       body: Column(
         children: [
           // Giải thích đáp án

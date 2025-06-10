@@ -10,7 +10,8 @@ import 'package:np_career/model/enrollment.dart';
 import '../model/mi.dart';
 
 class AppService {
-  final String baseUrl = 'http://10.6.136.251:8000/api';
+  // final String baseUrl = 'http://10.6.136.251:8000/api';
+  final String baseUrl = 'http://192.168.0.104:8000/api';
 // 'http://192.168.0.104:8000/api';
 
   Future<List<MyCategory>> fetchCategories() async {
@@ -208,6 +209,30 @@ class AppService {
     } catch (e) {
       print('Error during HTTP request: $e');
       return [];
+    }
+  }
+
+  Future<Map<String, dynamic>> fetchFormula() async {
+    try {
+      final response = await http.get(
+        Uri.parse(baseUrl + '/formula'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> jsonResponse = jsonDecode(response.body);
+        return jsonResponse;
+      } else {
+        print('Failed to fetch formula. Status code: ${response.statusCode}');
+        print(response.body);
+        return {};
+      }
+    } catch (e) {
+      print('Error during HTTP request: $e');
+      return {};
     }
   }
 }
