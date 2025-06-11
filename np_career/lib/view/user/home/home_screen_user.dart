@@ -13,6 +13,7 @@ import 'package:np_career/tool/mi/mi.dart';
 import 'package:np_career/tool/tax/formula.dart';
 import 'package:np_career/view/screen/home.dart';
 import 'package:np_career/view/user/build_your_resume/by_style/resume_by_style.dart';
+import 'package:np_career/view/user/home/cv_webview.dart';
 import 'package:np_career/view/user/home/home_user_controller.dart';
 import 'package:np_career/view/user/home/navbar/customer_bottom_navbar.dart';
 import 'package:np_career/view/user/home/navbar/navbar_controller.dart';
@@ -304,7 +305,7 @@ class _HomeScreenUserState extends State<HomeScreenUser> {
                                           "assets/images/brain-svgrepo-com.svg",
                                       lableContainer: "Resume Writing Guide",
                                       selectedContainer: () {
-                                        Get.to(JobApplied());
+                                        Get.to(CVWebView());
                                       }),
                                   SizedBox(
                                     width: 30,

@@ -8,6 +8,7 @@ import 'package:np_career/view/login/login.dart';
 import 'package:np_career/view/login/login_fb.dart';
 import 'package:np_career/view/user/profile/change_password/change_password_screen.dart';
 import 'package:np_career/view/user/profile/my_profile/my_profile_screen.dart';
+import 'package:np_career/view/user/profile/policy/policy_home_page.dart';
 import 'package:np_career/view/user/profile/profile_controller.dart';
 import 'package:np_career/view/user/profile/setting_notification/notification_setting.dart';
 
@@ -96,8 +97,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
             _buildContainer(
                 "assets/images/verified_user_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.svg",
                 "assets/images/keyboard_arrow_right_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.svg",
-                "Security settings",
-                () => Get.snackbar("Action", "GestureDetector")),
+                "Policy & Privacy",
+                () => Get.to(PolicyHomePage())),
             SizedBox(
               height: 15,
             ),
