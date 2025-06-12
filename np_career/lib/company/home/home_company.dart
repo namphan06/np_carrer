@@ -63,36 +63,36 @@ class _HomeCompanyState extends State<HomeCompany> {
                   ),
                 ),
               ),
-              Padding(
-                padding: EdgeInsets.only(right: 10),
-                child: Stack(
-                  alignment: Alignment.topRight,
-                  children: [
-                    SvgPicture.asset(
-                      "assets/images/notifications_active.svg",
-                      width: 35,
-                      height: 35,
-                      color: AppColor.greenPrimaryColor,
-                    ),
-                    Positioned(
-                        top: -5,
-                        right: 0,
-                        child: Container(
-                          padding: EdgeInsets.all(4),
-                          decoration: BoxDecoration(
-                              color: AppColor.orangeRedColor,
-                              shape: BoxShape.circle),
-                          child: Text(
-                            "1",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ))
-                  ],
-                ),
-              )
+              // Padding(
+              //   padding: EdgeInsets.only(right: 10),
+              //   child: Stack(
+              //     alignment: Alignment.topRight,
+              //     children: [
+              //       SvgPicture.asset(
+              //         "assets/images/notifications_active.svg",
+              //         width: 35,
+              //         height: 35,
+              //         color: AppColor.greenPrimaryColor,
+              //       ),
+              //       Positioned(
+              //           top: -5,
+              //           right: 0,
+              //           child: Container(
+              //             padding: EdgeInsets.all(4),
+              //             decoration: BoxDecoration(
+              //                 color: AppColor.orangeRedColor,
+              //                 shape: BoxShape.circle),
+              //             child: Text(
+              //               "1",
+              //               style: TextStyle(
+              //                   color: Colors.white,
+              //                   fontSize: 15,
+              //                   fontWeight: FontWeight.bold),
+              //             ),
+              //           ))
+              //     ],
+              //   ),
+              // )
             ],
           ),
           SizedBox(

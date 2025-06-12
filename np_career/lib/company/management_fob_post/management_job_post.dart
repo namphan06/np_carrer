@@ -28,22 +28,21 @@ class _ManagementJobPostState extends State<ManagementJobPost> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppColor.orangePrimaryColor,
+        elevation: 0,
         leading: IconButton(
-          onPressed: () {
-            Get.back();
-          },
+          onPressed: () => Get.back(),
           icon: Icon(
             Icons.arrow_back_ios,
             color: AppColor.lightBackgroundColor,
           ),
         ),
-        title: Center(
-          child: Text(
-            "Management Job Post",
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              color: AppColor.lightBackgroundColor,
-            ),
+        centerTitle: true,
+        title: Text(
+          "Management Job Post",
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 18,
+            color: AppColor.lightBackgroundColor,
           ),
         ),
       ),

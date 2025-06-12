@@ -3,10 +3,12 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/get_instance.dart';
+import 'package:np_career/api_key.dart';
 import 'package:np_career/core/app_color.dart';
 import 'package:np_career/view/login/login.dart';
 import 'package:np_career/view/login/login_fb.dart';
 import 'package:np_career/view/user/profile/change_password/change_password_screen.dart';
+import 'package:np_career/view/user/profile/gemini_chat/chat_screen.dart';
 import 'package:np_career/view/user/profile/my_profile/my_profile_screen.dart';
 import 'package:np_career/view/user/profile/policy/policy_home_page.dart';
 import 'package:np_career/view/user/profile/profile_controller.dart';
@@ -86,11 +88,35 @@ class _ProfileScreenState extends State<ProfileScreen> {
             SizedBox(
               height: 15,
             ),
-            _buildContainer(
-                "assets/images/notifications_active.svg",
-                "assets/images/keyboard_arrow_right_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.svg",
-                "Notification setting",
-                () => Get.to(NotificationSetting())),
+            Obx(() {
+              final role = profileController.roleController.value;
+
+              if (role.isEmpty) {
+                return SizedBox(
+                  height: 50,
+                  child: Center(
+                    child: CircularProgressIndicator(
+                        color: AppColor.greenPrimaryColor),
+                  ),
+                );
+              }
+
+              if (role == "user") {
+                return _buildContainer(
+                  "assets/images/notifications_active.svg",
+                  "assets/images/keyboard_arrow_right_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.svg",
+                  "Notification setting",
+                  () => Get.to(NotificationSetting()),
+                );
+              } else {
+                return _buildContainer(
+                  "assets/images/smart_toy_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.svg",
+                  "assets/images/keyboard_arrow_right_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.svg",
+                  "SmartChat",
+                  () => Get.to(ChatScreen(apiKey: geminiApiKey1)),
+                );
+              }
+            }),
             SizedBox(
               height: 15,
             ),

@@ -4,7 +4,7 @@ import 'package:get/state_manager.dart';
 class NavbarController extends GetxController {
   var currentIndex = 0.obs;
 
-  void changeTab(int index) {
+  void changeTab(int index) async {
     currentIndex.value = index;
   }
 }
