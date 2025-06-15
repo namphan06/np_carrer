@@ -93,27 +93,44 @@ class SearchJobFb {
     };
   }
 
-  Future<List<String>> getAppliedJobIds() async {
-    final appliedDoc = await _firestore
+  // Stream<List<String>> getAppliedJobIds() async {
+  //   final appliedDoc = await _firestore
+  //       .collection('user_actions')
+  //       .doc(_auth.currentUser!.uid)
+  //       .get();
+
+  //   final appliedList =
+  //       appliedDoc.data()?['applied_list'] as List<dynamic>? ?? [];
+
+  //   List<String> jobIdList = [];
+
+  //   for (var item in appliedList) {
+  //     if (item is Map<String, dynamic> && item.containsKey('jobId')) {
+  //       final jobId = item['jobId'];
+  //       if (jobId != null) {
+  //         jobIdList.add(jobId.toString());
+  //       }
+  //     }
+  //   }
+
+  //   return jobIdList;
+  // }
+
+  Stream<List<String>> getAppliedJobIds() {
+    return _firestore
         .collection('user_actions')
         .doc(_auth.currentUser!.uid)
-        .get();
+        .snapshots()
+        .map((snapshot) {
+      final appliedList =
+          snapshot.data()?['applied_list'] as List<dynamic>? ?? [];
 
-    final appliedList =
-        appliedDoc.data()?['applied_list'] as List<dynamic>? ?? [];
-
-    List<String> jobIdList = [];
-
-    for (var item in appliedList) {
-      if (item is Map<String, dynamic> && item.containsKey('jobId')) {
-        final jobId = item['jobId'];
-        if (jobId != null) {
-          jobIdList.add(jobId.toString());
-        }
-      }
-    }
-
-    return jobIdList;
+      return appliedList
+          .whereType<Map<String, dynamic>>()
+          .map((item) => item['jobId']?.toString())
+          .whereType<String>()
+          .toList();
+    });
   }
 
   Future<JobPostModel?> getJobDetail(String job_id) async {

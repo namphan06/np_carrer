@@ -53,6 +53,7 @@ class CreateJobPostFb {
       await _firestore.collection("jobs").doc(randomId).set({
         'id': randomId,
         ...model.toJson(),
+        'createdAt': Timestamp.now(),
       });
 
       // 2. Thêm job vào job_company
@@ -71,7 +72,8 @@ class CreateJobPostFb {
         'currencyUnit': model.currencyUnit,
         'experience': model.experience,
         'jobInterests': model.jobInterests,
-        'companyId': _auth.currentUser!.uid
+        'companyId': _auth.currentUser!.uid,
+        'createdAt': Timestamp.now(),
       });
 
       await userDoc.set({'jps': existingJps});
@@ -161,7 +163,8 @@ class CreateJobPostFb {
               'currencyUnit': updatedModel.currencyUnit,
               'experience': updatedModel.experience,
               'jobInterests': updatedModel.jobInterests,
-              'companyId': _auth.currentUser!.uid
+              'companyId': _auth.currentUser!.uid,
+              'createdAt': Timestamp.now(),
             };
             break;
           }

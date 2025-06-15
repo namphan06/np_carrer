@@ -234,9 +234,11 @@ class _HomeScreenUserState extends State<HomeScreenUser> {
                                   CustomerContainer(
                                       svgPicture:
                                           "assets/images/industry-svgrepo-com.svg",
-                                      lableContainer: "Jobs by Specialty",
+                                      lableContainer: "Jobs Today",
                                       selectedContainer: () {
-                                        Get.to(JobApplied());
+                                        Get.to(SearchJobScreen(
+                                          nameRole: "Jobs Today",
+                                        ));
                                       }),
                                   SizedBox(
                                     width: 30,

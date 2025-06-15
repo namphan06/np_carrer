@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:np_career/model/job_post_model.dart';
@@ -24,7 +25,11 @@ class SearchJobController extends GetxController {
   RxBool savedJob = false.obs;
   RxList<bool> savedJobStatusList = <bool>[].obs;
   RxList<String> savedJobIdList = <String>[].obs;
-  RxList<String> appliedJobIdList = <String>[].obs;
+  RxString fix = ''.obs;
+  // RxList<String> appliedJobIdList = <String>[].obs;
+  Stream<List<String>> appliedJobIdStream() {
+    return _fb.getAppliedJobIds(); // Trả về Stream từ Firebase
+  }
 
   JobPostModel? job;
 
@@ -35,10 +40,12 @@ class SearchJobController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-
+    // appliedJobIdList.value = [];
     fetchSavedJobStatus();
     fetchSavedJobIds();
-    fetchAppliedJobIds();
+    // fetchAppliedJobIds().then((_) {
+    //   print('appliedJobIdList: ${appliedJobIdList}');
+    // });
   }
 
   List<Map<String, dynamic>> filterJobs(List<Map<String, dynamic>> jobPosts) {
@@ -136,9 +143,32 @@ class SearchJobController extends GetxController {
     // print(savedJobIdList);
   }
 
-  Future<void> fetchAppliedJobIds() async {
-    final result = await _fb.getAppliedJobIds();
-    appliedJobIdList.value = result as List<String>;
-    // print(savedJobIdList);
+  // Future<void> fetchAppliedJobIds() async {
+  //   final result = await _fb.getAppliedJobIds();
+  //   appliedJobIdList.value = result;
+  //   // print(savedJobIdList);
+  // }
+
+  String getCreatedAtLabel(Timestamp createdAt) {
+    final dateTime = createdAt.toDate();
+    final now = DateTime.now();
+    final diff = now.difference(dateTime);
+
+    bool isToday = dateTime.year == now.year &&
+        dateTime.month == now.month &&
+        dateTime.day == now.day;
+
+    if (isToday) return "New";
+
+    if (diff.inDays >= 7) {
+      final weeks = (diff.inDays / 7).floor();
+      return '$weeks week${weeks > 1 ? 's' : ''} ago';
+    } else if (diff.inDays >= 1) {
+      return '${diff.inDays} day${diff.inDays > 1 ? 's' : ''} ago';
+    } else if (diff.inHours >= 1) {
+      return '${diff.inHours} hour${diff.inHours > 1 ? 's' : ''} ago';
+    } else {
+      return '${diff.inMinutes} minute${diff.inMinutes > 1 ? 's' : ''} ago';
+    }
   }
 }
