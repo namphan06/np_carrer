@@ -49,4 +49,4 @@ lib/api_key.dart
 
 .env
 
-lib/firebase_options.dart
+/lib/firebase_options.dart
