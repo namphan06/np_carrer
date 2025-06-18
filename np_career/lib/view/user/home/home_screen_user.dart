@@ -13,6 +13,7 @@ import 'package:np_career/tool/mi/mi.dart';
 import 'package:np_career/tool/tax/formula.dart';
 import 'package:np_career/view/screen/home.dart';
 import 'package:np_career/view/user/build_your_resume/by_style/resume_by_style.dart';
+import 'package:np_career/view/user/gemini_find_job/gemini_find_job.dart';
 import 'package:np_career/view/user/home/cv_webview.dart';
 import 'package:np_career/view/user/home/home_user_controller.dart';
 import 'package:np_career/view/user/home/navbar/customer_bottom_navbar.dart';
@@ -316,9 +317,9 @@ class _HomeScreenUserState extends State<HomeScreenUser> {
                                   CustomerContainer(
                                       svgPicture:
                                           "assets/images/bug_report_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.svg",
-                                      lableContainer: "Testing",
+                                      lableContainer: "Chatbot",
                                       selectedContainer: () {
-                                        Get.to(ButtonTrigger());
+                                        Get.to(GeminiFindJob());
                                       }),
                                   SizedBox(
                                     width: 30,
