@@ -45,3 +45,8 @@ app.*.map.json
 /android/app/release
 
 lib/np_project_test
+lib/api_key.dart
+
+.env
+
+lib/firebase_options.dart
