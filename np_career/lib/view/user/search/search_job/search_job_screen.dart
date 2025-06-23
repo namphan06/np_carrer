@@ -36,7 +36,7 @@ class _SearchJobScreenState extends State<SearchJobScreen> {
     controller.clearSearch();
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.all(15),
+        padding: EdgeInsets.all(size.width * 0.02),
         child: SingleChildScrollView(
           child: Column(
             children: [

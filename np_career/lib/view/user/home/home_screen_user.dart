@@ -165,6 +165,7 @@ class _HomeScreenUserState extends State<HomeScreenUser> {
           Flexible(
             child: Container(
               width: double.infinity,
+              height: double.infinity,
               decoration: BoxDecoration(
                 color: AppColor.lightBackgroundColor,
                 border: Border(

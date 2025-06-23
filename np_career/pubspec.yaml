@@ -63,7 +63,9 @@ dependencies:
   crypto: ^3.0.6
   provider: ^6.1.5
   youtube_player_flutter: ^9.1.1
+  webview_flutter: ^4.13.0
   # image_gallery_saver: ^2.0.3
+  speech_to_text: ^7.0.0
 
 dev_dependencies:
   flutter_test:
