@@ -167,8 +167,12 @@ class _ApplicationApplyScreenState extends State<ApplicationApplyScreen> {
 
                           return GestureDetector(
                             onTap: () {
-                              controller.getCv(
-                                  application['cvId'], application['typeCV']);
+                              if (application['typeCV'] == 'upload') {
+                                controller.getCvUpload(application['cvId']);
+                              } else {
+                                controller.getCv(
+                                    application['cvId'], application['typeCV']);
+                              }
                             },
                             child: Card(
                               color:

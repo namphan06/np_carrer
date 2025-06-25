@@ -537,7 +537,11 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
                           var cv = filteredCvs[index];
                           return InkWell(
                             onTap: () {
-                              controller.getCv(cv['id'], cv['type']);
+                              if (cv['type'] == 'upload') {
+                                controller.getCvUpload(cv['id']);
+                              } else {
+                                controller.getCv(cv['id'], cv['type']);
+                              }
                             },
                             child: Card(
                               margin: EdgeInsets.symmetric(vertical: 8),

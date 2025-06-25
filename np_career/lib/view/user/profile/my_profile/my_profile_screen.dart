@@ -1133,15 +1133,14 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                                     }
 
                                     return Obx(() {
-                                      var filteredCvs = cvs.where((e) {
-                                        var cv = e as Map<String, dynamic>;
-                                        var position = (cv["position"] ?? "")
+                                      var filteredCvs = cvs.where((cv) {
+                                        final position = (cv["position"] ?? "")
                                             .toString()
                                             .toLowerCase();
-                                        var query = controller.searchQuery.value
+                                        final search = controller
+                                            .searchQuery.value
                                             .toLowerCase();
-                                        return cv["type"] != "upload" &&
-                                            position.contains(query);
+                                        return position.contains(search);
                                       }).toList();
                                       return Padding(
                                         padding: const EdgeInsets.all(15),
@@ -1264,8 +1263,14 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                 if (controller.selectedPosition.isNotEmpty)
                   Obx(
                     () => InkWell(
-                      onTap: () => controllerRs.getCv(
-                          controller.idCv.value, controller.typeCv.value),
+                      onTap: () {
+                        if (controller.typeCv.value == 'upload') {
+                          controller.getCvUpload(controller.idCv.value);
+                        } else {
+                          controllerRs.getCv(
+                              controller.idCv.value, controller.typeCv.value);
+                        }
+                      },
                       child: Card(
                         margin: EdgeInsets.symmetric(vertical: 8),
                         shape: RoundedRectangleBorder(

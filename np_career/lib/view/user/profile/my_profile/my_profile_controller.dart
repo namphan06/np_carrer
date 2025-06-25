@@ -6,6 +6,7 @@ import 'package:np_career/enum/enum_cv_no1_output.dart';
 import 'package:np_career/model/cv_model.dart';
 import 'package:np_career/model/my_profile_model.dart';
 import 'package:np_career/model/work_experience.dart';
+import 'package:np_career/view/pdf_viewr.dart';
 import 'package:np_career/view/user/profile/my_profile/my_profile_fb.dart';
 
 class MyProfileController extends GetxController {
@@ -200,6 +201,20 @@ class MyProfileController extends GetxController {
     try {
       dynamic model = await _fb.getCvModel(uid, type);
       CvOutputRouter.run(type, model);
+    } catch (err) {
+      Get.snackbar("Error", err.toString());
+    }
+  }
+
+  Future<void> getCvUpload(String uid) async {
+    try {
+      Map<String, dynamic> model = await _fb.getCvUpload(uid);
+      if (model.isNotEmpty) {
+        Get.to(PdfViewrScreen(
+            pdfLink: model['link'], position: model["position"]));
+      } else {
+        Get.snackbar("Notification", "Uploaded CV not found.");
+      }
     } catch (err) {
       Get.snackbar("Error", err.toString());
     }

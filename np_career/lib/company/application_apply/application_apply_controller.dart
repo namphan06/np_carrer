@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:np_career/company/application_apply/application_apply_fb.dart';
 import 'package:np_career/enum/enum_cv_no1_output.dart';
 import 'package:np_career/model/cv_model.dart';
+import 'package:np_career/view/pdf_viewr.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -94,6 +95,20 @@ The Hiring Team
     } catch (e) {
       final errorMessage = 'Lỗi không xác định khi mở email: $e';
       print(errorMessage);
+    }
+  }
+
+  Future<void> getCvUpload(String uid) async {
+    try {
+      Map<String, dynamic> model = await _fb.getCvUpload(uid);
+      if (model.isNotEmpty) {
+        Get.to(PdfViewrScreen(
+            pdfLink: model['link'], position: model["position"]));
+      } else {
+        Get.snackbar("Notification", "Uploaded CV not found.");
+      }
+    } catch (err) {
+      Get.snackbar("Error", err.toString());
     }
   }
 }

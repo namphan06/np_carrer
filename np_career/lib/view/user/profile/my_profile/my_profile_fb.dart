@@ -65,4 +65,19 @@ class MyProfileFb {
       throw Exception("Error getting CV: $err");
     }
   }
+
+  Future<Map<String, dynamic>> getCvUpload(String uid) async {
+    try {
+      DocumentSnapshot snapshot =
+          await _firestore.collection('upload_cv').doc(uid).get();
+
+      if (snapshot.exists) {
+        return snapshot.data() as Map<String, dynamic>;
+      } else {
+        throw Exception("CV not found");
+      }
+    } catch (err) {
+      throw Exception("Error getting CV: $err");
+    }
+  }
 }

@@ -317,7 +317,7 @@ class _HomeScreenUserState extends State<HomeScreenUser> {
                                   ),
                                   CustomerContainer(
                                       svgPicture:
-                                          "assets/images/bug_report_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.svg",
+                                          "assets/images/smart_toy_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.svg",
                                       lableContainer: "Chatbot",
                                       selectedContainer: () {
                                         Get.to(GeminiFindJob());
