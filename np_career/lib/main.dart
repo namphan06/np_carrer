@@ -9,6 +9,7 @@ import 'package:np_career/services/call_api.dart';
 import 'package:np_career/tool/courses/providers/CategoryProvider.dart';
 import 'package:np_career/tool/courses/providers/CourseProvider.dart';
 import 'package:np_career/tool/courses/providers/FormulaProvider.dart';
+import 'package:np_career/tool/courses/providers/MBTIProvider.dart';
 import 'package:np_career/tool/courses/providers/MIProvider.dart';
 import 'package:np_career/view/login/login.dart';
 import 'package:np_career/view/signup/signup.dart';
@@ -64,6 +65,9 @@ class MyApp extends StatelessWidget {
         // ),
         ChangeNotifierProvider(
           create: (_) => FormulaProvider(apiService: AppService()),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => MbtiQuestionProvider(apiService: AppService()),
         ),
       ],
       child: GetMaterialApp(

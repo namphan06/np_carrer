@@ -9,6 +9,7 @@ import 'package:np_career/core/app_color.dart';
 import 'package:np_career/resume_management/resume_management_screen.dart';
 import 'package:np_career/test/cv1_output_no1_test.dart';
 import 'package:np_career/tool/courses/category_screen.dart';
+import 'package:np_career/tool/mbti/mbti_screen.dart';
 import 'package:np_career/tool/mi/mi.dart';
 import 'package:np_career/tool/tax/formula.dart';
 import 'package:np_career/view/screen/home.dart';
@@ -350,7 +351,7 @@ class _HomeScreenUserState extends State<HomeScreenUser> {
                                           "assets/images/test-svgrepo-com.svg",
                                       lableContainer: "MBTI Personality Test",
                                       selectedContainer: () {
-                                        Get.to(JobApplied());
+                                        Get.to(MbtiScreen());
                                       }),
                                   SizedBox(
                                     width: 30,

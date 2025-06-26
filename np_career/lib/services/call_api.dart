@@ -6,6 +6,7 @@ import 'package:http/http.dart';
 import 'package:np_career/model/category.dart';
 import 'package:np_career/model/course.dart';
 import 'package:np_career/model/enrollment.dart';
+import 'package:np_career/model/mbti_question.dart';
 
 import '../model/mi.dart';
 
@@ -234,6 +235,32 @@ class AppService {
     } catch (e) {
       print('Error during HTTP request: $e');
       return {};
+    }
+  }
+
+  Future<List<MbtiQuestion>> fetchMbtiQuestions() async {
+    try {
+      final response = await http.get(
+        Uri.parse('$baseUrl/mbti_qs'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final List<dynamic> jsonResponse = jsonDecode(response.body);
+
+        return jsonResponse.map((item) => MbtiQuestion.fromJson(item)).toList();
+      } else {
+        print(
+            '❌ Failed to fetch MBTI questions. Status: ${response.statusCode}');
+        print(response.body);
+        return [];
+      }
+    } catch (e) {
+      print('❌ Error during HTTP request: $e');
+      return [];
     }
   }
 }
