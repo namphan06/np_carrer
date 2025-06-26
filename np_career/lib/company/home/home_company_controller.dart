@@ -26,7 +26,7 @@ class HomeCompanyController extends GetxController {
         {
           'img':
               'assets/images/assignment_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.svg',
-          'text': 'Hiring Information',
+          'text': 'Hiring Information ',
           'onTap': () => Get.to(GuideListScreen())
         },
         {

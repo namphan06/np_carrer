@@ -144,71 +144,72 @@ class _HomeCompanyState extends State<HomeCompany> {
           SizedBox(
             height: 25,
           ),
-          Flexible(
+          Expanded(
             child: Container(
-              padding: EdgeInsets.only(top: 80),
+              padding: EdgeInsets.only(top: 40),
               width: double.infinity,
               decoration: BoxDecoration(
                 color: AppColor.lightBackgroundColor,
                 border: Border(
-                    top: BorderSide(
-                        color: AppColor.greenPrimaryColor, width: 3)),
+                  top: BorderSide(color: AppColor.greenPrimaryColor, width: 3),
+                ),
                 borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(50),
-                    topRight: Radius.circular(50)),
+                  topLeft: Radius.circular(50),
+                  topRight: Radius.circular(50),
+                ),
               ),
-              child: GridView.count(
-                crossAxisCount: 3,
+              child: SingleChildScrollView(
                 padding: EdgeInsets.all(16),
-                crossAxisSpacing: 10,
-                mainAxisSpacing: 25,
-                children: controller.items.map((item) {
-                  return Column(
-                    children: [
-                      GestureDetector(
-                        onTap: item['onTap'],
-                        child: Container(
-                          decoration: BoxDecoration(
-                              border: Border.all(
-                                  color: AppColor.greenPrimaryColor, width: 3),
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(15)),
-                              color: AppColor.orangePrimaryColor
-                                  .withOpacity(0.66)),
-                          child: Padding(
-                            padding: EdgeInsets.all(20),
-                            child: SvgPicture.asset(
-                              item['img'],
-                              color: AppColor.greenPrimaryColor,
-                              width: 45,
-                              height: 45,
+                child: Wrap(
+                  spacing: 15,
+                  runSpacing: 25,
+                  children: controller.items.map((item) {
+                    return SizedBox(
+                      width: (MediaQuery.of(context).size.width - 69) / 3,
+                      child: Column(
+                        children: [
+                          GestureDetector(
+                            onTap: item['onTap'],
+                            child: Container(
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                    color: AppColor.greenPrimaryColor,
+                                    width: 3),
+                                borderRadius: BorderRadius.circular(15),
+                                color: AppColor.orangePrimaryColor
+                                    .withOpacity(0.66),
+                              ),
+                              padding: EdgeInsets.all(20),
+                              child: SvgPicture.asset(
+                                item['img'],
+                                color: AppColor.greenPrimaryColor,
+                                width: 45,
+                                height: 45,
+                              ),
                             ),
                           ),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Container(
-                        height: 15,
-                        width: 80,
-                        child: Center(
-                          child: Text(
-                            item['text'],
-                            style: TextStyle(
-                                fontSize: 10,
-                                fontWeight: FontWeight.bold,
-                                color: AppColor.greenPrimaryColor),
-                            textAlign: TextAlign.center,
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                            softWrap: true,
+                          SizedBox(height: 5),
+                          Container(
+                            height: 50,
+                            child: Center(
+                              child: Text(
+                                item['text'],
+                                style: TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.bold,
+                                    color: AppColor.greenPrimaryColor),
+                                textAlign: TextAlign.center,
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                                softWrap: true,
+                              ),
+                            ),
                           ),
-                        ),
-                      )
-                    ],
-                  );
-                }).toList(),
+                        ],
+                      ),
+                    );
+                  }).toList(),
+                ),
               ),
             ),
           ),
