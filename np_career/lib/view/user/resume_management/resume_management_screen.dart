@@ -5,11 +5,13 @@ import 'package:np_career/core/app_color.dart';
 import 'package:np_career/cv_no1/cv_input_no1/cv_input_no1.dart';
 import 'package:np_career/enum/enum_cv_input.dart';
 import 'package:np_career/model/cv_model.dart';
-import 'package:np_career/resume_management/resume_management_controller.dart';
-import 'package:np_career/resume_management/resume_management_fb.dart';
+// import 'package:np_career/resume_management/resume_management_controller.dart';
+// import 'package:np_career/resume_management/resume_management_fb.dart';
 import 'package:np_career/utils/image_uploader.dart';
 import 'package:np_career/view/not_found/not_found.dart';
 import 'package:np_career/view/pdf_viewr.dart';
+import 'package:np_career/view/user/resume_management/resume_management_controller.dart';
+import 'package:np_career/view/user/resume_management/resume_management_fb.dart';
 
 class ResumeManagementScreen extends StatefulWidget {
   const ResumeManagementScreen({super.key});

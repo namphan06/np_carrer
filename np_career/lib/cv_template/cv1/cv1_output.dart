@@ -85,9 +85,10 @@ class _Cv1OutputState extends State<Cv1Output> {
                           Container(
                             width: 155,
                             child: ClipRRect(
-                                child: Image.network(
-                              controller.getImageUrl(widget.cvModel.linkImage),
-                            )),
+                              child: Image.network(
+                                widget.cvModel.img.url,
+                              ),
+                            ),
                           ),
                           Padding(
                             padding: const EdgeInsets.all(10),

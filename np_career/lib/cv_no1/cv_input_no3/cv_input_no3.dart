@@ -11,8 +11,9 @@ import 'package:np_career/cv_template/cv_setting/cv_setting_no1.dart';
 import 'package:np_career/enum/enum_sex.dart';
 import 'package:np_career/model/cv_model.dart';
 import 'package:np_career/model/cv_model_v3.dart';
-import 'package:np_career/resume_management/resume_management_screen.dart';
+// import 'package:np_career/resume_management/resume_management_screen.dart';
 import 'package:np_career/view/user/build_your_resume/by_style/resume_by_style.dart';
+import 'package:np_career/view/user/resume_management/resume_management_screen.dart';
 
 class CvInputNo3 extends StatefulWidget {
   // final String type;
@@ -596,8 +597,8 @@ class _CvInputNo1State extends State<CvInputNo3> {
                                       color: AppColor.greenPrimaryColor,
                                       fontWeight: FontWeight.bold,
                                     ),
-                                    decoration:
-                                        InputDecoration(label: Text("Quality")),
+                                    decoration: InputDecoration(
+                                        label: Text("Quantity")),
                                   ),
                                 ),
                                 SizedBox(

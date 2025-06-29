@@ -248,15 +248,15 @@ class _Cv2OutputState extends State<Cv2Output> {
                 children: [
                   Container(
                     padding: EdgeInsets.all(size.width * 0.01),
-                    width: size.width * 0.36,
+                    width: size.width * 0.4,
                     decoration: const BoxDecoration(color: Color(0xFF353A3D)),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Image.network(
                           widget.model.img.url,
-                          width: size.width * 0.35,
-                          height: size.width * 0.35,
+                          width: size.width * 0.39,
+                          height: size.width * 0.39,
                           fit: BoxFit.cover,
                         ),
                         const SizedBox(height: 10),
@@ -318,9 +318,6 @@ class _Cv2OutputState extends State<Cv2Output> {
                           style:
                               TextStyle(color: AppColor.lightBackgroundColor),
                         ),
-                        SizedBox(
-                          height: 800,
-                        )
                       ],
                     ),
                   ),

@@ -6,7 +6,7 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/instance_manager.dart';
 import 'package:np_career/core/app_color.dart';
-import 'package:np_career/resume_management/resume_management_screen.dart';
+// import 'package:np_career/resume_management/resume_management_screen.dart';
 import 'package:np_career/test/cv1_output_no1_test.dart';
 import 'package:np_career/tool/courses/category_screen.dart';
 import 'package:np_career/tool/mbti/mbti_screen.dart';
@@ -23,6 +23,7 @@ import 'package:np_career/view/user/home/resume_writing_guid/resume_writing_guid
 import 'package:np_career/view/user/job_applied/job_applied.dart';
 import 'package:np_career/view/user/notification_user/notification_user.dart';
 import 'package:np_career/view/user/profile/profile_screen.dart';
+import 'package:np_career/view/user/resume_management/resume_management_screen.dart';
 import 'package:np_career/view/user/search/search_job/search_job_screen.dart';
 import 'package:np_career/view/user/top_company/top_company.dart';
 

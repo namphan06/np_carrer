@@ -1,3 +1,4 @@
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -7,8 +8,9 @@ import 'package:np_career/cv_template/cv1/cv1_output.dart';
 import 'package:np_career/cv_template/cv_setting/cv_setting_no1.dart';
 import 'package:np_career/enum/enum_sex.dart';
 import 'package:np_career/model/cv_model.dart';
-import 'package:np_career/resume_management/resume_management_screen.dart';
+// import 'package:np_career/resume_management/resume_management_screen.dart';
 import 'package:np_career/view/user/build_your_resume/by_style/resume_by_style.dart';
+import 'package:np_career/view/user/resume_management/resume_management_screen.dart';
 
 class CvInputNo1 extends StatefulWidget {
   // final String type;
@@ -121,54 +123,65 @@ class _CvInputNo1State extends State<CvInputNo1> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 GestureDetector(
-                  onTap: () => Get.dialog(AlertDialog(
-                    backgroundColor: AppColor.lightBackgroundColor,
-                    title: Text(
-                      "Enter image link",
-                      style: TextStyle(
-                          color: AppColor.orangePrimaryColor,
-                          fontWeight: FontWeight.bold),
-                    ),
-                    content: TextField(
-                      controller: controller.linkImgController,
-                      style: TextStyle(
-                          color: AppColor.greenPrimaryColor,
-                          fontWeight: FontWeight.bold),
-                      decoration: InputDecoration(label: Text("Link")),
-                    ),
-                    actions: [
-                      SizedBox(
-                        width: 100,
-                        child: ElevatedButton(
-                          onPressed: () {
-                            Get.back();
-                          },
-                          child: Text(
-                            "Cancel",
-                            style: TextStyle(
-                                color: AppColor.lightBackgroundColor,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        width: 100,
-                        child: ElevatedButton(
-                          onPressed: () {
-                            controller.imageUrl.value =
-                                controller.linkImgController.text;
-                            Get.back();
-                          },
-                          child: Text(
-                            "Submit",
-                            style: TextStyle(
-                                color: AppColor.lightBackgroundColor,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                      ),
-                    ],
-                  )),
+                  onTap: () async {
+                    FilePickerResult? result =
+                        await FilePicker.platform.pickFiles();
+
+                    if (result != null) {
+                      await controller.uploadFile(result);
+                    } else {
+                      print("No file selected.");
+                    }
+                  },
+
+                  //  Get.dialog(AlertDialog(
+                  //   backgroundColor: AppColor.lightBackgroundColor,
+                  //   title: Text(
+                  //     "Enter image link",
+                  //     style: TextStyle(
+                  //         color: AppColor.orangePrimaryColor,
+                  //         fontWeight: FontWeight.bold),
+                  //   ),
+                  //   content: TextField(
+                  //     controller: controller.linkImgController,
+                  //     style: TextStyle(
+                  //         color: AppColor.greenPrimaryColor,
+                  //         fontWeight: FontWeight.bold),
+                  //     decoration: InputDecoration(label: Text("Link")),
+                  //   ),
+                  //   actions: [
+                  //     SizedBox(
+                  //       width: 100,
+                  //       child: ElevatedButton(
+                  //         onPressed: () {
+                  //           Get.back();
+                  //         },
+                  //         child: Text(
+                  //           "Cancel",
+                  //           style: TextStyle(
+                  //               color: AppColor.lightBackgroundColor,
+                  //               fontWeight: FontWeight.bold),
+                  //         ),
+                  //       ),
+                  //     ),
+                  //     SizedBox(
+                  //       width: 100,
+                  //       child: ElevatedButton(
+                  //         onPressed: () {
+                  //           controller.imageUrl.value =
+                  //               controller.linkImgController.text;
+                  //           Get.back();
+                  //         },
+                  //         child: Text(
+                  //           "Submit",
+                  //           style: TextStyle(
+                  //               color: AppColor.lightBackgroundColor,
+                  //               fontWeight: FontWeight.bold),
+                  //         ),
+                  //       ),
+                  //     ),
+                  //   ],
+                  // )),
                   child: Container(
                     width: double.infinity,
                     decoration: BoxDecoration(

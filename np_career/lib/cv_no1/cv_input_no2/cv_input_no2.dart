@@ -8,8 +8,9 @@ import 'package:np_career/cv_no1/cv_input_no2/cv_input_no2_controller.dart';
 import 'package:np_career/cv_template/cv2/cv2_output.dart';
 import 'package:np_career/cv_template/cv_setting/cv_setting_no1.dart';
 import 'package:np_career/model/cv_model_v2.dart';
-import 'package:np_career/resume_management/resume_management_screen.dart';
+// import 'package:np_career/resume_management/resume_management_screen.dart';
 import 'package:np_career/view/user/build_your_resume/by_style/resume_by_style.dart';
+import 'package:np_career/view/user/resume_management/resume_management_screen.dart';
 
 class CvInputNo2 extends StatefulWidget {
   const CvInputNo2({super.key});

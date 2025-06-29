@@ -4,7 +4,8 @@ import 'package:np_career/enum/enum_cv_no1_output.dart';
 import 'package:np_career/model/cv_model.dart';
 import 'package:np_career/model/cv_model_v2.dart';
 import 'package:np_career/model/cv_model_v3.dart';
-import 'package:np_career/resume_management/resume_management_fb.dart';
+// import 'package:np_career/resume_management/resume_management_fb.dart';
+import 'package:np_career/view/user/resume_management/resume_management_fb.dart';
 
 class ResumeManagementController extends GetxController {
   final ResumeManagementFb _fb = Get.put(ResumeManagementFb());

@@ -11,11 +11,13 @@ import 'package:np_career/enum/enum_sex.dart';
 import 'package:np_career/enum/enum_type_job.dart';
 import 'package:np_career/enum/enum_type_job_category.dart';
 import 'package:np_career/main.dart';
-import 'package:np_career/resume_management/resume_management_controller.dart';
-import 'package:np_career/resume_management/resume_management_fb.dart';
+// import 'package:np_career/resume_management/resume_management_controller.dart';
+// import 'package:np_career/resume_management/resume_management_fb.dart';
 import 'package:np_career/view/not_found/not_found.dart';
 import 'package:np_career/view/user/profile/my_profile/my_profile_controller.dart';
 import 'package:np_career/view/user/profile/profile_screen.dart';
+import 'package:np_career/view/user/resume_management/resume_management_controller.dart';
+import 'package:np_career/view/user/resume_management/resume_management_fb.dart';
 
 class MyProfileScreen extends StatefulWidget {
   const MyProfileScreen({super.key});
