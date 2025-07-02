@@ -18,7 +18,8 @@ import 'package:np_career/view/user/search/search_job/search_job_fb.dart';
 
 class SearchJobScreen extends StatefulWidget {
   final String? nameRole;
-  const SearchJobScreen({super.key, this.nameRole});
+  final SearchJobController controller;
+  const SearchJobScreen({super.key, this.nameRole, required this.controller});
 
   @override
   State<SearchJobScreen> createState() => _SearchJobScreenState();
@@ -26,14 +27,15 @@ class SearchJobScreen extends StatefulWidget {
 
 class _SearchJobScreenState extends State<SearchJobScreen> {
   final SearchJobFb _fb = Get.put(SearchJobFb());
-  final SearchJobController controller = Get.put(SearchJobController());
+  // final SearchJobController controller = Get.put(SearchJobController());
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    controller.fetchSavedJobStatus();
+    widget.controller.fetchSavedJobStatus();
+    widget.controller.nameRole.value = widget.nameRole ?? '';
 
-    controller.clearSearch();
+    widget.controller.clearSearch();
     return Scaffold(
       body: Padding(
         padding: EdgeInsets.all(size.width * 0.02),
@@ -47,8 +49,8 @@ class _SearchJobScreenState extends State<SearchJobScreen> {
                     child: Column(
                       children: [
                         GestureDetector(
-                          onTap: () => controller.isExpanded.value =
-                              !controller.isExpanded.value,
+                          onTap: () => widget.controller.isExpanded.value =
+                              !widget.controller.isExpanded.value,
                           child: Container(
                             padding: EdgeInsets.all(10),
                             decoration: BoxDecoration(
@@ -80,7 +82,7 @@ class _SearchJobScreenState extends State<SearchJobScreen> {
                         SizedBox(
                           height: 15,
                         ),
-                        controller.isExpanded.value == true
+                        widget.controller.isExpanded.value == true
                             ? Column(
                                 children: [
                                   Container(
@@ -108,7 +110,8 @@ class _SearchJobScreenState extends State<SearchJobScreen> {
                                           height: 10,
                                         ),
                                         TextField(
-                                          controller: controller.nameController,
+                                          controller:
+                                              widget.controller.nameController,
                                           decoration: InputDecoration(
                                               label: Text(
                                             "Name",
@@ -137,7 +140,7 @@ class _SearchJobScreenState extends State<SearchJobScreen> {
                                               width: size.width * 0.269,
                                               child: TextField(
                                                 controller:
-                                                    controller.minSalary,
+                                                    widget.controller.minSalary,
                                                 keyboardType:
                                                     TextInputType.number,
                                                 inputFormatters: [
@@ -160,7 +163,7 @@ class _SearchJobScreenState extends State<SearchJobScreen> {
                                               width: size.width * 0.269,
                                               child: TextField(
                                                 controller:
-                                                    controller.maxSalary,
+                                                    widget.controller.maxSalary,
                                                 keyboardType:
                                                     TextInputType.number,
                                                 inputFormatters: [
@@ -221,10 +224,10 @@ class _SearchJobScreenState extends State<SearchJobScreen> {
                                                                       index];
                                                               return InkWell(
                                                                 onTap: () {
-                                                                  controller
-                                                                          .selectCurrencyUnit
-                                                                          .value =
-                                                                      e.label;
+                                                                  widget
+                                                                      .controller
+                                                                      .selectCurrencyUnit
+                                                                      .value = e.label;
                                                                   Get.back();
                                                                 },
                                                                 borderRadius:
@@ -281,7 +284,8 @@ class _SearchJobScreenState extends State<SearchJobScreen> {
                                                             .spaceBetween,
                                                     children: [
                                                       Text(
-                                                        controller
+                                                        widget
+                                                            .controller
                                                             .selectCurrencyUnit
                                                             .value,
                                                         style: TextStyle(
@@ -368,7 +372,8 @@ class _SearchJobScreenState extends State<SearchJobScreen> {
                                                               .where((e) => e
                                                                   .label
                                                                   .toLowerCase()
-                                                                  .contains(controller
+                                                                  .contains(widget
+                                                                      .controller
                                                                       .searchQueryC
                                                                       .value))
                                                               .toList();
@@ -391,20 +396,22 @@ class _SearchJobScreenState extends State<SearchJobScreen> {
                                                                       index];
 
                                                               return Obx(() {
-                                                                final isSelectedC =
-                                                                    controller
-                                                                        .list_city
-                                                                        .contains(
-                                                                            e.label);
+                                                                final isSelectedC = widget
+                                                                    .controller
+                                                                    .list_city
+                                                                    .contains(e
+                                                                        .label);
                                                                 return InkWell(
                                                                   onTap: () {
                                                                     if (isSelectedC) {
-                                                                      controller
+                                                                      widget
+                                                                          .controller
                                                                           .list_city
                                                                           .remove(
                                                                               e.label);
                                                                     } else {
-                                                                      controller
+                                                                      widget
+                                                                          .controller
                                                                           .list_city
                                                                           .add(e
                                                                               .label);
@@ -519,7 +526,8 @@ class _SearchJobScreenState extends State<SearchJobScreen> {
                                         Wrap(
                                             spacing: 10,
                                             runSpacing: 5,
-                                            children: controller.list_city
+                                            children: widget
+                                                .controller.list_city
                                                 .map(
                                                   (e) => Container(
                                                     padding:
@@ -552,7 +560,7 @@ class _SearchJobScreenState extends State<SearchJobScreen> {
                                                         ),
                                                         IconButton(
                                                             onPressed: () {
-                                                              controller
+                                                              widget.controller
                                                                   .list_city
                                                                   .remove(e);
                                                             },
@@ -602,7 +610,8 @@ class _SearchJobScreenState extends State<SearchJobScreen> {
                                                                   index];
                                                           return InkWell(
                                                             onTap: () {
-                                                              controller
+                                                              widget
+                                                                  .controller
                                                                   .selectExperience
                                                                   .value = e.label;
                                                               Get.back();
@@ -655,10 +664,13 @@ class _SearchJobScreenState extends State<SearchJobScreen> {
                                                         .spaceBetween,
                                                 children: [
                                                   Text(
-                                                    controller.selectExperience
+                                                    widget
+                                                            .controller
+                                                            .selectExperience
                                                             .isEmpty
                                                         ? "Experience"
-                                                        : controller
+                                                        : widget
+                                                            .controller
                                                             .selectExperience
                                                             .value,
                                                     style: TextStyle(
@@ -722,7 +734,8 @@ class _SearchJobScreenState extends State<SearchJobScreen> {
                                                       SizedBox(height: 16),
                                                       TextField(
                                                         onChanged: (value) =>
-                                                            controller
+                                                            widget
+                                                                    .controller
                                                                     .searchQuery
                                                                     .value =
                                                                 value
@@ -745,16 +758,16 @@ class _SearchJobScreenState extends State<SearchJobScreen> {
                                                       SizedBox(height: 16),
                                                       Expanded(
                                                         child: Obx(() {
-                                                          final filteredList =
-                                                              EnumTypeJobCategory
-                                                                  .values
-                                                                  .where((e) => e
-                                                                      .label
-                                                                      .toLowerCase()
-                                                                      .contains(controller
-                                                                          .searchQuery
-                                                                          .value))
-                                                                  .toList();
+                                                          final filteredList = EnumTypeJobCategory
+                                                              .values
+                                                              .where((e) => e
+                                                                  .label
+                                                                  .toLowerCase()
+                                                                  .contains(widget
+                                                                      .controller
+                                                                      .searchQuery
+                                                                      .value))
+                                                              .toList();
                                                           return ListView
                                                               .separated(
                                                             itemCount:
@@ -774,20 +787,22 @@ class _SearchJobScreenState extends State<SearchJobScreen> {
                                                                       index];
 
                                                               return Obx(() {
-                                                                final isSelected =
-                                                                    controller
-                                                                        .list_type_job_category
-                                                                        .contains(
-                                                                            e.label);
+                                                                final isSelected = widget
+                                                                    .controller
+                                                                    .list_type_job_category
+                                                                    .contains(e
+                                                                        .label);
                                                                 return InkWell(
                                                                   onTap: () {
                                                                     if (isSelected) {
-                                                                      controller
+                                                                      widget
+                                                                          .controller
                                                                           .list_type_job_category
                                                                           .remove(
                                                                               e.label);
                                                                     } else {
-                                                                      controller
+                                                                      widget
+                                                                          .controller
                                                                           .list_type_job_category
                                                                           .add(e
                                                                               .label);
@@ -902,7 +917,7 @@ class _SearchJobScreenState extends State<SearchJobScreen> {
                                         Wrap(
                                             spacing: 10,
                                             runSpacing: 5,
-                                            children: controller
+                                            children: widget.controller
                                                 .list_type_job_category
                                                 .map(
                                                   (e) => Container(
@@ -936,7 +951,7 @@ class _SearchJobScreenState extends State<SearchJobScreen> {
                                                         ),
                                                         IconButton(
                                                             onPressed: () {
-                                                              controller
+                                                              widget.controller
                                                                   .list_type_job_category
                                                                   .remove(e);
                                                             },
@@ -952,8 +967,8 @@ class _SearchJobScreenState extends State<SearchJobScreen> {
                                         ),
                                         ElevatedButton(
                                             onPressed: () {
-                                              controller.isExpanded.value =
-                                                  false;
+                                              widget.controller.isExpanded
+                                                  .value = false;
                                             },
                                             child: Text(
                                               "Submit",
@@ -973,7 +988,7 @@ class _SearchJobScreenState extends State<SearchJobScreen> {
                               )
                             : SizedBox.shrink(),
                         StreamBuilder(
-                            stream: controller.appliedJobIdStream(),
+                            stream: widget.controller.appliedJobIdStream(),
                             builder: (context, appliedSnapshot) {
                               if (appliedSnapshot.connectionState ==
                                   ConnectionState.waiting) {
@@ -1011,9 +1026,9 @@ class _SearchJobScreenState extends State<SearchJobScreen> {
                                     final List<Map<String, dynamic>> jobPosts =
                                         [];
 
-                                    controller.fetchSavedJobIds();
+                                    widget.controller.fetchSavedJobIds();
                                     // controller.fetchAppliedJobIds();
-                                    final _ = controller.fix.value;
+                                    final _ = widget.controller.fix.value;
 
                                     for (var doc in docs) {
                                       final data =
@@ -1023,7 +1038,7 @@ class _SearchJobScreenState extends State<SearchJobScreen> {
 
                                       for (var job in jobs) {
                                         if (widget.nameRole == "Saved Job" &&
-                                            controller.savedJobIdList
+                                            widget.controller.savedJobIdList
                                                 .contains(job['id'])) {
                                           jobPosts
                                               .add(job as Map<String, dynamic>);
@@ -1035,7 +1050,7 @@ class _SearchJobScreenState extends State<SearchJobScreen> {
                                               .add(job as Map<String, dynamic>);
                                         } else if (widget.nameRole ==
                                                 "Jobs Today" &&
-                                            controller.getCreatedAtLabel(
+                                            widget.controller.getCreatedAtLabel(
                                                     job['createdAt']) ==
                                                 'New') {
                                           jobPosts
@@ -1054,15 +1069,15 @@ class _SearchJobScreenState extends State<SearchJobScreen> {
                                     }
 
                                     final filterJobPosts =
-                                        controller.filterJobs(jobPosts);
+                                        widget.controller.filterJobs(jobPosts);
 
                                     // PHÂN TRANG
                                     final startIndex =
-                                        controller.currentPage.value *
-                                            controller.itemsPerPage;
-                                    final endIndex =
-                                        (startIndex + controller.itemsPerPage)
-                                            .clamp(0, filterJobPosts.length);
+                                        widget.controller.currentPage.value *
+                                            widget.controller.itemsPerPage;
+                                    final endIndex = (startIndex +
+                                            widget.controller.itemsPerPage)
+                                        .clamp(0, filterJobPosts.length);
                                     final paginatedJobs = filterJobPosts
                                         .sublist(startIndex, endIndex);
 
@@ -1087,8 +1102,8 @@ class _SearchJobScreenState extends State<SearchJobScreen> {
                                             final city =
                                                 job['city'] as List<dynamic>? ??
                                                     [];
-                                            final label =
-                                                controller.getCreatedAtLabel(
+                                            final label = widget.controller
+                                                .getCreatedAtLabel(
                                                     job['createdAt']);
                                             final isNew = label == 'New';
 
@@ -1115,18 +1130,26 @@ class _SearchJobScreenState extends State<SearchJobScreen> {
 
                                             return GestureDetector(
                                               onTap: () async {
-                                                await controller
+                                                await widget.controller
                                                     .loadJobDetail(job['id']);
 
-                                                if (controller.job == null) {
+                                                if (widget.controller.job ==
+                                                    null) {
                                                   Get.to(() =>
                                                       const JobNotFoundScreen());
                                                 } else {
                                                   Get.to(() => JobDetailScreen(
-                                                        job: controller.job!,
-                                                        isSave: controller
+                                                        job: widget
+                                                            .controller.job!,
+                                                        isSave: widget
+                                                                .controller
                                                                 .savedJobStatusList[
-                                                            index],
+                                                            index +
+                                                                5 *
+                                                                    widget
+                                                                        .controller
+                                                                        .currentPage
+                                                                        .value],
                                                         companyId:
                                                             job['companyId'],
                                                       ));
@@ -1250,115 +1273,154 @@ class _SearchJobScreenState extends State<SearchJobScreen> {
                                                         ],
                                                       ),
                                                     ),
-                                                    Obx(() => Column(
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .end,
-                                                          children: [
-                                                            Container(
-                                                              decoration:
-                                                                  BoxDecoration(
-                                                                shape: BoxShape
-                                                                    .circle,
-                                                                color: AppColor
-                                                                    .greyColor
-                                                                    .withOpacity(
-                                                                        0.5),
-                                                              ),
-                                                              child: controller
-                                                                              .savedJobStatusList
-                                                                              .length >
-                                                                          index &&
-                                                                      controller.savedJobStatusList[
-                                                                              index] ==
-                                                                          false
-                                                                  ? IconButton(
-                                                                      onPressed:
-                                                                          () {
-                                                                        controller.toggleSavedJobStatus(
-                                                                            index,
-                                                                            job['id']);
-                                                                      },
-                                                                      icon:
-                                                                          Icon(
-                                                                        Icons
-                                                                            .bookmark_border_outlined,
-                                                                        size:
-                                                                            30,
-                                                                        color: AppColor
-                                                                            .greenPrimaryColor,
-                                                                      ))
-                                                                  : IconButton(
-                                                                      onPressed:
-                                                                          () {
-                                                                        controller.toggleSavedJobStatus(
-                                                                            index,
-                                                                            job['id']);
-                                                                        if (widget.nameRole ==
-                                                                            "Job Applied") {
-                                                                          jobPosts
-                                                                              .remove(job);
-                                                                        }
-                                                                      },
-                                                                      icon:
-                                                                          Icon(
-                                                                        Icons
-                                                                            .bookmark,
-                                                                        size:
-                                                                            30,
-                                                                        color: AppColor
-                                                                            .greenPrimaryColor,
-                                                                      )),
-                                                            ),
-                                                            SizedBox(
-                                                                height: 35),
-                                                            Container(
-                                                              padding: EdgeInsets
-                                                                  .symmetric(
-                                                                      horizontal:
-                                                                          6,
-                                                                      vertical:
-                                                                          2),
-                                                              decoration:
-                                                                  BoxDecoration(
+                                                    (widget.nameRole !=
+                                                                "Applied Job" &&
+                                                            widget.nameRole !=
+                                                                "Jobs Today")
+                                                        ? Obx(() => Column(
+                                                              crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .end,
+                                                              children: [
+                                                                Container(
+                                                                  decoration:
+                                                                      BoxDecoration(
+                                                                    shape: BoxShape
+                                                                        .circle,
+                                                                    color: AppColor
+                                                                        .greyColor
+                                                                        .withOpacity(
+                                                                            0.5),
+                                                                  ),
+                                                                  child: widget.controller.savedJobStatusList.length > (index + 5 * widget.controller.currentPage.value) &&
+                                                                          widget.controller.savedJobStatusList[index + 5 * widget.controller.currentPage.value] ==
+                                                                              false
+                                                                      ? IconButton(
+                                                                          onPressed:
+                                                                              () {
+                                                                            widget.controller.toggleSavedJobStatus(index + 5 * widget.controller.currentPage.value,
+                                                                                job['id']);
+                                                                          },
+                                                                          icon:
+                                                                              Icon(
+                                                                            Icons.bookmark_border_outlined,
+                                                                            size:
+                                                                                30,
+                                                                            color:
+                                                                                AppColor.greenPrimaryColor,
+                                                                          ))
+                                                                      : IconButton(
+                                                                          onPressed:
+                                                                              () {
+                                                                            widget.controller.toggleSavedJobStatus(index + 5 * widget.controller.currentPage.value,
+                                                                                job['id']);
+                                                                            if (widget.nameRole ==
+                                                                                "Job Applied") {
+                                                                              jobPosts.remove(job);
+                                                                            }
+                                                                          },
+                                                                          icon:
+                                                                              Icon(
+                                                                            Icons.bookmark,
+                                                                            size:
+                                                                                30,
+                                                                            color:
+                                                                                AppColor.greenPrimaryColor,
+                                                                          )),
+                                                                ),
+                                                                SizedBox(
+                                                                    height: 35),
+                                                                Container(
+                                                                  padding: EdgeInsets
+                                                                      .symmetric(
+                                                                          horizontal:
+                                                                              6,
+                                                                          vertical:
+                                                                              2),
+                                                                  decoration:
+                                                                      BoxDecoration(
+                                                                    color: isNew
+                                                                        ? Colors
+                                                                            .green
+                                                                        : Colors
+                                                                            .grey,
+                                                                    border:
+                                                                        Border
+                                                                            .all(
+                                                                      color: isNew
+                                                                          ? Colors
+                                                                              .green
+                                                                              .shade700
+                                                                          : Colors
+                                                                              .grey
+                                                                              .shade400,
+                                                                      width:
+                                                                          0.8,
+                                                                    ),
+                                                                    borderRadius:
+                                                                        BorderRadius
+                                                                            .circular(8),
+                                                                  ),
+                                                                  child: Text(
+                                                                    label,
+                                                                    style:
+                                                                        TextStyle(
+                                                                      color: Colors
+                                                                          .white
+                                                                          .withOpacity(
+                                                                              0.7),
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w500,
+                                                                      fontSize:
+                                                                          15,
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            ))
+                                                        : Container(
+                                                            padding: EdgeInsets
+                                                                .symmetric(
+                                                                    horizontal:
+                                                                        6,
+                                                                    vertical:
+                                                                        2),
+                                                            decoration:
+                                                                BoxDecoration(
+                                                              color: isNew
+                                                                  ? Colors.green
+                                                                  : Colors.grey,
+                                                              border:
+                                                                  Border.all(
                                                                 color: isNew
                                                                     ? Colors
                                                                         .green
+                                                                        .shade700
                                                                     : Colors
-                                                                        .grey,
-                                                                border:
-                                                                    Border.all(
-                                                                  color: isNew
-                                                                      ? Colors
-                                                                          .green
-                                                                          .shade700
-                                                                      : Colors
-                                                                          .grey
-                                                                          .shade400,
-                                                                  width: 0.8,
-                                                                ),
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            8),
+                                                                        .grey
+                                                                        .shade400,
+                                                                width: 0.8,
                                                               ),
-                                                              child: Text(
-                                                                label,
-                                                                style:
-                                                                    TextStyle(
-                                                                  color: Colors
-                                                                      .white
-                                                                      .withOpacity(
-                                                                          0.7),
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w500,
-                                                                  fontSize: 15,
-                                                                ),
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          8),
+                                                            ),
+                                                            child: Text(
+                                                              label,
+                                                              style: TextStyle(
+                                                                color: Colors
+                                                                    .white
+                                                                    .withOpacity(
+                                                                        0.7),
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500,
+                                                                fontSize: 15,
                                                               ),
                                                             ),
-                                                          ],
-                                                        )),
+                                                          ),
                                                   ],
                                                 ),
                                               ),
@@ -1371,27 +1433,29 @@ class _SearchJobScreenState extends State<SearchJobScreen> {
                                               MainAxisAlignment.center,
                                           children: [
                                             IconButton(
-                                              onPressed:
-                                                  controller.currentPage.value >
-                                                          0
-                                                      ? () => controller
-                                                          .currentPage.value--
-                                                      : null,
+                                              onPressed: widget.controller
+                                                          .currentPage.value >
+                                                      0
+                                                  ? () => widget.controller
+                                                      .currentPage.value--
+                                                  : null,
                                               icon: Icon(Icons.arrow_back),
                                             ),
                                             Text(
-                                              "Page ${controller.currentPage.value + 1} of ${(filterJobPosts.length / controller.itemsPerPage).ceil()}",
+                                              "Page ${widget.controller.currentPage.value + 1} of ${(filterJobPosts.length / widget.controller.itemsPerPage).ceil()}",
                                               style: TextStyle(
                                                   fontWeight: FontWeight.bold),
                                             ),
                                             IconButton(
-                                              onPressed: (controller.currentPage
+                                              onPressed: (widget
+                                                                  .controller
+                                                                  .currentPage
                                                                   .value +
                                                               1) *
-                                                          controller
+                                                          widget.controller
                                                               .itemsPerPage <
                                                       filterJobPosts.length
-                                                  ? () => controller
+                                                  ? () => widget.controller
                                                       .currentPage.value++
                                                   : null,
                                               icon: Icon(Icons.arrow_forward),

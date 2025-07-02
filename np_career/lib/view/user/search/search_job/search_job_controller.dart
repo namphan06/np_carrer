@@ -15,6 +15,8 @@ class SearchJobController extends GetxController {
   RxString searchQuery = ''.obs;
   RxString searchQueryC = ''.obs;
 
+  RxString nameRole = ''.obs;
+
   final RxInt currentPage = 0.obs;
   final int itemsPerPage = 5;
 
@@ -38,11 +40,17 @@ class SearchJobController extends GetxController {
   }
 
   @override
-  void onInit() {
+  void onInit() async {
     super.onInit();
     // appliedJobIdList.value = [];
-    fetchSavedJobStatus();
-    fetchSavedJobIds();
+    savedJobStatusList.value = [];
+    savedJobIdList.value = [];
+    await fetchSavedJobStatus();
+    await fetchSavedJobIds();
+    print("Init success");
+    print(savedJobStatusList);
+    print(savedJobIdList);
+    print(nameRole.value);
     // fetchAppliedJobIds().then((_) {
     //   print('appliedJobIdList: ${appliedJobIdList}');
     // });
@@ -134,6 +142,10 @@ class SearchJobController extends GetxController {
   Future<void> fetchSavedJobStatus() async {
     final result = await _fb.getSavedJobsStatusAndIds();
     savedJobStatusList.value = result['status'] as List<bool>;
+    if (nameRole.value == "Saved Job") {
+      savedJobStatusList.value =
+          List<bool>.filled(savedJobStatusList.length, true);
+    }
     // print(savedJobStatusList);
   }
 

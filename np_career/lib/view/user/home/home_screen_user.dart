@@ -24,6 +24,7 @@ import 'package:np_career/view/user/job_applied/job_applied.dart';
 import 'package:np_career/view/user/notification_user/notification_user.dart';
 import 'package:np_career/view/user/profile/profile_screen.dart';
 import 'package:np_career/view/user/resume_management/resume_management_screen.dart';
+import 'package:np_career/view/user/search/search_job/search_job_controller.dart';
 import 'package:np_career/view/user/search/search_job/search_job_screen.dart';
 import 'package:np_career/view/user/top_company/top_company.dart';
 
@@ -40,6 +41,7 @@ class _HomeScreenUserState extends State<HomeScreenUser> {
 
   @override
   Widget build(BuildContext context) {
+    final SearchJobController controllerS = Get.put(SearchJobController());
     return Scaffold(
       backgroundColor: AppColor.orangePrimaryColor,
       body: Obx(() {
@@ -47,7 +49,9 @@ class _HomeScreenUserState extends State<HomeScreenUser> {
           case 0:
             return _buildHomeScree();
           case 1:
-            return SearchJobScreen();
+            return SearchJobScreen(
+              controller: controllerS,
+            );
           case 2:
             return ProfileScreen();
           default:
@@ -206,8 +210,12 @@ class _HomeScreenUserState extends State<HomeScreenUser> {
                                           "assets/images/file-info-paper-person-profile-svgrepo-com.svg",
                                       lableContainer: "Jobs Applied",
                                       selectedContainer: () {
+                                        Get.delete<SearchJobController>();
+                                        final SearchJobController controller =
+                                            Get.put(SearchJobController());
                                         Get.to(SearchJobScreen(
                                           nameRole: "Applied Job",
+                                          controller: controller,
                                         ));
                                       }),
                                   SizedBox(
@@ -217,9 +225,16 @@ class _HomeScreenUserState extends State<HomeScreenUser> {
                                       svgPicture:
                                           "assets/images/save-add-svgrepo-com.svg",
                                       lableContainer: "Saved Jobs",
-                                      selectedContainer: () {
+                                      selectedContainer: () async {
+                                        await Get.delete<
+                                            SearchJobController>(); // xoá controller cũ (nếu có)
+                                        final SearchJobController controller =
+                                            Get.put(
+                                                SearchJobController()); // tạo lại, gọi lại onInit
+
                                         Get.to(SearchJobScreen(
                                           nameRole: "Saved Job",
+                                          controller: controller,
                                         ));
                                       }),
                                   SizedBox(
@@ -240,8 +255,12 @@ class _HomeScreenUserState extends State<HomeScreenUser> {
                                           "assets/images/industry-svgrepo-com.svg",
                                       lableContainer: "Jobs Today",
                                       selectedContainer: () {
+                                        Get.delete<SearchJobController>();
+                                        final SearchJobController controller =
+                                            Get.put(SearchJobController());
                                         Get.to(SearchJobScreen(
                                           nameRole: "Jobs Today",
+                                          controller: controller,
                                         ));
                                       }),
                                   SizedBox(
