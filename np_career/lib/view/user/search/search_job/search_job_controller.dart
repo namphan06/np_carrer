@@ -184,3 +184,9 @@ class SearchJobController extends GetxController {
     }
   }
 }
+
+
+//  savedjob và appliedjob được xử  lý khác nhau 
+//  - savedjob lưu trạng thái vào biến trong hàm controller duwois dạng list cách này sẽ bị lỗi khi phân trang vì khi lọc theo điều kiện khiến số phần tử giảm đi khiến list chứa trạng thái của savejob không còn đúng (VD: đây đủ có 6 phần tử [false, true, false, false, true, true] nhưng khi lọc ra các phần tử true tổng có 2 phần tử thì chỉ phần tử thứ 2 là true trong khi cả 2 phải cùng true kêt cả khi gọi lại hàm fetch thì nó vẫn lọc qua toàn mảng và trả về [false, true, false, false, true, true] )
+//  - appliedjob thì sử dụng streambuilder bao bên ngoài stream chứa list nên có thể cập nhật 
+
